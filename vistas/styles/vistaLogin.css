@@ -1,1 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Laila', sans-serif;
+}
+
+.barra-superior {
+  background-color: #2f5d8c;
+  color: yellow;
+  display: flex;
+  align-items: center;
+  padding: 10px 30px;
+}
+
+.logo-sep {
+  height: 60px;
+  margin-right: 20px;
+}
+
+.titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.contenedor-principal {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Ocupa toda la pantalla */
+  overflow: hidden;
+}
+
+.fondo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85);
+  z-index: 1;
+}
+
+.escudo {
+  position: absolute;
+  z-index: 2;
+  width: 140px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.formulario-login {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  background-color: white;
+  padding: 20px;
+  width: 300px;
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  z-index: 3;
+}
+
+
+.tabs {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #ccc;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px 5px 0 0;
+}
+
+.tab.activo {
+  background-color: #146534;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.campo label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.campo input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.botones {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn:first-child {
+  background-color: #146534;
+  color: white;
+}
+
+.btn:last-child {
+  background-color: #2f5d8c;
+  color: white;
+}
+
+.olvide {
+  display: block;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #2f5d8c;
+  text-decoration: none;
+}
