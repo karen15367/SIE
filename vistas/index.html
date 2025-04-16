@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIE</title>
     <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/avisos.css">
     <link rel="stylesheet" href="styles/btn.css">
+    <script src="script/popup.js" type="module"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 </head>
@@ -25,9 +27,9 @@
                 </div>
 
                 <div id="dvTwo" class="divItems">
-                    <button class="btnBorder">AVISOS</button>
+                    <button id="btnAvisos" class="btnBorder">AVISOS</button>
                     <button class="btnBorder">ENCUESTAS</h3>
-                        <button class="btnBorder">SALIR</h3>
+                    <button class="btnBorder">SALIR</h3>
                 </div>
             </div>
 
@@ -35,26 +37,32 @@
 
         <main class="content">
 
-
             <div id="dvCasos">
                 <div id="dvCasosT">
                     <h2>Dudas o casos Particulares</h2>
                 </div>
-
             </div>
 
             <div id="dvEncuesta">
                 <button class="button-28" role="button">RESPONDER ENCUESTA</button>
             </div>
-
         </main>
 
-        <footer>
+        <div id="dvAvisos" class="popup">
+            <div class="popup-content">
+                <span id="closePopup" class="close">&times;</span>
+                <h2>Avisos</h2>
+                <hr>
+                <h3>Titulo</h3>
+                <p>Este es el contenido de la ventana emergente.</p>
+                <hr>
+            </div>
+        </div>
 
+        <footer>
         </footer>
 
     </div>
-
 </body>
 
 </html>
