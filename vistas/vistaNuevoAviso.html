@@ -7,6 +7,7 @@
     <title>SIE</title>
     <link rel="stylesheet" href="styles/vistaHomePage.css">
     <link rel="stylesheet" href="styles/avisosAdmin.css">
+    <link rel="stylesheet" href="styles/avisoNuevo.css">
     <link rel="stylesheet" href="styles/btn.css">
     <script src="script/vistaHomePage.js" type="module"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -36,15 +37,17 @@
         </header>
 
         <main class="content">
-
-            <div id="dvCasos">
-                <div id="dvCasosT">
-                    <h2>Dudas o casos Particulares</h2>
-                </div>
+            <div class="blueContent">
+                <button type="button" >Regresar</button>
+                <button type="button" >Publicar</button>
             </div>
-
-            <div id="dvEncuesta">
-                <button class="button-28" role="button">CREAR AVISO</button>
+            <div class="grayContent">
+                <h2 class="blueText">Titulo</h2>
+                <input type="text" name="tituloAviso" id="tituloAviso" placeholder="Agregar Titulo">
+                <textarea name="areaMensaje" id="mensajeAviso" placeholder="Agregar mensaje"></textarea>
+            </div>
+            <div  class="blueContent">
+                <h2>Nuevo Aviso</h2>
             </div>
         </main>
 
@@ -60,7 +63,8 @@
             </div>
         </div>
 
-        <footer>
+        <footer >
+        
         </footer>
 
     </div>
