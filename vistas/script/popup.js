@@ -2,11 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var openPopupButton = document.getElementById("btnAvisos");
     var popup = document.getElementById("dvAvisos");
     var closePopupButton = document.getElementById("closePopup");
-    
     if (popup) {
-        popup.style.display = "block"; 
+        popup.style.display = "block";
     }
-    
     if (openPopupButton) {
         openPopupButton.addEventListener("click", function () {
             if (popup) {
@@ -14,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    
     if (closePopupButton) {
         closePopupButton.addEventListener("click", function () {
             if (popup) {
@@ -22,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
     if (popup) {
         window.addEventListener("click", function (event) {
             if (event.target === popup) {
