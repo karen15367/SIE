@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .encabezado {
+    display: flex;
+    align-items: center;
+    background-color: #3e7dbf;
+    color: white;
+    padding: 10px 20px;
+  }
+  
+  .logo-sep img {
+    height: 60px;
+    margin-right: 20px;
+  }
+  
+  .titulo-encuesta h1 {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .titulo-encuesta h2 {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  .seccion-formulario {
+    max-width: 900px;
+    background-color: #f4f4f4;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .subtitulo {
+    background-color: #215c94;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .subtitulo h3 {
+    margin: 0;
+  }
+  
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .fila {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .fila label {
+    min-width: 180px;
+  }
+  
+  .fila input[type="text"],
+  .fila input[type="date"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .porcentaje {
+    width: 60px;
+  }
+  
+  .botones {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+  
+  .botones button {
+    background-color: #215c94;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .botones button:hover {
+    background-color: #18406c;
+  }
+  

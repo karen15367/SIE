@@ -1,139 +1,176 @@
-* {
+/* General Styles */
+body {
+  font-family: 'Laila', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  background-color: #f4f4f4;
+  color: #333;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Laila', sans-serif;
+header {
+  background-color: #215c94;
+  color: white;
+  padding: 10px 20px;
 }
 
 .barra-superior {
-  background-color: #2f5d8c;
-  color: yellow;
   display: flex;
   align-items: center;
-  padding: 10px 30px;
 }
 
 .logo-sep {
   height: 60px;
-  margin-right: 20px;
 }
 
 .titulo {
-  font-size: 1.5rem;
+  flex: 1;
+  text-align: center;
+  font-size: 20px;
   font-weight: bold;
-  text-transform: uppercase;
 }
 
-.contenedor-principal {
+/* Main Section */
+main {
+  flex: 1;
   position: relative;
-  width: 100%;
-  height: 100vh; /* Ocupa toda la pantalla */
-  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .fondo {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.85);
+  z-index: -1;
+}
+
+.escudo-centro {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
 }
 
 .escudo {
-  position: absolute;
-  z-index: 2;
-  width: 140px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 200px;
+  opacity: 1;
 }
 
+/* Login Form */
 .formulario-login {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 350px;
   position: absolute;
   top: 50%;
-  right: 5%;
+  right: 10%;
   transform: translateY(-50%);
-  background-color: white;
-  padding: 20px;
-  width: 300px;
-  border-radius: 6px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  z-index: 3;
+  z-index: 2;
 }
-
 
 .tabs {
   display: flex;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .tab {
   flex: 1;
-  text-align: center;
   padding: 10px;
   cursor: pointer;
-  background-color: #ccc;
-  color: white;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  color: #333;
   font-weight: bold;
-  border-radius: 5px 5px 0 0;
+  text-align: center;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .tab.activo {
-  background-color: #146534;
+  background-color: #215c94;
+  color: white;
+  border-color: #215c94;
+}
+
+.tab:hover {
+  background-color: #18406c;
+  color: white;
 }
 
 .campo {
-  display: flex;
-  flex-direction: column;
   margin-bottom: 15px;
 }
 
-.campo label {
-  font-size: 0.9rem;
-  margin-bottom: 5px;
-}
-
 .campo input {
-  padding: 8px;
-  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
   border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .botones {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .btn {
-  padding: 10px 15px;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  font-weight: bold;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.btn:first-child {
-  background-color: #146534;
+.btn.ingresar {
+  background-color: #215c94;
   color: white;
 }
 
-.btn:last-child {
-  background-color: #2f5d8c;
+.btn.ingresar:hover {
+  background-color: #18406c;
+}
+
+.btn.registrar {
+  background-color: #d9534f;
   color: white;
+}
+
+.btn.registrar:hover {
+  background-color: #c9302c;
 }
 
 .olvide {
   display: block;
-  text-align: right;
-  font-size: 0.85rem;
-  color: #2f5d8c;
+  margin-top: 10px;
+  color: #215c94;
+  font-size: 14px;
   text-decoration: none;
+}
+
+.olvide:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.logo-footer {
+  height: 50px;
 }

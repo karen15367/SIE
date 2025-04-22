@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil del Egresado</title>
+  <link rel="stylesheet" href="styles/encuesta1.css">
+</head>
+<body>
+  <div class="header">
+    <div class="logos">
+      <img src="img/logo-sep.png" alt="SEP">
+    </div>
+    <div class="titulo">
+      <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
+      <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>I. PERFIL DEL EGRESADO</h3>
+    <p>Ingrese los datos de acuerdo a su situación actual</p>
+
+    <form>
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre">
+        <label for="no-control">No Control:</label>
+        <input type="text" id="no-control">
+      </div>
+
+      <div class="form-group">
+        <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha-nacimiento">
+        <label for="curp">CURP:</label>
+        <input type="text" id="curp" maxlength="18">
+      </div>
+
+      <div class="form-group">
+        <label>Sexo:</label>
+        <label><input type="radio" name="sexo" value="femenino"> Femenino</label>
+        <label><input type="radio" name="sexo" value="masculino"> Masculino</label>
+      </div>
+
+      <div class="form-group">
+        <label>Estado Civil:</label>
+        <label><input type="radio" name="estado-civil" value="soltero"> Soltero</label>
+        <label><input type="radio" name="estado-civil" value="casado"> Casado</label>
+      </div>
+
+      <div class="form-group">
+        <label for="domicilio">Domicilio:</label>
+        <input type="text" id="domicilio">
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad">
+        <label for="cp">CP:</label>
+        <input type="text" id="cp">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email">
+        <label for="telefono">Teléfono:</label>
+        <input type="tel" id="telefono">
+      </div>
+
+      <div class="buttons">
+        <button type="button">Regresar</button>
+        <button type="submit">Continuar</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

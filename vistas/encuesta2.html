@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil del Egresado</title>
+  <link rel="stylesheet" href="styles/encuesta2.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="logo-sep">
+      <img src="img/logo-sep.png" alt="Logo SEP" />
+    </div>
+    <div class="titulo-encuesta">
+      <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
+      <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
+    </div>
+  </header>
+
+  <section class="seccion-formulario">
+    <div class="subtitulo">
+      <h3>I. PERFIL DEL EGRESADO</h3>
+      <p>Ingrese los datos de acuerdo a su situación actual</p>
+    </div>
+
+    <form class="formulario">
+      <div class="fila">
+        <label>Carrera:</label><input type="text">
+        <label>Especialidad:</label><input type="text">
+      </div>
+
+      <div class="fila">
+        <label>Fecha de Ingreso:</label><input type="date">
+        <label>Fecha de Egreso:</label><input type="date">
+      </div>
+
+      <div class="fila">
+        <label>Titulado:</label>
+        <label><input type="radio" name="titulado"> Sí</label>
+        <label><input type="radio" name="titulado"> No</label>
+      </div>
+
+      <div class="fila">
+        <label>Dominio de Inglés:</label><input type="text" class="porcentaje">%
+        <label>Otro idioma:</label><input type="text">
+      </div>
+
+      <div class="fila">
+        <label>Manejo de paquetes computacionales:</label>
+        <label><input type="radio" name="paquetes"> Sí</label>
+        <label><input type="radio" name="paquetes"> No</label>
+        <label>Especificar:</label><input type="text">
+      </div>
+
+      <div class="botones">
+        <button type="button">Regresar</button>
+        <button type="submit">Continuar</button>
+      </div>
+    </form>
+  </section>
+</body>
+</html>

@@ -1,0 +1,115 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #3e7dbf;
+  color: white;
+  padding: 10px 20px;
+  border-bottom: 5px solid #144a86;
+}
+
+.header .logos img {
+  height: 60px;
+  margin-right: 20px;
+}
+
+.header .titulo {
+  text-align: center;
+  flex: 1;
+}
+
+.header .titulo h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.header .titulo h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.form-section {
+  background-color: #f4f4f4;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 800px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h3 {
+  background-color: #215c94;
+  color: white;
+  padding: 10px;
+  margin: -20px -20px 20px -20px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-align: center;
+}
+
+.form-section p {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.form-group label {
+  width: auto;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="email"],
+.form-group input[type="tel"] {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  min-width: 200px;
+}
+
+.form-group input[type="radio"] {
+  margin-left: 10px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.buttons button {
+  background-color: #215c94;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.buttons button:hover {
+  background-color: #18406c;
+}
+
+.buttons button:first-child {
+  background-color: #215c94;
+}
+
+.buttons button:first-child:hover {
+  background-color: #215c94;
+}

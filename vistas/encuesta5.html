@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Encuesta 5</title>
+  <link rel="stylesheet" href="styles/encuesta5.css" />
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <img src="img/logo-sep.png" alt="SEP" class="logo" />
+      <div class="titulo-encuesta">
+        <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
+        <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="encabezado">
+      <h3>III. UBICACION LABORAL DE LOS EGRESADOS</h3>
+      <p>Indique a cuál de los siguientes puntos indica su situación actual</p>
+    </section>
+
+    <section class="pregunta">
+      <form>
+        <h4>III.3 Medio para obtener el empleo:</h4>
+        <label><input type="radio" name="medio" /> Bolsa de trabajo del plantel</label>
+        <label><input type="radio" name="medio" /> Contactos personales</label>
+        <label><input type="radio" name="medio" /> Residencia Profesional</label>
+        <label><input type="radio" name="medio" /> Medios masivos de comunicación</label>
+        <label><input type="radio" name="medio" /> Otros <input type="text" name="medio_otro" /></label>
+
+        <h4>III.4 Requisitos de contratación</h4>
+        <label><input type="checkbox" name="requisito" /> Competencias laborales</label>
+        <label><input type="checkbox" name="requisito" /> Título profesional</label>
+        <label><input type="checkbox" name="requisito" /> Examen de selección</label>
+        <label><input type="checkbox" name="requisito" /> Idioma extranjero</label>
+        <label><input type="checkbox" name="requisito" /> Actitudes y habilidades socio-comunicativas</label>
+        <label><input type="checkbox" name="requisito" /> Ninguno</label>
+        <label><input type="checkbox" name="requisito" /> Otros <input type="text" name="requisito_otro" /></label>
+
+        <h4>III.5 Idioma que utiliza en su trabajo:</h4>
+        <label><input type="checkbox" name="idioma" /> Inglés</label>
+        <label><input type="checkbox" name="idioma" /> Francés</label>
+        <label><input type="checkbox" name="idioma" /> Alemán</label>
+        <label><input type="checkbox" name="idioma" /> Japonés</label>
+        <label><input type="checkbox" name="idioma" /> Otros <input type="text" name="idioma_otro" /></label>
+
+        <h4>III.6 Proporción del uso del idioma extranjero</h4>
+        <label>Hablar: <input type="text" name="hablar" />%</label>
+        <label>Escribir: <input type="text" name="escribir" />%</label>
+        <label>Leer: <input type="text" name="leer" />%</label>
+        <label>Escuchar: <input type="text" name="escuchar" />%</label>
+      </form>
+    </section>
+
+    <div class="botones">
+      <button type="button">Regresar</button>
+      <button type="submit">Continuar</button>
+    </div>
+  </main>
+</body>
+</html>
