@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <title>Verificación de Código - Instituto Tecnológico de Veracruz</title>
   <!-- Reutiliza o crea un nuevo CSS, por ejemplo: -->
   <link rel="stylesheet" href="styles\vistaVerficacionCorreo.css" />
+  <link rel="script" href="script/correo.js" />
 </head>
+
 <body>
   <div class="page">
     <!-- Encabezado (igual que en vistaSignUp) -->
     <div class="header">
       <div class="header-logo">
         <!-- Imagen SEP -->
-        <img src="recursos/image 5.png" alt="logo de la SEP" width="200" /> 
+        <img src="recursos/image 5.png" alt="logo de la SEP" width="200" />
         <div style="width: 100%; height: 100%; background-color: white; margin: -10px;"></div>
       </div>
       <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
@@ -44,13 +47,14 @@
         </div>
 
         <!-- Botón para enviar -->
-        <div class="button-container">
+        <div class="button-container" id="form">
           <button type="button" class="btn-enviar">Atrás</button>
           <button type="button" class="btn-enviar">Reenviar código</button>
-          <button type="button" class="btn-enviar">Enviar</button>
+          <button id="enviar" type="button" class="btn-enviar">Enviar</button>
         </div>
       </div>
     </div>
   </div>
 </body>
+
 </html>
