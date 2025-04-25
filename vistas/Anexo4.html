@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+    <link rel="stylesheet" href="styles/Anexo4.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="recursos/image 5.png" alt="logo de la SEP" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="section-title">Anexo de Química y Bioquímica</div>
+            <div class="section-subtitle">Situación Laboral</div>
+        </div>
+        
+        <div class="form-content">
+            <img src="recursos/image 1.png" alt="Logo Instituto" class="logo-center">
+            
+            <div class="question-group">
+                <div class="question">¿Tu trabajo actual tiene relación con la carrera qué estudiaste?</div>
+                <div class="radio-options">
+                    <span class="radio-option">
+                        <input type="radio" name="trabaja" value="1" id="trabajaSi" />
+                        <label for="trabajaSi">Si</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="trabaja" value="0" id="trabajaNo" />
+                        <label for="trabajaNo">No</label>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <div class="question">¿Cuál es la antigüedad de tu empleo actual?</div>
+                <div class="options-group">
+                    <span class="radio-option">
+                        <input type="radio" name="antiguedad" value="1" id="lapso1" />
+                        <label for="lapso1">0-3 Meses</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="antiguedad" value="2" id="lapso2" />
+                        <label for="lapso2">4-6 Meses</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="antiguedad" value="3" id="lapso3" />
+                        <label for="lapso3">6 Meses - 1 Año</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="antiguedad" value="4" id="lapso4" />
+                        <label for="lapso4">1-5 Años</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="antiguedad" value="5" id="lapso5" />
+                        <label for="lapso5">6 años o más</label>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="question-group">
+                <div class="question">¿Después de egresar, en cuánto tiempo conseguiste trabajo relacionado con tu carrera?</div>
+                <div class="options-group">
+                    <span class="radio-option">
+                        <input type="radio" name="tiempoTrabajoRelacionado" value="1" id="tiempoTR1" />
+                        <label for="tiempoTR1">Al egresar ya contaba con un trabajo</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="tiempoTrabajoRelacionado" value="2" id="tiempoTR2" />
+                        <label for="tiempoTR2">Menos de 6 meses</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="tiempoTrabajoRelacionado" value="3" id="tiempoTR3" />
+                        <label for="tiempoTR3">Más de 1 año</label>
+                    </span>
+                    <span class="radio-option">
+                        <input type="radio" name="tiempoTrabajoRelacionado" value="4" id="tiempoTR4" />
+                        <label for="tiempoTR4">Aún no lo consigo ¿por qué?:</label>
+                        <input type="text" class="line-input">
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="button">Regresar</button>
+            <button class="button">Continuar</button>
+        </div>
+    </div>
+</body>
+</html>
