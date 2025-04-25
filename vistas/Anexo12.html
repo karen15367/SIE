@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/Anexo2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="recursos/image 5.png" alt="logo de la SEP" width="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Anexo de Química y Bioquímica</div>
+            <div class="section-subtitle">Situación Laboral</div>
+        </div>
+
+        <div class="form-content">
+            <img src="recursos/image 1.png" alt="Logo Instituto" class="logo-center">
+
+            <div class="question-group">
+                <div class="question" style="width: 100%;">¿Perteneces a alguna asociación profesional relacionada con tu carrera?</div>
+            </div>
+            <div class="radio-group" style="width: 100%;">
+                <span class="radio-option">
+                    <input type="radio" name="asociacion" value="0" id="asociacionNo" />
+                    <label for="asociacionNo">No</label>
+                    <span class="radio-option">
+                        <input type="radio" name="asociacion" value="1" id="asociacionSi" />
+                        <label for="asociacionSi">Si especifique</label>
+                        <input type="text" class="line-input">
+                    </span>
+            </div>
+
+            <div class="question-group" style="margin-top: 10px; width: 100%;">
+                <div class="question" style="margin-top: 10px; width: 100%;">¿En cuál de los siguientes documentos has
+                    participado en su elaboración?</div>
+            </div>
+
+            <div class="options-group">
+                <div class="radio-row">
+                    <span class="radio-option">
+                        <input type="radio" name="etica" value="1" id="razon1" />
+                        <label for="razon1">Aplicar las Normas básicas de una empresa</label>
+                    </span>
+                </div>
+                <div class="radio-row">
+                    <span class="radio-option">
+                        <input type="radio" name="etica" value="2" id="razon2" />
+                        <label for="razon2">Aplicar reglas de cortesía que demuestran respeto por los demás</label>
+                    </span>
+                </div>
+                <div class="radio-row">
+                    <span class="radio-option">
+                        <input type="radio" name="etica" value="3" id="razon3" />
+                        <label for="razon3"> Asumir un comportamiento adecuado para la buena convivencia</label>
+                    </span>
+                </div>
+                <div class="radio-row">
+                    <span class="radio-option">
+                        <input type="radio" name="etica" value="4" id="razon4" />
+                        <label for="razon4"> Establecer una serie de normas como guía de conducta</label>
+                    </span>
+                </div>
+                
+                <div class="radio-row">
+                    <span class="radio-option">
+                        <input type="radio" name="etica" value="5" id="razon4" />
+                        <label for="razon4">Ninguna de las anteriores</label>
+                    </span>
+                </div>
+                
+            </div>
+
+        </div>
+
+        <div class="buttons">
+            <button class="button">Regresar</button>
+            <button class="button">Continuar</button>
+        </div>
+    </div>
+</body>
+
+</html>
