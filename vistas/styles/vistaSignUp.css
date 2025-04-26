@@ -113,6 +113,24 @@ input.line-input {
   padding: 2px 0;
 }
 
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container .password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #306696;
+}
+
+.form-input {
+  display: flex;
+  align-items: center;
+}
 
 .logo-center {
   pointer-events: none; 
