@@ -1,18 +1,16 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="../vistas/styles/vistaLogin.css">
-  <link rel="stylesheet" href="../vistas/styles/personalEgresado.css">
+  <link rel="stylesheet" href="{% static '/styles/vistaLogin.css' %}">
+  <link rel="stylesheet" href="{% static '/styles/PersonalEgresado.css' %}">
 </head>
 
-
-
-<body>
   <header class="bg-[#1f4d7e] flex justify-center items-center text-white p-5 family-sans">
     <h1 class="text-3xl font-bold text-[#f9ca24] ml-[25px] ">Sistema Institucional de Encuestas</h1>
   </header>
@@ -20,7 +18,7 @@
   <main class="items-center justify-center h-screen">
     <!--* Logo -->
     <div class="imgITV">
-      <img src="static\media\image 1.png" id="logo" width="200" height="100">
+      <img src="{% static 'media/itv.png' %}" id="logo" width="200" height="100">
     </div>
     <!--* Formulario de inicio de sesión -->
     <div class="flex items-center justify-center bg-[#D9D9D9] ml-[800px] rounded-lg shadow-lg mb-[160px]">
@@ -72,7 +70,7 @@
   </main>
 
   <footer class="bg-[#1f4d7e] flex justify-center items-center text-white p-4 ">
-    <img src="static\media\sep.png" id="logo" width="247" height="81">
+    <img src="{% static 'media/sep.png' %}" id="logo" width="247" height="81">
   </footer>
 </body>
 
