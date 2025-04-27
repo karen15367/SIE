@@ -48,3 +48,10 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Ignorar archivos de entorno
+.env
+.env.dev
+.env.prod
+
+#entorno virtual
+.venv/
