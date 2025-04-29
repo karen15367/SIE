@@ -4,62 +4,106 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Encuesta 5</title>
-  <link rel="stylesheet" href="styles/encuesta5.css" />
+  <link rel="stylesheet" href="styles/encuesta5.css" /> <!-- Usamos el mismo CSS bonito -->
 </head>
 <body>
-  <header>
-    <div class="header-container">
-      <img src="img/logo-sep.png" alt="SEP" class="logo" />
-      <div class="titulo-encuesta">
-        <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
-        <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
+
+  <div class="container">
+
+    <!-- Encabezado -->
+    <div class="header">
+      <img src="img/logo-sep.png" alt="SEP">
+      <div class="header-text">
+        <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+        <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
       </div>
     </div>
-  </header>
 
-  <main>
-    <section class="encabezado">
-      <h3>III. UBICACION LABORAL DE LOS EGRESADOS</h3>
-      <p>Indique a cuál de los siguientes puntos indica su situación actual</p>
-    </section>
-
-    <section class="pregunta">
-      <form>
-        <h4>III.3 Medio para obtener el empleo:</h4>
-        <label><input type="radio" name="medio" /> Bolsa de trabajo del plantel</label>
-        <label><input type="radio" name="medio" /> Contactos personales</label>
-        <label><input type="radio" name="medio" /> Residencia Profesional</label>
-        <label><input type="radio" name="medio" /> Medios masivos de comunicación</label>
-        <label><input type="radio" name="medio" /> Otros <input type="text" name="medio_otro" /></label>
-
-        <h4>III.4 Requisitos de contratación</h4>
-        <label><input type="checkbox" name="requisito" /> Competencias laborales</label>
-        <label><input type="checkbox" name="requisito" /> Título profesional</label>
-        <label><input type="checkbox" name="requisito" /> Examen de selección</label>
-        <label><input type="checkbox" name="requisito" /> Idioma extranjero</label>
-        <label><input type="checkbox" name="requisito" /> Actitudes y habilidades socio-comunicativas</label>
-        <label><input type="checkbox" name="requisito" /> Ninguno</label>
-        <label><input type="checkbox" name="requisito" /> Otros <input type="text" name="requisito_otro" /></label>
-
-        <h4>III.5 Idioma que utiliza en su trabajo:</h4>
-        <label><input type="checkbox" name="idioma" /> Inglés</label>
-        <label><input type="checkbox" name="idioma" /> Francés</label>
-        <label><input type="checkbox" name="idioma" /> Alemán</label>
-        <label><input type="checkbox" name="idioma" /> Japonés</label>
-        <label><input type="checkbox" name="idioma" /> Otros <input type="text" name="idioma_otro" /></label>
-
-        <h4>III.6 Proporción del uso del idioma extranjero</h4>
-        <label>Hablar: <input type="text" name="hablar" />%</label>
-        <label>Escribir: <input type="text" name="escribir" />%</label>
-        <label>Leer: <input type="text" name="leer" />%</label>
-        <label>Escuchar: <input type="text" name="escuchar" />%</label>
-      </form>
-    </section>
-
-    <div class="botones">
-      <button type="button">Regresar</button>
-      <button type="submit">Continuar</button>
+    <!-- Sección título -->
+    <div class="form-section">
+      <div class="section-title">III. UBICACIÓN LABORAL DE LOS EGRESADOS</div>
+      <div class="section-subtitle">Indique a cuál de los siguientes puntos indica su situación actual</div>
     </div>
-  </main>
+
+    <!-- Contenido del Formulario -->
+    <div class="form-content">
+      <form>
+
+        <!-- III.3 Medio para obtener el empleo -->
+        <div class="form-group">
+          <label class="form-label">III.3 Medio para obtener el empleo:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="medio"> Bolsa de trabajo del plantel</label>
+            <label class="radio-option"><input type="radio" name="medio"> Contactos personales</label>
+            <label class="radio-option"><input type="radio" name="medio"> Residencia Profesional</label>
+            <label class="radio-option"><input type="radio" name="medio"> Medios masivos de comunicación</label>
+            <label class="radio-option">Otros: <input type="text" class="form-input line-input" name="medio_otro"></label>
+          </div>
+        </div>
+
+        <!-- III.4 Requisitos de contratación -->
+        <div class="form-group">
+          <label class="form-label">III.4 Requisitos de contratación:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="checkbox" name="requisito"> Competencias laborales</label>
+            <label class="radio-option"><input type="checkbox" name="requisito"> Título profesional</label>
+            <label class="radio-option"><input type="checkbox" name="requisito"> Examen de selección</label>
+            <label class="radio-option"><input type="checkbox" name="requisito"> Idioma extranjero</label>
+            <label class="radio-option"><input type="checkbox" name="requisito"> Actitudes y habilidades socio-comunicativas</label>
+            <label class="radio-option"><input type="checkbox" name="requisito"> Ninguno</label>
+            <label class="radio-option">Otros: <input type="text" class="form-input line-input" name="requisito_otro"></label>
+          </div>
+        </div>
+
+        <!-- III.5 Idioma que utiliza en su trabajo -->
+        <div class="form-group">
+          <label class="form-label">III.5 Idioma que utiliza en su trabajo:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="checkbox" name="idioma"> Inglés</label>
+            <label class="radio-option"><input type="checkbox" name="idioma"> Francés</label>
+            <label class="radio-option"><input type="checkbox" name="idioma"> Alemán</label>
+            <label class="radio-option"><input type="checkbox" name="idioma"> Japonés</label>
+            <label class="radio-option">Otros: <input type="text" class="form-input line-input" name="idioma_otro"></label>
+          </div>
+        </div>
+
+        <!-- III.6 Proporción del uso del idioma extranjero -->
+        <div class="form-group">
+          <label class="form-label">III.6 Proporción del uso del idioma extranjero:</label>
+        </div>
+
+        <div class="form-row">
+          <div class="form-column">
+            <label class="form-label">Hablar:</label>
+            <input type="text" name="hablar" class="form-input line-input">%
+          </div>
+          <div class="form-column">
+            <label class="form-label">Escribir:</label>
+            <input type="text" name="escribir" class="form-input line-input">%
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-column">
+            <label class="form-label">Leer:</label>
+            <input type="text" name="leer" class="form-input line-input">%
+          </div>
+          <div class="form-column">
+            <label class="form-label">Escuchar:</label>
+            <input type="text" name="escuchar" class="form-input line-input">%
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons">
+          <button type="button" class="button">Regresar</button>
+          <button type="submit" class="button">Continuar</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
 </body>
 </html>

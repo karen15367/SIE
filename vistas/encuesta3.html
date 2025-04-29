@@ -4,91 +4,101 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pertinencia y Recursos</title>
-  <link rel="stylesheet" href="styles/encuesta3.css">
+  <link rel="stylesheet" href="styles/encuesta3.css"> <!-- Usa el CSS bonito -->
 </head>
 <body>
-  <header class="encabezado">
-    <div class="logo-sep">
+
+  <div class="container">
+    
+    <!-- Encabezado -->
+    <div class="header">
       <img src="img/logo-sep.png" alt="Logo SEP">
-    </div>
-    <div class="titulo-encuesta">
-      <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
-      <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
-    </div>
-  </header>
-
-  <section class="seccion-formulario">
-    <div class="subtitulo">
-      <h3>II. PERTINENCIA Y DISPONIBILIDAD DE MEDIOS Y RECURSOS PARA EL APRENDIZAJE</h3>
-      <p>Califique la calidad de los siguientes aspectos proporcionados por la institución</p>
+      <div class="header-text">
+        <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+        <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+      </div>
     </div>
 
-    <form class="formulario">
-      <div class="pregunta">
-        <label>II.1 Calidad de docentes</label>
-        <div class="opciones">
-          <label><input type="radio" name="p1"> Muy buena</label>
-          <label><input type="radio" name="p1"> Buena</label>
-          <label><input type="radio" name="p1"> Regular</label>
-          <label><input type="radio" name="p1"> Mala</label>
-        </div>
-      </div>
+    <!-- Sección de título -->
+    <div class="form-section">
+      <div class="section-title">II. PERTINENCIA Y DISPONIBILIDAD DE MEDIOS Y RECURSOS PARA EL APRENDIZAJE</div>
+      <div class="section-subtitle">Califique la calidad de los siguientes aspectos proporcionados por la institución</div>
+    </div>
 
-      <div class="pregunta">
-        <label>II.2 Plan de estudios</label>
-        <div class="opciones">
-          <label><input type="radio" name="p2"> Muy buena</label>
-          <label><input type="radio" name="p2"> Buena</label>
-          <label><input type="radio" name="p2"> Regular</label>
-          <label><input type="radio" name="p2"> Mala</label>
-        </div>
-      </div>
+    <!-- Contenido del formulario -->
+    <div class="form-content">
+      <form>
 
-      <div class="pregunta">
-        <label>II.3 Oportunidades de participar en proyectos de investigación y desarrollo</label>
-        <div class="opciones">
-          <label><input type="radio" name="p3"> Muy buena</label>
-          <label><input type="radio" name="p3"> Buena</label>
-          <label><input type="radio" name="p3"> Regular</label>
-          <label><input type="radio" name="p3"> Mala</label>
+        <div class="form-group">
+          <label class="form-label">II.1 Calidad de docentes:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="p1"> Muy buena</label>
+            <label class="radio-option"><input type="radio" name="p1"> Buena</label>
+            <label class="radio-option"><input type="radio" name="p1"> Regular</label>
+            <label class="radio-option"><input type="radio" name="p1"> Mala</label>
+          </div>
         </div>
-      </div>
 
-      <div class="pregunta">
-        <label>II.4 Énfasis que se le prestaba a la investigación dentro del proceso de enseñanza</label>
-        <div class="opciones">
-          <label><input type="radio" name="p4"> Muy buena</label>
-          <label><input type="radio" name="p4"> Buena</label>
-          <label><input type="radio" name="p4"> Regular</label>
-          <label><input type="radio" name="p4"> Mala</label>
+        <div class="form-group">
+          <label class="form-label">II.2 Plan de estudios:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="p2"> Muy buena</label>
+            <label class="radio-option"><input type="radio" name="p2"> Buena</label>
+            <label class="radio-option"><input type="radio" name="p2"> Regular</label>
+            <label class="radio-option"><input type="radio" name="p2"> Mala</label>
+          </div>
         </div>
-      </div>
 
-      <div class="pregunta">
-        <label>II.5 Satisfacción con las condiciones de estudio</label>
-        <div class="opciones">
-          <label><input type="radio" name="p5"> Muy buena</label>
-          <label><input type="radio" name="p5"> Buena</label>
-          <label><input type="radio" name="p5"> Regular</label>
-          <label><input type="radio" name="p5"> Mala</label>
+        <div class="form-group">
+          <label class="form-label">II.3 Oportunidades de participar en proyectos de investigación y desarrollo:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="p3"> Muy buena</label>
+            <label class="radio-option"><input type="radio" name="p3"> Buena</label>
+            <label class="radio-option"><input type="radio" name="p3"> Regular</label>
+            <label class="radio-option"><input type="radio" name="p3"> Mala</label>
+          </div>
         </div>
-      </div>
 
-      <div class="pregunta">
-        <label>II.6 Experiencia obtenida a través de la residencia profesional</label>
-        <div class="opciones">
-          <label><input type="radio" name="p6"> Muy buena</label>
-          <label><input type="radio" name="p6"> Buena</label>
-          <label><input type="radio" name="p6"> Regular</label>
-          <label><input type="radio" name="p6"> Mala</label>
+        <div class="form-group">
+          <label class="form-label">II.4 Énfasis en investigación dentro del proceso de enseñanza:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="p4"> Muy buena</label>
+            <label class="radio-option"><input type="radio" name="p4"> Buena</label>
+            <label class="radio-option"><input type="radio" name="p4"> Regular</label>
+            <label class="radio-option"><input type="radio" name="p4"> Mala</label>
+          </div>
         </div>
-      </div>
 
-      <div class="botones">
-        <button type="button">Regresar</button>
-        <button type="submit">Continuar</button>
-      </div>
-    </form>
-  </section>
+        <div class="form-group">
+          <label class="form-label">II.5 Satisfacción con condiciones de estudio:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="p5"> Muy buena</label>
+            <label class="radio-option"><input type="radio" name="p5"> Buena</label>
+            <label class="radio-option"><input type="radio" name="p5"> Regular</label>
+            <label class="radio-option"><input type="radio" name="p5"> Mala</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">II.6 Experiencia obtenida a través de la residencia profesional:</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="p6"> Muy buena</label>
+            <label class="radio-option"><input type="radio" name="p6"> Buena</label>
+            <label class="radio-option"><input type="radio" name="p6"> Regular</label>
+            <label class="radio-option"><input type="radio" name="p6"> Mala</label>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons">
+          <button type="button" class="button">Regresar</button>
+          <button type="submit" class="button">Continuar</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
 </body>
 </html>
