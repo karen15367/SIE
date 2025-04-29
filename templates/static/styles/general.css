@@ -5,7 +5,7 @@
     text-align: center;
 }
 
-.divItems{
+.divItems {
     display: inline-flex;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 9pt;
@@ -13,7 +13,7 @@
     justify-content: space-evenly;
 }
 
-.btnBorder{
+.btnBorder {
     background-color: #D9D9D9;
     width: 100%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -21,7 +21,7 @@
     font-style: bold;
 }
 
-.btnBorder:hover{
+.btnBorder:hover {
     background-color: #1f4d7e;
     color: #F5F6FA;
 }
@@ -54,7 +54,7 @@ main {
     background-image: url("../img/itv.png");
     background-repeat: no-repeat;
     background-position: center;
-    
+
 }
 
 
@@ -65,15 +65,15 @@ h1 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-h2{
+h2 {
     color: #F5F6FA;
     font-size: 1em;
-    font-family:Verdana, Geneva, Tahoma, sans-serif ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-style: bold;
 }
 
 #logo {
-    position:absolute;
+    position: absolute;
     padding-top: 10pt;
     padding-left: 5pc;
 }
@@ -103,7 +103,7 @@ h2{
     margin-bottom: 20px;
 }
 
-#btnEncuesta{
+#btnEncuesta {
     background-color: #F5F6FA;
     color: #1f4d7e;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -115,13 +115,14 @@ h2{
     cursor: pointer;
 }
 
-#dvCasos{
+#dvCasos {
     margin-bottom: 10px;
     background-color: #D9D9D9;
     width: 90%;
     height: 20vh;
 }
-#dvCasosT{
+
+#dvCasosT {
     padding-top: 10pt;
     padding-bottom: 10pt;
     background-color: #1f4d7e;
@@ -142,4 +143,4 @@ h2{
     left: 0;
     z-index: 10;
     display: none;
-}       
+}
