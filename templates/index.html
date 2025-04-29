@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,10 +7,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIE</title>
-    <link rel="stylesheet" href="static/styles/general.css">
-    <link rel="stylesheet" href="static/styles/avisos.css">
-    <link rel="stylesheet" href="styles/btn.css">
-    <script src="script/popup.js" type="module"></script>
+    <link rel="stylesheet" href="{% static '/styles/general.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/avisos.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/btn.css' %}">
+    <script src="{% static '/script/popup.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 </head>
@@ -19,7 +21,7 @@
 
         <header>
             <div id="dvHeader">
-                <img src="recursos/image 5.png" id="logo" width="147" height="71">
+                <img src="{% static 'img/sepB.png' %}" id="logo" width="147" height="71">
 
                 <div id="dvOne">
                     <h1>Sistema Institucional de Encuestas</h1>
@@ -29,7 +31,7 @@
                 <div id="dvTwo" class="divItems">
                     <button id="btnAvisos" class="btnBorder">AVISOS</button>
                     <button class="btnBorder">ENCUESTAS</h3>
-                    <button class="btnBorder">SALIR</h3>
+                        <button class="btnBorder">SALIR</h3>
                 </div>
             </div>
 
@@ -39,7 +41,7 @@
 
             <div id="dvCasos">
                 <div id="dvCasosT">
-                    <h2>Dudas o casos Particulares</h2>
+                    <h2 style="color: aliceblue;" >Dudas o casos Particulares</h2>
                 </div>
             </div>
 
