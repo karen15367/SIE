@@ -4,71 +4,99 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil del Egresado</title>
-  <link rel="stylesheet" href="styles/encuesta1.css">
+  <link rel="stylesheet" href="styles/encuesta1.css"> 
 </head>
 <body>
-  <div class="header">
-    <div class="logos">
+  <div class="container"> <!-- contenedor principal -->
+
+    <div class="header">
       <img src="img/logo-sep.png" alt="SEP">
+      <div class="header-text">
+        <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+        <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+      </div>
     </div>
-    <div class="titulo">
-      <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
-      <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
+
+    <div class="form-section">
+      <div class="section-title">I. PERFIL DEL EGRESADO</div>
+      <div class="section-subtitle">Ingrese los datos de acuerdo a su situación actual</div>
     </div>
-  </div>
 
-  <div class="form-section">
-    <h3>I. PERFIL DEL EGRESADO</h3>
-    <p>Ingrese los datos de acuerdo a su situación actual</p>
+    <div class="form-content">
+      <form>
+        <div class="form-grid"> <!-- NUEVO contenedor para 2 columnas -->
 
-    <form>
-      <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre">
-        <label for="no-control">No Control:</label>
-        <input type="text" id="no-control">
-      </div>
+          <div class="form-group">
+            <label class="form-label" for="nombre">Nombre:</label>
+            <input type="text" id="nombre" class="form-input line-input">
+          </div>
 
-      <div class="form-group">
-        <label for="fecha-nacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha-nacimiento">
-        <label for="curp">CURP:</label>
-        <input type="text" id="curp" maxlength="18">
-      </div>
+          <div class="form-group">
+            <label class="form-label" for="no-control">No Control:</label>
+            <input type="text" id="no-control" class="form-input line-input">
+          </div>
 
-      <div class="form-group">
-        <label>Sexo:</label>
-        <label><input type="radio" name="sexo" value="femenino"> Femenino</label>
-        <label><input type="radio" name="sexo" value="masculino"> Masculino</label>
-      </div>
+          <div class="form-group">
+            <label class="form-label" for="fecha-nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha-nacimiento" class="form-input line-input">
+          </div>
 
-      <div class="form-group">
-        <label>Estado Civil:</label>
-        <label><input type="radio" name="estado-civil" value="soltero"> Soltero</label>
-        <label><input type="radio" name="estado-civil" value="casado"> Casado</label>
-      </div>
+          <div class="form-group">
+            <label class="form-label" for="curp">CURP:</label>
+            <input type="text" id="curp" maxlength="18" class="form-input line-input">
+          </div>
 
-      <div class="form-group">
-        <label for="domicilio">Domicilio:</label>
-        <input type="text" id="domicilio">
-        <label for="ciudad">Ciudad:</label>
-        <input type="text" id="ciudad">
-        <label for="cp">CP:</label>
-        <input type="text" id="cp">
-      </div>
+          <div class="form-group">
+            <label class="form-label">Sexo:</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="sexo" value="femenino"> Femenino</label>
+              <label class="radio-option"><input type="radio" name="sexo" value="masculino"> Masculino</label>
+            </div>
+          </div>
 
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email">
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono">
-      </div>
+          <div class="form-group">
+            <label class="form-label">Estado Civil:</label>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="estado-civil" value="soltero"> Soltero</label>
+              <label class="radio-option"><input type="radio" name="estado-civil" value="casado"> Casado</label>
+            </div>
+          </div>
 
-      <div class="buttons">
-        <button type="button">Regresar</button>
-        <button type="submit">Continuar</button>
-      </div>
-    </form>
-  </div>
+          <div class="form-group">
+            <label class="form-label" for="domicilio">Domicilio:</label>
+            <input type="text" id="domicilio" class="form-input line-input">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ciudad">Ciudad:</label>
+            <input type="text" id="ciudad" class="form-input line-input">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="cp">CP:</label>
+            <input type="text" id="cp" class="form-input line-input">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email:</label>
+            <input type="email" id="email" class="form-input line-input">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" class="form-input line-input">
+          </div>
+
+        </div> <!-- cierre form-grid -->
+
+        <div class="buttons">
+          <button type="button" class="button">Regresar</button>
+          <button type="submit" class="button">Continuar</button>
+        </div>
+
+      </form>
+    </div>
+
+  </div> <!-- cierre container -->
 </body>
 </html>
