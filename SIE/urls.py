@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('login.urls')),
     path('sign-in/', include('signin.urls') ),
     path('index/', include('index.urls') ),
+    path('anexo/', include('anexo.urls') ),
 ]

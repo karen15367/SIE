@@ -1,11 +1,14 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/styles/general.css">
-    <link rel="stylesheet" href="static/styles/Anexo2.css">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/Anexo4.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
 </head>
@@ -13,7 +16,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="recursos/image 5.png" alt="logo de la SEP" width="150" />
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" width="150" />
             <div class="header-text">
                 <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
                 <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
@@ -26,7 +29,7 @@
         </div>
 
         <div class="form-content">
-            <img src="recursos/image 1.png" alt="Logo Instituto" class="logo-center">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
             <div class="question" style="margin-bottom: 2px; width: 100%;">En tu desempeño laboral, ¿cuál(es) de las
                 siguientes herramientas utilizas?</div>
@@ -98,7 +101,7 @@
                     <input type="radio" name="herramientas" value="0" id="poco" />
                     <label for="poco">Descriptiva</label>
                 </span>
-                <span class="radio-option">
+                <span class="radio-option" style="width: 15%;" >
                     <input type="radio" name="herramientas" value="5" id="razon5" />
                     <label for="razon5">Otras</label>
                     <input type="text" class="line-input">

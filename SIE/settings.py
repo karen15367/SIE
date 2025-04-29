@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'login',
     'signin',
     'index',
+    'anexo',
 ]
 
 MIDDLEWARE = [
