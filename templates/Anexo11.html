@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/Anexo2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="recursos/image 5.png" alt="logo de la SEP" width="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Anexo de Química y Bioquímica</div>
+            <div class="section-subtitle">Situación Laboral</div>
+        </div>
+
+        <div class="form-content">
+            <img src="recursos/image 1.png" alt="Logo Instituto" class="logo-center">
+
+            <div class="question-group">
+                <div class="question" style="width: 100%;">¿Has realizado o colaborado con alguna publicación de un
+                    artículo en revista científica y/o de divulgación?</div>
+            </div>
+            <div class="radio-group" style="width: 100%;">
+                <span class="radio-option">
+                    <input type="radio" name="publicacion" value="0" id="publicacionNo" />
+                    <label for="publicacionNo">No</label>
+                    <span class="radio-option">
+                        <input type="radio" name="publicacion" value="1" id="publicacionSi" />
+                        <label for="publicacionSi">Si especifique</label>
+                        <input type="text" class="line-input">
+                    </span>
+            </div>
+
+            <div class="question-group" style="margin-top: 10px; width: 100%;">
+                <div class="question" style="margin-top: 10px; width: 100%;">¿En cuál de los siguientes documentos has
+                    participado en su elaboración?</div>
+            </div>
+
+            <div class="radio-group" style="width: 100%;">
+                <span class="radio-option">
+                    <input type="radio" name="documentos" value="0" id="manuales" />
+                    <label for="manuales">Manuales operativos</label>
+                </span>
+                <span class="radio-option">
+                    <input type="radio" name="documentos" value="1" id="procedimientos" />
+                    <label for="procedimientos">Procedimientos</label>
+                </span>
+                <span class="radio-option">
+                    <input type="radio" name="documentos" value="2" id="lineamientos" />
+                    <label for="lineamientos">Lineamientos</label>
+                </span>
+                <span class="radio-option">
+                    <input type="radio" name="documentos" value="3" id="informes" />
+                    <label for="informes">Informes Técnicos</label>
+                </span>
+            </div>
+            <div class="radio-group" style="margin-top: 10px; width: 100%;">
+                <span class="radio-option">
+                    <input type="radio" name="documentos" value="4" id="otras" />
+                    <label for="otro">Otro</label>
+                    <input type="text" class="line-input">
+                </span>
+            </div>
+
+            <div class="question-group" style="margin-top: 10px; width: 100%;">
+                <div class="question" style="width: 100%;">¿Qué sistema de gestión de calidad aplicas en tu actividad
+                    laboral?</div>
+            </div>
+            <div class="radio-group" style="width: 100%;">
+                <span class="radio-option">
+                    <input type="radio" name="calidad" value="0" id="ingles" />
+                    <label for="ingles">Calidad</label>
+                </span>
+                <span class="radio-option">
+                    <input type="radio" name="calidad" value="1" id="frances" />
+                    <label for="frances">Ambiental</label>
+                </span>
+                <span class="radio-option">
+                    <input type="radio" name="calidad" value="2" id="aleman" />
+                    <label for="aleman">Seguridad</label>
+                </span>
+
+                <span class="radio-option">
+                    <input type="radio" name="calidad" value="3" id="otro" />
+                    <label for="otras">Otras</label>
+                    <input type="text" class="line-input">
+                </span>
+            </div>
+
+        </div>
+
+        <div class="buttons">
+            <button class="button">Regresar</button>
+            <button class="button">Continuar</button>
+        </div>
+    </div>
+</body>
+
+</html>

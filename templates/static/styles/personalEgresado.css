@@ -1,0 +1,39 @@
+.radio-inputs-19 {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #2ecc71;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    font-size: 14px;
+}
+
+.radio-inputs-19 label {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.radio-inputs-19 label input {
+    display: none;
+}
+
+.radio-inputs-19 label .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: .5rem 0;
+    color: rgba(51, 65, 85, 1);
+    transition: all .15s ease-in-out;
+}
+
+.radio-inputs-19 label input:checked+.name {
+    background-color: #1f4d7e;
+    font-weight: 600;
+    color: white;
+}
+
