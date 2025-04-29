@@ -76,42 +76,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'SIE.wsgi.application'
 
 
-# ¿Estamos en Railway o no?
-ON_RAILWAY = config('RAILWAY_ENVIRONMENT', default=None) is not None
 
-# Configuración de BASE DE DATOS
-if ON_RAILWAY:
-    # Producción en Railway
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('PGDATABASE'),
-            'USER': config('PGUSER'),
-            'PASSWORD': config('PGPASSWORD'),
-            'HOST': config('PGHOST'),
-            'PORT': config('PGPORT'),
-        }
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
-    DEBUG = False
-    ALLOWED_HOSTS = ['*']
-
-else:
-    # Desarrollo local
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST'),
-            'PORT': config('DB_PORT'),
-        }
-    }
-    DEBUG = True
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
-
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
