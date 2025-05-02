@@ -8,9 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
     <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
-    <link rel="stylesheet" href="{% static '/styles/general.css' %}">
     <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -31,112 +29,118 @@
 
         <div class="form-content">
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
-
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label class="form-label">Nombre completo:</label>
-                        <div class="form-input">
-                            <input type="text" class="line-input">
+            <form action="/sign-in/verify/" method="post" id="mainForm">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Nombre completo:</label>
+                            <div class="form-input">
+                                <input type="text" style="text-transform: uppercase;" class="line-input" name="nombre" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Curp :</label>
-                        <div class="form-input">
-                            <input type="text" class="line-input">
+                        <div class="form-group">
+                            <label class="form-label">CURP:</label>
+                            <div class="form-input">
+                                <input name="curp" type="text" class="line-input" style="text-transform: uppercase;" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Crea contraseña :</label>
-                        <div class="form-input">
-                            <div class="password-container">
-                                <input type="password" class="line-input" id="password">
-                                <i class="password-toggle fas fa-eye-slash" id="togglePassword"></i>
+                        <div class="form-group">
+                            <label class="form-label">Crea contraseña :</label>
+                            <div class="form-input">
+                                <div class="password-container">
+                                    <input name="pwd1" type="password" class="line-input" id="password" required>
+                                    <i class="password-toggle fas fa-eye-slash" id="togglePassword"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Nacimiento :</label>
+                            <input name="fechaNacimiento" type="date" id="fechaNacimiento" required/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Titulado:</label>
+                            <div class="radio-group">
+                                <span class="radio-option">
+                                    <input type="radio" name="titulado" value="si" id="tituladoSi" required/>
+                                    <label for="tituladoSi">Si</label>
+                                </span>
+                                <span class="radio-option">
+                                    <input type="radio" name="titulado" value="no" id="tituladoNo" required/>
+                                    <label for="tituladoNo">No</label>
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Fecha de Nacimiento :</label>
-                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Titulado:</label>
-                        <div class="radio-group">
-                            <span class="radio-option">
-                                <input type="radio" name="titulado" value="si" id="tituladoSi" />
-                                <label for="tituladoSi">Si</label>
-                            </span>
-                            <span class="radio-option">
-                                <input type="radio" name="titulado" value="no" id="tituladoNo" />
-                                <label for="tituladoNo">No</label>
-                            </span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="form-column">
-                    <div class="form-group">
-                        <label class="form-label">No. Control:</label>
-                        <div class="form-input">
-                            <input type="text" class="line-input">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">No. Control:</label>
+                            <div class="form-input">
+                                <input name="control" type="text" class="line-input" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="form-label">Correo Electrónico:</label>
-                        <div class="form-input">
-                            <input type="email" class="line-input">
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico:</label>
+                            <div class="form-input">
+                                <input name="correo" type="email" class="line-input" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Confirma Contraseña :</label>
-                        <div class="form-input">
-                            <div class="password-container">
-                                <input type="password" class="line-input" id="confirmPassword">
-                                <i class="password-toggle fas fa-eye-slash" id="toggleConfirmPassword"></i>
+                        <div class="form-group">
+                            <label class="form-label">Confirma Contraseña :</label>
+                            <div class="form-input">
+                                <div class="password-container">
+                                    <input name="pwd2" type="password" class="line-input" id="confirmPassword" required>
+                                    <i class="password-toggle fas fa-eye-slash" id="toggleConfirmPassword"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Carrera:</label>
+                            <select id="carrera" name="carrera" required>
+                                <option value="">Seleccione una opción</option>
+                                <option>Ing. Sistemas Computacionales</option>
+                                <option>Ing. Química</option>
+                                <option>Ing. Bioquímica</option>
+                                <option>Ing. Industrial</option>
+                                <option>Ing. Mecatrónica</option>
+                                <option>Ing. Eléctrica</option>
+                                <option>Ing. Electrónica</option>
+                                <option>Ing. Mecánica</option>
+                                <option>Ing. Renovables</option>
+                                <option>Ing. Gestión Empresarial</option>
+                                <option>Lic. Administración</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sexo:</label>
+                            <div class="radio-group">
+                                <span class="radio-option">
+                                    <input type="radio" name="sexo" value="masculino" id="sFemenino" required/>
+                                    <label for="sFemenino">Femenino</label>
+                                </span>
+                                <span class="radio-option">
+                                    <input type="radio" name="sexo" value="femenino" id="sMasculino" required/>
+                                    <label for="sMasculino">Masculino</label>
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Carrera:</label>
-                        <select id="carrera" name="carrera">
-                            <option value="">Seleccione una opción</option>
-                            <option>Ing. Sistemas Computacionales</option>
-                            <option>Ing. Química</option>
-                            <option>Ing. Bioquímica</option>
-                            <option>Ing. Industrial</option>
-                            <option>Ing. Mecatrónica</option>
-                            <option>Ing. Eléctrica</option>
-                            <option>Ing. Electrónica</option>
-                            <option>Ing. Mecánica</option>
-                            <option>Ing. Renovables</option>
-                            <option>Ing. Gestión Empresarial</option>
-                            <option>Lic. Administración</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Sexo:</label>
-                        <div class="radio-group">
-                            <span class="radio-option">
-                                <input type="radio" name="sexo" value="masculino" id="sFemenino" />
-                                <label for="sFemenino">Femenino</label>
-                            </span>
-                            <span class="radio-option">
-                                <input type="radio" name="sexo" value="femenino" id="sMasculino" />
-                                <label for="sMasculino">Masculino</label>
-                            </span>
-                        </div>
-                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
         <div class="buttons">
-            <button class="button">Regresar</button>
-            <button class="button">Continuar</button>
+            <form action="/" method="get">
+                {{form.as_p}}
+                <button class="button">Regresar</button>
+            </form>
+            <button class="button" id="continuar" form="mainForm" type="submit">Continuar</button>
         </div>
     </div>
+
     <script>
         // JavaScript para mostrar/ocultar contraseña
         document.addEventListener('DOMContentLoaded', function () {
@@ -145,7 +149,7 @@
             const password = document.querySelector('#password');
 
             togglePassword.addEventListener('click', function () {
-                // Alternar el tipo de entrada entre "password" y "text"
+                // Alternar  el tipo de entrada entre "password" y "text"
                 const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                 password.setAttribute('type', type);
 
