@@ -50,6 +50,8 @@ class Administrador(models.Model):
     correo = models.EmailField(max_length=50, unique=True, validators=[EmailValidator()])
     contraseña = models.CharField(max_length=64)
     sesion = models.CharField(max_length=64, blank=True, null=True)
+    carrera = models.CharField(max_length=50,validators=[solo_letras_espacios],blank=True,null=True,
+    help_text="Si está vacío, el administrador tiene acceso a todas las carreras.")
 
     def __str__(self):
         return self.nombre
