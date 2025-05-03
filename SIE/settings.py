@@ -17,7 +17,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -131,7 +130,8 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates/static'),  # Si tienes una carpeta 'static' en la raíz del proyecto
+    # Si tienes una carpeta 'static' en la raíz del proyecto
+    os.path.join(BASE_DIR, 'templates/static'),
 ]
 
 # Default primary key field type
@@ -140,14 +140,16 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #!EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#!EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-EMAIL_BACKEND = 'signin.backends.email_backend.EmailBackend'
-
+#*EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# ?EMAIL_BACKEND = 'signin.backends.email_backend.EmailBackend'
+'''
+#* mejor vamos a usar resend salu2
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-#EMAIL_USE_SSL = True
+# EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'gonzalezsamuel988@gmail.com'
-DEFAULT_FROM_EMAIL = 'gonzalezsamuel988@gmail.com'
+DEFAULT_FROM_EMAIL = 'no-reply@SIE.tecnm.mx'
+EMAIL_HOST_USER = 'gonzalezsamuel988@gmail.com'
 EMAIL_HOST_PASSWORD = 'bsizlspnezqkktld'
+'''
