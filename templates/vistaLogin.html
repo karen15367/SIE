@@ -37,7 +37,8 @@
           </div>
         </div>
 
-        <form action="#">
+        <form action="/index/" method="post">
+          {% csrf_token %}
           <div class="mb-4">
             <label for="curp" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CURP</label>
             <input type="text" id="CURP"
