@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Verificación de Código - Instituto Tecnológico de Veracruz</title>
+    <!-- Reutiliza o crea un nuevo CSS, por ejemplo: -->
+
+    <link rel="stylesheet" href="{% static '/styles/vistaVerficacion.css' %}">
+</head>
+
+<body>
+    <div class="page">
+    <!-- Encabezado (igual que en vistaSignUp) -->
+    <div class="header">
+        <div class="header-logo">
+        <!-- Imagen SEP -->
+        <img src="{% static '/img/sepB.png' %}" alt="logo de la SEP" width="200" />
+        <div style="width: 100%; height: 100%; background-color: white; margin: -10px;"></div>
+        </div>
+        <h1>SISTEMA INSTITUCIONAL DE ENCUESTAS</h1>
+        <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Banner de título (igual que en vistaSignUp) -->
+        <div class="title-banner">
+            VERIFICACIÓN PENDIENTE
+    </div>
+
+    <!-- Área central, en lugar del formulario de "Alta de Egresado" -->
+    <div class="form-area">
+        <!-- Texto arriba -->
+        <div class="texto-superior">
+            <p>Se ha enviado un link de verificación al correo ingresado con el fin de llevar un registro éxitoso.
+                lleve a cabo la verificación de su cuenta para poder iniciar sesión.
+                Si no recibe el correo, revise su bandeja de spam o correo no deseado.
+                Si no lo encuentra, por favor, vuelva a intentar el registro.
+                Es libre de cerrar esta ventana.
+            </p>
+            </p>
+        </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

@@ -11,6 +11,16 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import redirect
 from django.conf import settings
+from datetime import datetime
+from django.core.mail import send_mail
+from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.utils.dateparse import parse_date
+from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import IntegrityError
+
+
 
 # * Create your views here.
 
@@ -18,80 +28,82 @@ from django.conf import settings
 def signin(request):
     return render(request, "vistaSignUp.html")
 
+def vistaVerificacionPendiente(request):
+    return render(request, "vistaVerificacionPendiente.html")
+
+def vistaLogin(request):
+    return render(request, 'vistaLogin.html')
+
 
 def verify(request):
-    if request.method == 'POST':
-        # todo hacer que al validar el correo se guarde en la base de datos
-        # * para la fecha de nacimiento y egreso
-        fechaN = request.POST.get('fechaNacimiento')
-        # * para el sexo
-        if request.POST.get('sexo') is 'Masculino':
-            sexo = False
-        else:
-            sexo = True
-        # * para el titulo
-        if request.POST.get('titulado') is 'no':
-            titulo = False
-        else:
-            titulo = True
+    if request.method == "POST":
+        fechaN = request.POST.get("fechaNacimiento")
+        sexo = request.POST.get("sexo") != "Masculino"
+        titulo = request.POST.get("titulado") != "no"
 
-        try:
-            '''
-            #TODO hacer que al validar correo se guarde en la base de datos
-            Egresado.objects.create(
-                curp=request.POST.get('curp'),
-                nombre=request.POST.get('nombre'),
-                noControl=request.POST.get('control'),
-                correo=request.POST.get('correo'),
-                sexo=sexo,
-                fechaNacimiento=datetime.strptime(fechaN, '%Y-%m-%d').date(),
-                carrera=request.POST.get('carrera'),
-                titulado=titulo,
-                fechaEgreso=datetime.strptime(fechaN, '%Y-%m-%d').date(),
-                contraseña=make_password( request.POST.get('pwd1')))
-            '''
-            # TODO hacer que se mande el correo de verificación
-            signer = TimestampSigner()
-            signer = TimestampSigner()
-            signed_token = signer.sign(tempUser.curp)  # o tempUser.correo si prefieres
-            confirm_url = f"http://127.0.0.1:8000/confirmar/{signed_token}/"
-            print('token', token)
+        tempUser = {
+            "curp": request.POST.get("curp"),
+            "nombre": request.POST.get("nombre"),
+            "control": request.POST.get("control"),
+            "correo": request.POST.get("correo"),
+            "sexo": sexo,
+            "fechaNacimiento": fechaN,
+            "carrera": request.POST.get("carrera"),
+            "titulado": titulo,
+            "fechaEgreso": fechaN,
+            "pwd1": request.POST.get("pwd1")
+        }
 
-            # TODO PASARSE A RESEND
-            resend.api_key = config("RESEND_API_KEY")
-            params = {
-                "from": "onboarding@resend.dev",
-                "to": [tempUser.correo],
-                "subject": "Verifica tu cuenta en SIE",
-                "html": f"""
-                    <h1>¡Hola, {tempUser.nombre}!</h1>
-                    <p>Gracias por registrarte en SIE. Por favor verifica tu cuenta haciendo clic en el siguiente enlace:</p>
-                    <a href="{confirm_url}">Confirmar cuenta</a>
-                    <p>Si no fuiste tú, puedes ignorar este correo.</p>
-                """
-                "to": [request.POST.get('correo')],
-                "subject": "Hello world",
-                "html": "pvto resend tambien me dio problemas"
-            }
-            #!resend.Emails.send(params)
+        # Guardar temporalmente
+        request.session["registro_egresado"] = tempUser
 
-        except ZeroDivisionError as e:
-            print(f'{e}')
-        finally:
-            print(request.POST.get('correo'))
-    return render(request, "vistaVerificacion.html")
+        # Firmar el token
+        signer = TimestampSigner()
+        signed_token = signer.sign(request.POST.get("curp"))
+        confirm_url = request.build_absolute_uri(reverse("confirm_email", args=[signed_token]))
 
+        send_mail(
+            subject="Verifica tu cuenta en SIE",
+            message=f"Hola {tempUser['nombre']}, confirma tu cuenta: {confirm_url}",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[tempUser["correo"]],
+        )
+        #print("Host:", settings.EMAIL_HOST)
+        #print("User:", settings.EMAIL_HOST_USER)
+        return render(request, "vistaVerificacionPendiente.html")
+    return render(request, "vistaSignUp.html")
 
 def confirm_email(request, token):
-    pass
+    signer = TimestampSigner()
+    try:
+        curp = signer.unsign(token, max_age=120)  # válido por 1 día = 86400 segundos
+        tempUser = request.session.get("registro_egresado")
+        
+        if not tempUser or tempUser.get("curp") != curp:
+            return HttpResponse("Tu sesión ha expirado o los datos no coinciden.", status=400)
+        
+        if "pwd1" not in tempUser:
+            return HttpResponse("Faltan datos en sesión (pwd1)", status=400)
 
-    # // se manda el correo ¡?
-    '''
-        #! NO
-        send_mail(
-            subject='Verifica tu cuenta',
-            message='Por favor verifica tu cuenta haciendo clic en el siguiente enlace:',
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[tempUser.correo],
-        )
-        '''
+        try:
+            Egresado.objects.create(
+                curp=curp,
+                nombre=tempUser['nombre'],
+                noControl=tempUser['control'],
+                correo=tempUser['correo'],
+                sexo=tempUser['sexo'],
+                fechaNacimiento=parse_date(tempUser['fechaNacimiento']),
+                carrera=tempUser['carrera'],
+                titulado=tempUser['titulado'],
+                fechaEgreso=parse_date(tempUser['fechaEgreso']),
+                contraseña=make_password(tempUser['pwd1']),
+            )
+            del request.session["registro_egresado"]
+            return render(request, "vistaVerificacion.html")
+        except IntegrityError:
+            return HttpResponse("Este egresado ya fue registrado.", status=400)
+        
+    except SignatureExpired:
+        return HttpResponse("El enlace ha expirado.", status=400)
+    except BadSignature:
+        return HttpResponse("Enlace inválido.", status=400)

@@ -28,32 +28,21 @@
     <div class="container">
       <!-- Banner de título (igual que en vistaSignUp) -->
       <div class="title-banner">
-        VERIFICACIÓN DE CÓDIGO
+        VERIFICACIÓN
       </div>
 
       <!-- Área central, en lugar del formulario de "Alta de Egresado" -->
       <div class="form-area">
         <!-- Texto arriba -->
         <div class="texto-superior">
-          <p>Por favor, ingresa el código de 6 dígitos que te enviamos por correo.</p>
+          <p>Se ha registrado correctamente, puede regresar a la pagina Login</p>
         </div>
-
-        <!-- 6 campos para un solo dígito -->
-        <div class="code-container">
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-          <input type="text" maxlength="1" />
-        </div>
-
         <!-- Botón para enviar -->
-        <div class="button-container" id="form">
-          <button type="button" class="btn-enviar">Atrás</button>
-          <button type="button" class="btn-enviar">Reenviar código</button>
-          <button id="enviar" type="button" class="btn-enviar">Enviar</button>
-        </div>
+        <form action="{% url 'vistaLogin' %}" method="get">
+          <div class="button-container" id="form">
+            <button type="submit" class="btn-enviar">Salir</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -24,7 +24,7 @@ class Egresado(models.Model):
     carrera = models.CharField(max_length=50, validators=[solo_letras_espacios])
     titulado = models.BooleanField()
     fechaEgreso = models.DateField()
-    contraseña = models.CharField(max_length=64)
+    contraseña = models.CharField(max_length=255)
     sesion = models.CharField(max_length=64, blank=True, null=True)
 
 

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from decouple import config
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+load_dotenv()
 # Application definition
 
 INSTALLED_APPS = [
@@ -166,3 +167,11 @@ DEFAULT_FROM_EMAIL = 'no-reply@SIE.tecnm.mx'
 EMAIL_HOST_USER = 'gonzalezsamuel988@gmail.com'
 EMAIL_HOST_PASSWORD = 'bsizlspnezqkktld'
 '''
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

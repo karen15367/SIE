@@ -5,3 +5,6 @@ from django.shortcuts import render
 
 def login(request):
     return render(request, "vistaLogin.html")
+
+def signin(request):
+    return render(request, "vistaLogin.html")
