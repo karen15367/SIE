@@ -4,6 +4,11 @@ from django.conf import settings
 from core.models import Egresado
 import uuid
 import resend
+from django.core.signing import Signer, BadSignature, SignatureExpired, TimestampSigner
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.shortcuts import redirect
+from django.conf import settings
 
 # * Create your views here.
 
@@ -28,8 +33,10 @@ def verify(request):
                 titulado=request.POST.get('titulado'),
                 contraseña=request.POST.get('pwd1'))
             # TODO hacer que se mande el correo de verificación
-            token = str(uuid.uuid4())
-            confirm_url = f"http://127.0.0.1:8000/confirmar/{token}/"
+            signer = TimestampSigner()
+            signer = TimestampSigner()
+            signed_token = signer.sign(tempUser.curp)  # o tempUser.correo si prefieres
+            confirm_url = f"http://127.0.0.1:8000/confirmar/{signed_token}/"
             print('token', token)
 
             # TODO PASARSE A RESEND
@@ -38,8 +45,13 @@ def verify(request):
             params = {
                 "from": "onboarding@resend.dev",
                 "to": [tempUser.correo],
-                "subject": "Hello world",
-                "html": "pvto resend tambien me dio problemas"
+                "subject": "Verifica tu cuenta en SIE",
+                "html": f"""
+                    <h1>¡Hola, {tempUser.nombre}!</h1>
+                    <p>Gracias por registrarte en SIE. Por favor verifica tu cuenta haciendo clic en el siguiente enlace:</p>
+                    <a href="{confirm_url}">Confirmar cuenta</a>
+                    <p>Si no fuiste tú, puedes ignorar este correo.</p>
+                """
             }
             resend.Emails.send(params)
 

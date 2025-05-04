@@ -40,7 +40,6 @@
                             <input type="text" class="line-input">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label">Curp :</label>
                         <div class="form-input">
@@ -74,7 +73,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="form-column">
                     <div class="form-group">
                         <label class="form-label">No. Control:</label>
@@ -82,7 +80,6 @@
                             <input type="text" class="line-input">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label">Correo Electrónico:</label>
                         <div class="form-input">
@@ -131,7 +128,6 @@
                 </div>
             </div>
         </div>
-
         <div class="buttons">
             <button class="button">Regresar</button>
             <button class="button">Continuar</button>
@@ -143,26 +139,21 @@
             // Para el primer campo de contraseña
             const togglePassword = document.querySelector('#togglePassword');
             const password = document.querySelector('#password');
-
             togglePassword.addEventListener('click', function () {
                 // Alternar el tipo de entrada entre "password" y "text"
                 const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                 password.setAttribute('type', type);
-
                 // Alternar el icono entre ojo y ojo tachado
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
             });
-
             // Para el campo de confirmar contraseña
             const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
             const confirmPassword = document.querySelector('#confirmPassword');
-
             toggleConfirmPassword.addEventListener('click', function () {
                 // Alternar el tipo de entrada entre "password" y "text"
                 const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
                 confirmPassword.setAttribute('type', type);
-
                 // Alternar el icono entre ojo y ojo tachado
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
@@ -170,5 +161,4 @@
         });
     </script>
 </body>
-
 </html>

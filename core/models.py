@@ -27,6 +27,7 @@ class Egresado(models.Model):
     contraseña = models.CharField(max_length=64)
     sesion = models.CharField(max_length=64, blank=True, null=True)
 
+
     def clean(self):
         hoy = datetime.date.today()
         if self.fechaNacimiento and self.fechaNacimiento > hoy:
