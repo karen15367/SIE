@@ -36,38 +36,42 @@
                         <div class="form-group">
                             <label class="form-label">Nombre completo:</label>
                             <div class="form-input">
-                                <input type="text" style="text-transform: uppercase;" class="line-input" name="nombre" required>
+                                <input type="text" style="text-transform: uppercase;" class="line-input" name="nombre"
+                                    required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">CURP:</label>
                             <div class="form-input">
-                                <input name="curp" type="text" class="line-input" style="text-transform: uppercase;" required>
+                                <input name="curp" type="text" class="line-input" style="text-transform: uppercase;"
+                                    required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Crea contraseña :</label>
                             <div class="form-input">
                                 <div class="password-container">
-                                    <input name="pwd1" type="password" class="line-input" id="password" required>
+                                    <input name="pwd1" type="password" class="line-input" id="password" required
+                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
+                                        title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
                                     <i class="password-toggle fas fa-eye-slash" id="togglePassword"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Fecha de Nacimiento :</label>
-                            <input name="fechaNacimiento" type="date" id="fechaNacimiento" required/>
+                            <input name="fechaNacimiento" type="date" id="fechaNacimiento" required />
                         </div>
                         <div class="form-group">
                             <label class="form-label">Titulado:</label>
                             <div class="radio-group">
                                 <span class="radio-option">
-                                    <input type="radio" name="titulado" value="si" id="tituladoSi" required/>
+                                    <input type="radio" name="titulado" value="si" id="tituladoSi" required />
                                     <label for="tituladoSi">Si</label>
                                 </span>
                                 <span class="radio-option">
-                                    <input type="radio" name="titulado" value="no" id="tituladoNo" required/>
+                                    <input type="radio" name="titulado" value="no" id="tituladoNo" required />
                                     <label for="tituladoNo">No</label>
                                 </span>
                             </div>
@@ -92,7 +96,9 @@
                             <label class="form-label">Confirma Contraseña :</label>
                             <div class="form-input">
                                 <div class="password-container">
-                                    <input name="pwd2" type="password" class="line-input" id="confirmPassword" required>
+                                    <input name="pwd2" type="password" class="line-input" id="confirmPassword" required
+                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
+                                        title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
                                     <i class="password-toggle fas fa-eye-slash" id="toggleConfirmPassword"></i>
                                 </div>
                             </div>
@@ -118,11 +124,11 @@
                             <label class="form-label">Sexo:</label>
                             <div class="radio-group">
                                 <span class="radio-option">
-                                    <input type="radio" name="sexo" value="masculino" id="sFemenino" required/>
+                                    <input type="radio" name="sexo" value="masculino" id="sFemenino" required />
                                     <label for="sFemenino">Femenino</label>
                                 </span>
                                 <span class="radio-option">
-                                    <input type="radio" name="sexo" value="femenino" id="sMasculino" required/>
+                                    <input type="radio" name="sexo" value="femenino" id="sMasculino" required />
                                     <label for="sMasculino">Masculino</label>
                                 </span>
                             </div>
@@ -172,6 +178,27 @@
                 this.classList.toggle('fa-eye-slash');
             });
         });
+        // JavaScript para establecer la fecha máxima en el campo de fecha de nacimiento
+        document.addEventListener('DOMContentLoaded', function () {
+            const fechaNacimientoInput = document.getElementById('fechaNacimiento');
+            const today = new Date().toISOString().split('T')[0];
+            fechaNacimientoInput.setAttribute('max', today);
+        });
+
+
+        //validar ambas pwd
+        document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('mainForm');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        form.addEventListener('submit', function (event) {
+            if (password.value !== confirmPassword.value) {
+                event.preventDefault(); // Evita que el formulario se envíe
+                alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo de nuevo.');
+            }
+        });
+    });
     </script>
 </body>
 
