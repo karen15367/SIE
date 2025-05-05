@@ -38,7 +38,7 @@ def vistaLogin(request):
 def verify(request):
     if request.method == "POST":
         fechaN = request.POST.get("fechaNacimiento")
-        sexo = request.POST.get("sexo") != "Masculino"
+        sexo = request.POST.get("sexo") != "masculino"
         titulo = request.POST.get("titulado") != "no"
 
         tempUser = {
