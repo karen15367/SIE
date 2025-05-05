@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
+from django.urls import include
 
 urlpatterns = [
-    path('', views.index)
+    path('', views.index),
+    path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion')
 ]

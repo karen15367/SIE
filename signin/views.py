@@ -90,8 +90,7 @@ def confirm_email(request, token):
             return HttpResponse("Faltan datos en sesión (pwd1)", status=400)
 
         # Validar campos obligatorios
-        required_fields = ['nombre', 'control', 'correo', 'sexo',
-                           'fechaNacimiento', 'carrera', 'titulado', 'fechaEgreso', 'pwd1']
+        required_fields = ['nombre', 'control', 'correo', 'sexo','fechaNacimiento', 'carrera', 'titulado', 'fechaEgreso', 'pwd1']
         for field in required_fields:
             if field not in tempUser:
                 return HttpResponse(f"Falta el campo: {field}", status=400)

@@ -9,14 +9,17 @@ from django.contrib.auth.hashers import check_password
 
 def login(request):
     if request.method == 'POST':
+        identificador = request.POST.get('curp_rfc')
+        password = request.POST.get('password')
         if request.POST.get('tipo') == '0':
             try:
-                egresado = Egresado.objects.get(curp=curp)
+                egresado = Egresado.objects.get(curp=identificador)
                 if check_password(password, egresado.contraseña):
                     request.session['usuario_tipo'] = 'egresado'
                     request.session['usuario_id'] = egresado.curp
                     request.session['usuario_carrera'] = egresado.carrera
-                    return redirect('vistaIndex')  # o la que corresponda
+                    #return redirect('index')  # o la que corresponda
+                    return redirect('/index/')
                 else:
                     messages.error(request, 'Contraseña incorrecta')
             except Egresado.DoesNotExist:
@@ -24,12 +27,13 @@ def login(request):
             return redirect('/')
         else:
             try:
-                admin = Administrador.objects.get(rfc=curp)
+                admin = Administrador.objects.get(rfc=identificador)
                 if check_password(password, admin.contraseña):
                     request.session['usuario_tipo'] = 'admin'
                     request.session['usuario_id'] = admin.rfc
                     request.session['usuario_carrera'] = admin.carrera
-                    return redirect('vistaIndex')  # o admin_home, etc.
+                    #return redirect('index')  # o admin_home, etc.
+                    return redirect('/index/')
                 else:
                     messages.error(request, 'Contraseña incorrecta')
             except Administrador.DoesNotExist:
@@ -39,3 +43,6 @@ def login(request):
 
 def signin(request):
     return render(request, "vistaLogin.html")
+
+def index(request):
+    return render(request, "index.html")
