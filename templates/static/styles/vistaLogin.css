@@ -30,3 +30,13 @@ main {
   height: auto;
   /* Mantiene la proporción de la imagen */
 }
+
+::placeholder {
+  color: #6b7280; /* gris neutro para claro */
+}
+
+@media (prefers-color-scheme: dark) {
+  ::placeholder {
+    color: #d1d5db; /* gris claro para oscuro */
+  }
+}
