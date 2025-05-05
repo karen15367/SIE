@@ -38,15 +38,55 @@
         </header>
 
         <main class="content">
+            <div class="user-info">
+                <p>Bienvenido: 
+                    {% if tipo == 'egresado' %}
+                        Egresado con CURP: {{ identificador }}
+                    {% elif tipo == 'admin' %}
+                        Administrador con RFC: {{ identificador }}
+                    {% else %}
+                        Usuario
+                    {% endif %}
+                </p>
+                {% if carrera %}
+                    <p>Carrera: {{ carrera }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Contenido específico según el tipo de usuario -->
+            {% if tipo == 'Egresado' %}
+                <!-- Contenido para Egresados -->
+                <div id="dvEncuesta">
+                    <button class="button-28" role="button">RESPONDER ENCUESTA</button>
+                </div>
+            {% elif tipo == 'Administrador' %}
+                <!-- Contenido para Administradores -->
+                <div id="dvEncuesta">
+                    <button class="button-28" role="button">HACER AVISO</button>
+                </div>
+                
+                <!-- Agregar opciones adicionales para administradores -->
+                <div class="admin-panel">
+                    <h3>Panel de administración</h3>
+                    <div class="admin-options">
+                        <button class="button-28" role="button">GESTIONAR ENCUESTAS</button>
+                        <button class="button-28" role="button">GESTIONAR USUARIOS</button>
+                        <button class="button-28" role="button">VER ESTADÍSTICAS</button>
+                    </div>
+                    
+                    {% if carrera == 'todas' or carrera == 'general' %}
+                        <div class="admin-all-carreras">
+                            <h4>Gestión general de carreras</h4>
+                            <!-- Opciones específicas para administradores con acceso a todas las carreras -->
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
 
             <div id="dvCasos">
                 <div id="dvCasosT">
                     <h2 style="color: aliceblue;" >Dudas o casos Particulares</h2>
                 </div>
-            </div>
-
-            <div id="dvEncuesta">
-                <button class="button-28" role="button">RESPONDER ENCUESTA</button>
             </div>
         </main>
 
