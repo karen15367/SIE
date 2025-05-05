@@ -52,13 +52,36 @@
           </div>
         </div>
 
-
+        
         <div class="mb-4">
-          <label for="curp" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CURP</label>
-          <input type="text" id="CURP" name="curp"
+          <label for="curp_rfc" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" id="curp-rfc-label">CURP</label>
+          <input type="text" id="curp_rfc" name="curp_rfc"
             class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 dark:text-white"
             placeholder="Ingresa tu CURP" required>
-        </div>
+        </div> 
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const personalRadio = document.getElementById('example-19-2');
+          const egresadoRadio = document.getElementById('example-19-1');
+          const label = document.getElementById('curp-rfc-label');
+          const input = document.getElementById('curp_rfc');
+
+          personalRadio.addEventListener('change', function() {
+            if (personalRadio.checked) {
+        label.textContent = 'RFC';
+        input.placeholder = 'Ingresa tu RFC';
+            }
+          });
+
+          egresadoRadio.addEventListener('change', function() {
+            if (egresadoRadio.checked) {
+        label.textContent = 'CURP';
+        input.placeholder = 'Ingresa tu CURP';
+            }
+          });
+        });
+      </script>
         <div class="mb-4">
           <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
           <div class="relative">
