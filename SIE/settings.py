@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from decouple import config
 from pathlib import Path
 import os
+import certifi
 from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'core',
     'templates',
     'login',
@@ -153,21 +156,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#!EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#*EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# ?EMAIL_BACKEND = 'signin.backends.email_backend.EmailBackend'
-'''
-#* mejor vamos a usar resend salu2
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'gonzalezsamuel988@gmail.com'
-DEFAULT_FROM_EMAIL = 'no-reply@SIE.tecnm.mx'
-EMAIL_HOST_USER = 'gonzalezsamuel988@gmail.com'
-EMAIL_HOST_PASSWORD = 'bsizlspnezqkktld'
-'''
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_PORT = config("EMAIL_PORT", cast=int)
@@ -175,3 +163,8 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
+
+EMAIL_SSL_CERT_FILE = certifi.where()
