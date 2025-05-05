@@ -18,6 +18,7 @@ def login(request):
                     request.session['usuario_tipo'] = 'egresado'
                     request.session['usuario_id'] = egresado.curp
                     request.session['usuario_carrera'] = egresado.carrera
+                    request.session['usuario_nombre'] = egresado.nombre 
                     #return redirect('index')  # o la que corresponda
                     return redirect('/index/')
                 else:
@@ -32,6 +33,7 @@ def login(request):
                     request.session['usuario_tipo'] = 'admin'
                     request.session['usuario_id'] = admin.rfc
                     request.session['usuario_carrera'] = admin.carrera
+                    request.session['usuario_nombre'] = admin.nombre
                     #return redirect('index')  # o admin_home, etc.
                     return redirect('/index/')
                 else:

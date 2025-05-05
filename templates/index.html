@@ -12,81 +12,178 @@
     <link rel="stylesheet" href="{% static '/styles/btn.css' %}">
     <script src="{% static '/script/popup.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        .welcome-info {
+            text-align: center;
+            margin: 20px 0;
+            position: relative
+            bottom: 20px;
+        }
+        
+        .welcome-title {
+            color: #ff8c00;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .user-name {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .user-career {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        
+        /* Ajuste para el layout general */
+        .content {
+            clear: both;
+            padding-top: 20px;
+        }
+        
+        /* Mostramos el logo correctamente */
+        .logo-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
+        .dropdown-toggle {
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            min-width: 160px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+
+        .dropdown-item {
+            padding: 10px 20px;
+            text-align: left;
+            background-color: white;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menuButton');
+            const adminMenu = document.getElementById('adminMenu');
+            
+            if (menuButton && adminMenu) {
+                // Al hacer clic en el botón
+                menuButton.addEventListener('click', function() {
+                    adminMenu.classList.toggle('show');
+                });
+                
+                // Cerrar el menú cuando se hace clic fuera
+                document.addEventListener('click', function(event) {
+                    if (!menuButton.contains(event.target) && !adminMenu.contains(event.target)) {
+                        adminMenu.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 
 <body>
 
     <div class="divIndex">
 
-        <header>
+        <header style="position: relative; z-index: 2;">
             <div id="dvHeader">
-                <img src="{% static 'img/sepB.png' %}" id="logo" width="147" height="71">
+            <img src="{% static 'img/sepB.png' %}" id="logo" width="147" height="71">
 
-                <div id="dvOne">
-                    <h1>Sistema Institucional de Encuestas</h1>
-                    <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
-                </div>
-
-                <div id="dvTwo" class="divItems">
-                    <button id="btnAvisos" class="btnBorder">AVISOS</button>
-                    <button class="btnBorder">ENCUESTAS</h3>
-                    <button class="btnBorder"><a href="{% url 'cerrar_sesion' %}">SALIR</a></button>
-                </div>
+            <div id="dvOne">
+                <h1>Sistema Institucional de Encuestas</h1>
+                <h2>INSTITUTO TECNOLÓGICO DE VERACRUZ</h2>
             </div>
+
+            <div id="dvTwo" class="divItems">
+                <button id="btnAvisos" class="btnBorder">AVISOS</button>
+                <button class="btnBorder">ENCUESTAS</button>
+                <button class="btnBorder"><a href="{% url 'cerrar_sesion' %}">SALIR</a></button>
+            </div>
+            </div>
+        </header>
 
         </header>
 
-        <main class="content">
-            <div class="user-info">
-                <p>Bienvenido: 
-                    {% if tipo == 'egresado' %}
-                        Egresado con CURP: {{ identificador }}
-                    {% elif tipo == 'admin' %}
-                        Administrador con RFC: {{ identificador }}
-                    {% else %}
-                        Usuario
-                    {% endif %}
-                </p>
-                {% if carrera %}
-                    <p>Carrera: {{ carrera }}</p>
-                {% endif %}
+        <main class="welcome-info" style="height: 75%; margin: 0 auto;">
+            <div id="dvCasos">
+                <div id="dvCasosT">
+                    <h2 style="color: aliceblue;">Dudas o casos Particulares</h2>
+                </div>
             </div>
-
             <!-- Contenido específico según el tipo de usuario -->
-            {% if tipo == 'Egresado' %}
+            {% if tipo == 'egresado' %}
                 <!-- Contenido para Egresados -->
                 <div id="dvEncuesta">
                     <button class="button-28" role="button">RESPONDER ENCUESTA</button>
                 </div>
-            {% elif tipo == 'Administrador' %}
-                <!-- Contenido para Administradores -->
-                <div id="dvEncuesta">
-                    <button class="button-28" role="button">HACER AVISO</button>
-                </div>
-                
-                <!-- Agregar opciones adicionales para administradores -->
-                <div class="admin-panel">
-                    <h3>Panel de administración</h3>
-                    <div class="admin-options">
-                        <button class="button-28" role="button">GESTIONAR ENCUESTAS</button>
-                        <button class="button-28" role="button">GESTIONAR USUARIOS</button>
-                        <button class="button-28" role="button">VER ESTADÍSTICAS</button>
-                    </div>
-                    
-                    {% if carrera == 'todas' or carrera == 'general' %}
-                        <div class="admin-all-carreras">
-                            <h4>Gestión general de carreras</h4>
-                            <!-- Opciones específicas para administradores con acceso a todas las carreras -->
+            {% elif tipo == 'admin' %}
+                {% if carrera == 'general' %}
+                    <div id="dvEncuesta">
+                        <div class="dropdown">
+                            <button class="button-28" id="menuButton">MENÚ</button>
+                            <div class="dropdown-menu" id="adminMenu">
+                                <a href="{% url 'crear_aviso' %}" class="dropdown-item">CREAR AVISO</a>
+                                <a href="{% url 'crear_aviso' %}" class="dropdown-item">REGISTRAR ADMINISTRADOR</a>
+                            </div>
                         </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% else %}
+                    <div id="dvEncuesta">
+                        <a href="{% url 'crear_aviso' %}" style="text-decoration: none;">
+                            <button class="button-28" role="button">HACER AVISO</button>
+                        </a>
+                    </div>
+                {% endif %}
             {% endif %}
-
-            <div id="dvCasos">
-                <div id="dvCasosT">
-                    <h2 style="color: aliceblue;" >Dudas o casos Particulares</h2>
-                </div>
+            
+            <div class="welcome-info" style="position: absolute; top: 140px; left: 50%; transform: translateX(-50%); z-index: 1;">
+                <div class="welcome-title">Bienvenido(a)</div>
+                    <div class="user-name">
+                        {% if nombre %}
+                            {{ nombre }}
+                        {% else %}
+                            {{ identificador }}
+                        {% endif %}
+                    </div>
+                    {% if carrera %}
+                        <div class="user-career">{{ carrera }}</div>
+                    {% endif %}
             </div>
         </main>
 
