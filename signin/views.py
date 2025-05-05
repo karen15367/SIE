@@ -76,7 +76,6 @@ def verify(request):
 
 
 def confirm_email(request, token):
-    print('llega')
     signer = TimestampSigner()
     try:
         # válido por 1 día = 86400 segundos
@@ -88,16 +87,14 @@ def confirm_email(request, token):
 
         if "pwd1" not in tempUser:
             return HttpResponse("Faltan datos en sesión (pwd1)", status=400)
-
         # Validar campos obligatorios
         required_fields = ['nombre', 'control', 'correo', 'sexo',
                            'fechaNacimiento', 'carrera', 'titulado', 'fechaEgreso', 'pwd1']
         for field in required_fields:
             if field not in tempUser:
                 return HttpResponse(f"Falta el campo: {field}", status=400)
-        print('entra')
         try:
-            print('registra')
+            
             Egresado.objects.create(
                 curp=curp,
                 nombre=tempUser['nombre'],
