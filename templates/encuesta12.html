@@ -1,0 +1,50 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">III. UBICACIÓN LABORAL DE LOS EGRESADOS</div>
+            <div class="section-subtitle">Indique a cuál de los siguientes puntos indica su situación actual</div>
+        </div>
+
+        <div class="form-content">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+            <div class="form-block" style="padding: 10px;">
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 20px;">Opinión o recomendación para
+                        fortalecer el desempeño profesional de los egresados</h3>
+
+                    <textarea placeholder="Escribe aquí"
+                        style="width: 100%; height: 150px; margin-top: 20px; border: 1px solid #ccc; border-radius: 5px; padding: 10px; resize: none;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="button">Regresar</button>
+            <button class="button">Continuar</button>
+        </div>
+    </div>
+</body>
+
+</html>

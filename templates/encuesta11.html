@@ -1,0 +1,88 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title" style="margin-bottom: 20px;"><strong>V. EXPECTATIVAS DE DESARROLLO,SUPERACION
+                    PROFESIONAL Y DE ACTUALIZACIÓN
+                    <P>VI. PARTICIPACION SOCIAL DE LOS EGRESADOS: </P>
+                </strong></div>
+        </div>
+
+        <div class="form-content"
+            style="position: relative; text-align: left; background-color: #f5f5f5; padding: 30px; border-radius: 20px;">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; opacity: 0.08; pointer-events: none;">
+
+
+            <label style="font-weight: bold; font-size: 16px; display: block; margin-bottom: 25px;">VI. ACTUALIZACIÓN DE
+                CONOCIMIENTOS</label>
+
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 15px; margin-bottom: 20px;"><strong>Le gustaría tomar cursos de
+                        actualización</strong>
+                    No <input type="radio" name="cursos" />
+                    Sí <input type="radio" name="cursos" />
+                    ¿Cuáles? <input type="text"
+                        style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
+                </p>
+
+                <p style="font-size: 15px;"><strong>Le gustaría tomar algún Posgrado</strong>
+                    No <input type="radio" name="posgrado" />
+                    Sí <input type="radio" name="posgrado" />
+                    ¿Cuál? <input type="text"
+                        style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
+                </p>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <p style="font-size: 15px; margin-bottom: 20px;"><strong>VI.1 Pertenece a organizaciones
+                        sociales:</strong>
+                    No <input type="radio" name="organizaciones" />
+                    Sí <input type="radio" name="organizaciones" />
+                    ¿Cuáles? <input type="text"
+                        style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
+                </p>
+
+                <p style="font-size: 15px; margin-bottom: 20px;"><strong>VI.2 Pertenece a organismos de
+                        profesionistas:</strong>
+                    No <input type="radio" name="profesionistas" />
+                    Sí <input type="radio" name="profesionistas" />
+                    ¿Cuál? <input type="text"
+                        style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
+                </p>
+
+                <p style="font-size: 15px;"><strong>VI.3 Pertenece a la asociación de egresados:</strong>
+                    No <input type="radio" name="egresados" />
+                    Sí <input type="radio" name="egresados" />
+                </p>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="button">Regresar</button>
+            <button class="button">Continuar</button>
+        </div>
+    </div>
+</body>
+
+</html>
