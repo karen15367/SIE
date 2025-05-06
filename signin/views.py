@@ -76,12 +76,10 @@ def verify(request):
 
 
 def confirm_email(request, token):
-    print('llega')
     signer = TimestampSigner()
     try:
         # válido por 1 día = 86400 segundos
         curp = signer.unsign(token, max_age=1800)
-        tempUser = request.session.get("registro_egresado")
 
         if not tempUser or tempUser.get("curp") != curp:
             return HttpResponse("Tu sesión ha expirado o los datos no coinciden.", status=400)
