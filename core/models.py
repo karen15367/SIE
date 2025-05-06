@@ -78,6 +78,33 @@ class Encuesta(models.Model):
         return f"Encuesta {self.folioEncuesta}"
 
 # ---------------------------
+# MODELO temporal de administrador
+# ---------------------------
+class AdministradorTemporal(models.Model):
+    rfc = models.CharField(max_length=13, primary_key=True)
+    nombre = models.CharField(max_length=100)
+    correo = models.EmailField()
+    carrera = models.CharField(max_length=100, blank=True, null=True)
+    contraseña = models.CharField(max_length=128)  # ya encriptada
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+# ---------------------------
+# MODELO temporal de egresado
+# ---------------------------
+class EgresadoTemporal(models.Model):
+    curp = models.CharField(max_length=18, primary_key=True)
+    nombre = models.CharField(max_length=100)
+    no_control = models.CharField(max_length=20)
+    correo = models.EmailField()
+    sexo = models.BooleanField()
+    fecha_nacimiento = models.DateField()
+    carrera = models.CharField(max_length=100)
+    titulado = models.BooleanField()
+    fecha_egreso = models.DateField()
+    contraseña = models.CharField(max_length=128)  # Hasheada
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+# ---------------------------
 # MODELOS de Secciones de Encuesta
 # ---------------------------
 class EncuestaS1(models.Model):

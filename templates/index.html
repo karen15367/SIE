@@ -51,29 +51,42 @@
             margin: 20px 0;
         }
         .dropdown {
-            position: relative;
-            display: inline-block;
+            width: 100%;
+            display: block;
         }
 
         .dropdown-toggle {
-            background-color: #ff8c00;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+            width: 100%;
+            min-height: 60px;
+            appearance: none;
+            background-color: #F5F6FA;
+            border: 2px solid #1A1A1A;
+            border-radius: 15px;
+            box-sizing: border-box;
+            color: #1f4d7e;
             cursor: pointer;
+            display: inline-block;
+            font-style: bold;
+            font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
             font-size: 16px;
-            border-radius: 5px;
+            font-weight: 600;
+            line-height: normal;
+            margin: 0;
+            outline: none;
+            padding: 16px 24px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            will-change: transform;
         }
 
         .dropdown-menu {
-            display: none;
-            position: absolute;
-            background-color: white;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            min-width: 160px;
-            border-radius: 5px;
-            overflow: hidden;
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 5px;
         }
 
         .dropdown-menu.show {
@@ -93,6 +106,18 @@
 
         .dropdown-item:hover {
             background-color: #f1f1f1;
+        }
+
+        .dropdown-toggle:hover {
+            color: #fff;
+            background-color: #1f4d7e;
+            box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+            transform: translateY(-2px);
+        }
+        
+        .dropdown-toggle:active {
+            box-shadow: none;
+            transform: translateY(0);
         }
 
         /* Estilos para la ventana emergente de avisos */
@@ -183,6 +208,43 @@
         .popup button:hover {
             background-color: #16396a;
         }
+
+        #dvEncuesta {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            width: 50%;
+            padding: 10pt;
+            margin-bottom: 20px;
+            background-color: #D9D9D9;
+        }
+        
+        #dvEncuesta .button-28 {
+            font-size: 14px;
+            padding: 12px 10px;
+            min-height: 50px;
+            white-space: nowrap;
+        }
+        
+        /* Media query for smaller screens to adjust font size */
+        @media (max-width: 768px) {
+            #dvEncuesta .button-28 {
+                font-size: 12px;
+                padding: 10px 5px;
+            }
+        }
+        
+        /* Additional media query for very small screens */
+        @media (max-width: 480px) {
+            #dvEncuesta {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            #dvEncuesta .button-28 {
+                min-height: 40px;
+            }
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -243,18 +305,17 @@
                 </div>
             {% elif tipo == 'admin' %}
                 {% if carrera == 'general' %}
-                    <div id="dvEncuesta">
-                        <div class="dropdown">
-                            <button class="button-28" id="menuButton">MENÚ</button>
-                            <div class="dropdown-menu" id="adminMenu">
-                                <a href="{% url 'crear_aviso' %}" class="dropdown-item">CREAR AVISO</a>
-                                <a href="{% url 'crear_aviso' %}" class="dropdown-item">REGISTRAR ADMINISTRADOR</a>
-                            </div>
-                        </div>
+                    <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
+                        <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
+                            <button class="button-28" role="button">CREAR AVISO</button>
+                        </a>
+                        <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
+                            <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
+                        </a>
                     </div>
                 {% else %}
                     <div id="dvEncuesta">
-                        <a href="{% url 'crear_aviso' %}" style="text-decoration: none;">
+                        <a href="{% url 'crear_aviso' %}">
                             <button class="button-28" role="button">HACER AVISO</button>
                         </a>
                     </div>

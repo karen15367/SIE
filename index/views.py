@@ -36,6 +36,9 @@ def cerrar_sesion(request):
     request.session.flush()  # Elimina toda la sesión
     return redirect('/')  # Redirige al login
 
+def vistaSignUpAdmin(request):
+    return render(request, 'vistaSignUpAdmin.html')
+
 def crear_aviso(request):
     # Verificar si el usuario es administrador
     tipo = request.session.get('usuario_tipo')

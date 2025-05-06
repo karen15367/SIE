@@ -2,6 +2,7 @@ from decouple import config
 from django.shortcuts import render
 from django.conf import settings
 from core.models import Egresado
+from core.models import EgresadoTemporal
 from datetime import datetime
 from django.contrib.auth.hashers import make_password
 import uuid
@@ -18,10 +19,12 @@ from django.utils.dateparse import parse_date
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
+from django.utils.timezone import now
+from datetime import timedelta
 
 
 # * Create your views here.
-
+EgresadoTemporal.objects.filter(fecha_creacion__lt=now() - timedelta(hours=1)).delete()
 
 def signin(request):
     return render(request, "vistaSignUp.html")
@@ -39,38 +42,35 @@ def verify(request):
     if request.method == "POST":
         fechaN = request.POST.get("fechaNacimiento")
         sexo = request.POST.get("sexo") != "masculino"
-        titulo = request.POST.get("titulado") != "no"
-
-        tempUser = {
-            "curp": request.POST.get("curp"),
-            "nombre": request.POST.get("nombre"),
-            "control": request.POST.get("control"),
-            "correo": request.POST.get("correo"),
-            "sexo": sexo,
-            "fechaNacimiento": fechaN,
-            "carrera": request.POST.get("carrera"),
-            "titulado": titulo,
-            "fechaEgreso": fechaN,
-            "pwd1": request.POST.get("pwd1")
-        }
-
-        # Guardar temporalmente
-        request.session["registro_egresado"] = tempUser
+        titulado = request.POST.get("titulado") != "no"
+        curp = request.POST.get("curp")
+        
+        temp = EgresadoTemporal(
+            curp=curp,
+            nombre=request.POST.get("nombre"),
+            no_control=request.POST.get("control"),
+            correo=request.POST.get("correo"),
+            sexo=sexo,
+            fecha_nacimiento=fechaN,
+            carrera=request.POST.get("carrera"),
+            titulado=titulado,
+            fecha_egreso=fechaN,
+            contraseña=make_password(request.POST.get("pwd1"))
+        )
+        temp.save()
 
         # Firmar el token
         signer = TimestampSigner()
-        signed_token = signer.sign(request.POST.get("curp"))
-        confirm_url = request.build_absolute_uri(
-            reverse("confirm_email", args=[signed_token]))
-        print(request.POST.get("correo"))
+        signed_token = signer.sign(curp)
+        confirm_url = request.build_absolute_uri(reverse("confirm_email", args=[signed_token]))
+        
         send_mail(
             subject="Verifica tu cuenta en SIE",
-            message=f"Hola {tempUser['nombre']}, confirma tu cuenta: {confirm_url}",
+            message=f"Hola {temp.nombre}, confirma tu cuenta: {confirm_url}",
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[tempUser["correo"]],
+            recipient_list=[temp.correo],
         )
-        # print("Host:", settings.EMAIL_HOST)
-        # print("User:", settings.EMAIL_HOST_USER)
+        
         return render(request, "vistaVerificacionPendiente.html")
     return render(request, "vistaSignUp.html")
 
@@ -78,41 +78,38 @@ def verify(request):
 def confirm_email(request, token):
     signer = TimestampSigner()
     try:
-        # válido por 1 día = 86400 segundos
+        # Token válido por 30 minutos
         curp = signer.unsign(token, max_age=1800)
 
-        if not tempUser or tempUser.get("curp") != curp:
-            return HttpResponse("Tu sesión ha expirado o los datos no coinciden.", status=400)
+        # Buscar egresado temporal
+        temp = EgresadoTemporal.objects.get(curp=curp)
 
-        if "pwd1" not in tempUser:
-            return HttpResponse("Faltan datos en sesión (pwd1)", status=400)
+        # Validar que todos los datos existen (por seguridad extra)
+        campos_requeridos = [temp.nombre, temp.no_control, temp.correo, temp.fecha_nacimiento, temp.carrera, temp.fecha_egreso, temp.contraseña]
+        if any(valor is None for valor in campos_requeridos):
+            return HttpResponse("Faltan datos en el registro temporal.", status=400)
 
-        # Validar campos obligatorios
-        required_fields = ['nombre', 'control', 'correo', 'sexo','fechaNacimiento', 'carrera', 'titulado', 'fechaEgreso', 'pwd1']
-        for field in required_fields:
-            if field not in tempUser:
-                return HttpResponse(f"Falta el campo: {field}", status=400)
-        print('entra')
-        try:
-            print('registra')
-            Egresado.objects.create(
-                curp=curp,
-                nombre=tempUser['nombre'],
-                noControl=tempUser['control'],
-                correo=tempUser['correo'],
-                sexo=tempUser['sexo'],
-                fechaNacimiento=parse_date(tempUser['fechaNacimiento']),
-                carrera=tempUser['carrera'],
-                titulado=tempUser['titulado'],
-                fechaEgreso=parse_date(tempUser['fechaEgreso']),
-                contraseña=make_password(tempUser['pwd1']),
-            )
-            del request.session["registro_egresado"]
-            return render(request, "vistaVerificacion.html")
+        # Crear el egresado real
+        Egresado.objects.create(
+            curp=curp,
+            nombre=temp.nombre,
+            noControl=temp.no_control,
+            correo=temp.correo,
+            sexo=temp.sexo,
+            fechaNacimiento=temp.fecha_nacimiento,
+            carrera=temp.carrera,
+            titulado=temp.titulado,
+            fechaEgreso=temp.fecha_egreso,
+            contraseña=temp.contraseña,  # Ya está hasheada
+        )
 
-        except IntegrityError:
-            return HttpResponse("Este egresado ya fue registrado.", status=400)
+        # Eliminar el temporal
+        temp.delete()
 
+        return render(request, "vistaVerificacion.html")
+
+    except EgresadoTemporal.DoesNotExist:
+        return HttpResponse("El registro temporal no existe o ya fue confirmado.", status=400)
     except SignatureExpired:
         return HttpResponse("El enlace ha expirado.", status=400)
     except BadSignature:
