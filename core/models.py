@@ -24,9 +24,8 @@ class Egresado(models.Model):
     carrera = models.CharField(max_length=50, validators=[solo_letras_espacios])
     titulado = models.BooleanField()
     fechaEgreso = models.DateField()
-    contraseña = models.CharField(max_length=255)
-    sesion = models.CharField(max_length=64, blank=True, null=True)
-
+    contraseña = models.CharField(max_length=128)
+    sesion = models.CharField(max_length=255, blank=True, null=True)
 
     def clean(self):
         hoy = datetime.date.today()
@@ -49,8 +48,8 @@ class Administrador(models.Model):
     rfc = models.CharField(max_length=13, primary_key=True, validators=[rfc_validator])
     nombre = models.CharField(max_length=50, validators=[solo_letras_espacios])
     correo = models.EmailField(max_length=50, unique=True, validators=[EmailValidator()])
-    contraseña = models.CharField(max_length=64)
-    sesion = models.CharField(max_length=64, blank=True, null=True)
+    contraseña = models.CharField(max_length=128)
+    sesion = models.CharField(max_length=255, blank=True, null=True)
     carrera = models.CharField(max_length=50,validators=[solo_letras_espacios],blank=True,null=True,
     help_text="Si está vacío, el administrador tiene acceso a todas las carreras.")
 
