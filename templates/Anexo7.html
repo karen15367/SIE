@@ -28,6 +28,8 @@
             <div class="section-subtitle">Plan de Estudios</div>
         </div>
 
+        <form method="POST">
+            {% csrf_token %}
         <div class="form-content">
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
@@ -41,15 +43,15 @@
                         <label for="Totalmente">Totalmente</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="competencias" value="0" id="suficiente" />
+                        <input type="radio" name="competencias" value="2" id="suficiente" />
                         <label for="suficiente">Suficiente</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="competencias" value="0" id="poco" />
+                        <input type="radio" name="competencias" value="3" id="poco" />
                         <label for="poco">Poco</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="competencias" value="0" id="nada" />
+                        <input type="radio" name="competencias" value="4" id="nada" />
                         <label for="nada">Nada</label>
                     </span>
                 </div>
@@ -122,7 +124,7 @@
     </div>
     </div>
     <div class="radio-group" ">
-            <div class=" radio-group" ">
+            <div class=" radio-group">
             <div class=" radio-row">
         <span class="radio-option">
             <input type="radio" name="educativo" value="5" id="razon5" />
@@ -135,9 +137,10 @@
 
     </div>
     <div class="buttons ma">
-        <button class="button">Regresar</button>
-        <button class="button">Continuar</button>
+        <button class="button" type="button" onclick="window.location.href='{% url 'anexo6' %}'">Regresar</button>
+        <button class="button" type="submit">Continuar</button>
     </div>
+    </form>
 </body>
 
 </html>

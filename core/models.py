@@ -136,27 +136,27 @@ class EncuestaS1(models.Model):
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
     
     # Datos de la Imagen 1
-    nombre = models.CharField(max_length=100)
-    noControl = models.CharField(max_length=20)
-    fechaNacimiento = models.DateField()
-    curp = models.CharField(max_length=18)
-    sexo = models.IntegerField(choices=SEXO_CHOICES)
-    estadoCivil = models.IntegerField(choices=ESTADO_CIVIL_CHOICES)
-    domicilio = models.CharField(max_length=200)
-    ciudad = models.CharField(max_length=50)
-    cp = models.CharField(max_length=10)
-    email = models.EmailField()
-    telefono = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=100, null=True)
+    noControl = models.CharField(max_length=20, null=True)
+    fechaNacimiento = models.DateField(null=True)
+    curp = models.CharField(max_length=18, null=True)
+    sexo = models.IntegerField(choices=SEXO_CHOICES, null=True)
+    estadoCivil = models.IntegerField(choices=ESTADO_CIVIL_CHOICES, null=True)
+    domicilio = models.CharField(max_length=200, null=True)
+    ciudad = models.CharField(max_length=50, null=True)
+    cp = models.CharField(max_length=10, null=True)
+    email = models.EmailField(max_length=50, null=True)
+    telefono = models.CharField(max_length=20, null=True)
     
     # Datos de la Imagen 2
-    carrera = models.CharField(max_length=100)
-    especialidad = models.CharField(max_length=100)
-    fechaIngreso = models.DateField()
-    fechaEgreso = models.DateField()
-    titulado = models.IntegerField(choices=TITULADO_CHOICES)
-    dominioIngles = models.IntegerField(help_text="Porcentaje de dominio")
+    carrera = models.CharField(max_length=100, null=True)
+    especialidad = models.CharField(max_length=100, null=True)
+    fechaIngreso = models.DateField(null=True)
+    fechaEgreso = models.DateField(null=True)
+    titulado = models.IntegerField(choices=TITULADO_CHOICES, null=True)
+    dominioIngles = models.IntegerField(help_text="Porcentaje de dominio", null=True)
     otroIdioma = models.CharField(max_length=50, blank=True, null=True)
-    manejoPaquetes = models.IntegerField(choices=MANEJO_PAQUETES_CHOICES)
+    manejoPaquetes = models.IntegerField(choices=MANEJO_PAQUETES_CHOICES, null=True)
     especificarPaquetes = models.CharField(max_length=200, blank=True, null=True)
     
     def __str__(self):
@@ -177,32 +177,38 @@ class EncuestaS2(models.Model):
     # Campos basados en la imagen
     calidadDocentes = models.IntegerField(
         choices=CALIFICACION_CHOICES,
-        verbose_name="Calidad de docentes"
+        verbose_name="Calidad de docentes",
+        null=True
     )
     
     planEstudios = models.IntegerField(
         choices=CALIFICACION_CHOICES,
-        verbose_name="Plan de estudios"
+        verbose_name="Plan de estudios",
+        null=True
     )
     
     oportunidadesProyectos = models.IntegerField(
         choices=CALIFICACION_CHOICES,
-        verbose_name="Oportunidades de participar en proyectos de investigación y desarrollo"
+        verbose_name="Oportunidades de participar en proyectos de investigación y desarrollo",
+        null=True
     )
     
     enfasisInvestigacion = models.IntegerField(
         choices=CALIFICACION_CHOICES,
-        verbose_name="Énfasis que se le prestaba a la investigación dentro del proceso de enseñanza"
+        verbose_name="Énfasis que se le prestaba a la investigación dentro del proceso de enseñanza",
+        null=True
     )
     
     satisfaccionCondiciones = models.IntegerField(
         choices=CALIFICACION_CHOICES,
-        verbose_name="Satisfacción con las condiciones de estudio"
+        verbose_name="Satisfacción con las condiciones de estudio",
+        null=True
     )
     
     experienciaResidencia = models.IntegerField(
         choices=CALIFICACION_CHOICES,
-        verbose_name="Experiencia obtenida a través de la residencia profesional"
+        verbose_name="Experiencia obtenida a través de la residencia profesional",
+        null=True
     )
     
     def __str__(self):
@@ -301,7 +307,7 @@ class EncuestaS3(models.Model):
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
     
     # Campos de Imagen 1
-    actividad = models.IntegerField(choices=ACTIVIDAD_CHOICES)
+    actividad = models.IntegerField(choices=ACTIVIDAD_CHOICES, null=True)
     tipoEstudio = models.IntegerField(choices=TIPO_ESTUDIO_CHOICES, blank=True, null=True)
     tipoEstudioOtro = models.CharField(max_length=100, blank=True, null=True)
     especialidadInstitucion = models.CharField(max_length=200, blank=True, null=True)
@@ -374,16 +380,16 @@ class EncuestaS3Empresa(models.Model):
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
     
     # Datos de la Imagen 1 (III.12)
-    tipoOrganismo = models.IntegerField(choices=TIPO_ORGANISMO_CHOICES)
-    giroActividad = models.CharField(max_length=100)
-    razonSocial = models.CharField(max_length=150)
-    domicilio = models.CharField(max_length=200)
-    ciudad = models.CharField(max_length=50)
-    cp = models.CharField(max_length=10)
-    email = models.EmailField()
-    telefono = models.CharField(max_length=20)
-    nombreJefeInmediato = models.CharField(max_length=100)
-    puestoJefeInmediato = models.CharField(max_length=50)
+    tipoOrganismo = models.IntegerField(choices=TIPO_ORGANISMO_CHOICES, null=True)
+    giroActividad = models.CharField(max_length=100, null=True)
+    razonSocial = models.CharField(max_length=150, null=True)
+    domicilio = models.CharField(max_length=200, null=True)
+    ciudad = models.CharField(max_length=50, null=True)
+    cp = models.CharField(max_length=10, null=True)
+    email = models.EmailField(null=True)
+    telefono = models.CharField(max_length=20, null=True)
+    nombreJefeInmediato = models.CharField(max_length=100, null=True)
+    puestoJefeInmediato = models.CharField(max_length=50, null=True)
     
     # Datos de la Imagen 2 (III.13 y III.14)
     sectorPrimario = models.IntegerField(choices=SECTOR_PRIMARIO_CHOICES, blank=True, null=True)
@@ -392,7 +398,7 @@ class EncuestaS3Empresa(models.Model):
     sectorSecundarioOtro = models.CharField(max_length=50, blank=True, null=True)
     sectorTerciario = models.IntegerField(choices=SECTOR_TERCIARIO_CHOICES, blank=True, null=True)
     sectorTerciarioOtro = models.CharField(max_length=50, blank=True, null=True)
-    tamanoEmpresa = models.IntegerField(choices=TAMANO_EMPRESA_CHOICES)
+    tamanoEmpresa = models.IntegerField(choices=TAMANO_EMPRESA_CHOICES, null=True)
     
     def __str__(self):
         return f"Datos de Empresa - {self.razonSocial} - Encuesta {self.folioEncuesta}"
@@ -413,52 +419,62 @@ class EncuestaS4(models.Model):
     # Aspectos valorados para contratación (IV.4)
     areaCampoEstudio = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Área o campo de estudio"
+        verbose_name="Área o campo de estudio",
+        null=True
     )
     
     titulacion = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Titulación"
+        verbose_name="Titulación",
+        null=True
     )
     
     experienciaLaboral = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Experiencia laboral/práctica"
+        verbose_name="Experiencia laboral/práctica",
+        null=True
     )
     
     competenciaLaboral = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Competencia laboral"
+        verbose_name="Competencia laboral",
+        null=True
     )
     
     posicionamientoInstitucion = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Posicionamiento de la institución"
+        verbose_name="Posicionamiento de la institución",
+        null=True
     )
     
     conocimientoIdiomas = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Conocimiento de idiomas"
+        verbose_name="Conocimiento de idiomas",
+        null=True
     )
     
     recomendacionesReferencias = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Recomendaciones/referencias"
+        verbose_name="Recomendaciones/referencias",
+        null=True
     )
     
     personalidadActitudes = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Personalidad/actitudes"
+        verbose_name="Personalidad/actitudes",
+        null=True
     )
     
     capacidadLiderazgo = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Capacidad de liderazgo"
+        verbose_name="Capacidad de liderazgo",
+        null=True
     )
     
     otrosAspectos = models.IntegerField(
         choices=VALORACION_CHOICES,
-        verbose_name="Otros"
+        verbose_name="Otros",
+        null=True
     )
     
     def __str__(self):
@@ -477,7 +493,8 @@ class EncuestaS5(models.Model):
     # Sección V - Actualización de conocimientos
     cursosActualizacion = models.IntegerField(
         choices=SI_NO_CHOICES,
-        verbose_name="Le gustaría tomar cursos de actualización"
+        verbose_name="Le gustaría tomar cursos de actualización",
+        null=True
     )
     cursosActualizacionCuales = models.CharField(
         max_length=200,
@@ -488,7 +505,8 @@ class EncuestaS5(models.Model):
     
     tomarPosgrado = models.IntegerField(
         choices=SI_NO_CHOICES,
-        verbose_name="Le gustaría tomar algún Posgrado"
+        verbose_name="Le gustaría tomar algún Posgrado",
+        null=True
     )
     tomarPosgradoCual = models.CharField(
         max_length=200,
@@ -500,7 +518,8 @@ class EncuestaS5(models.Model):
     # Sección VI - Participación social
     perteneceOrganizacionesSociales = models.IntegerField(
         choices=SI_NO_CHOICES,
-        verbose_name="Pertenece a organizaciones sociales"
+        verbose_name="Pertenece a organizaciones sociales",
+        null=True
     )
     organizacionesSocialesCuales = models.CharField(
         max_length=200,
@@ -511,7 +530,8 @@ class EncuestaS5(models.Model):
     
     perteneceOrganismosProfesionistas = models.IntegerField(
         choices=SI_NO_CHOICES,
-        verbose_name="Pertenece a organismos de profesionistas"
+        verbose_name="Pertenece a organismos de profesionistas",
+        null=True
     )
     organismosProfesionistasCuales = models.CharField(
         max_length=200,
@@ -522,7 +542,8 @@ class EncuestaS5(models.Model):
     
     perteneceAsociacionEgresados = models.IntegerField(
         choices=SI_NO_CHOICES,
-        verbose_name="Pertenece a la asociación de egresados"
+        verbose_name="Pertenece a la asociación de egresados",
+        null=True
     )
     
     # Sección VIII - Comentarios y sugerencias
@@ -555,7 +576,7 @@ class AnexoS1(models.Model):
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
 
     # Anexo1
-    nombreCompleto = models.CharField(max_length=100)
+    nombreCompleto = models.CharField(max_length=100, blank=True, null=True)
     redesSociales = models.CharField(max_length=100, blank=True, null=True)
     fechaIngreso = models.DateField(blank=True, null=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
@@ -563,7 +584,7 @@ class AnexoS1(models.Model):
     fechaEgreso = models.DateField(blank=True, null=True)
 
     # Anexo2
-    titulado = models.IntegerField(choices=TITULO_CHOICES)
+    titulado = models.IntegerField(choices=TITULO_CHOICES, null=True)
     razonNoTitulo = models.IntegerField(
         choices=RAZON_NO_TITULO_CHOICES,
         blank=True,
@@ -663,7 +684,7 @@ class AnexoS2(models.Model):
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
 
     # Anexo3
-    trabaja = models.IntegerField(choices=TRABAJA_CHOICES)
+    trabaja = models.IntegerField(choices=TRABAJA_CHOICES, null=True)
     razonNoTrabaja = models.IntegerField(choices=RAZON_NO_TRABAJA_CHOICES, blank=True, null=True)
     razonNoTrabajaOtra = models.CharField(max_length=100, blank=True, null=True)
 
@@ -742,14 +763,14 @@ class AnexoS3(models.Model):
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
     
     # Anexo7
-    competencias = models.IntegerField(choices=COMPETENCIAS_CHOICES)
-    satisfaccion = models.IntegerField(choices=SATISFACCION_CHOICES)
-    educativo = models.IntegerField(choices=EDUCATIVO_CHOICES)
+    competencias = models.IntegerField(choices=COMPETENCIAS_CHOICES, null=True)
+    satisfaccion = models.IntegerField(choices=SATISFACCION_CHOICES, null=True)
+    educativo = models.IntegerField(choices=EDUCATIVO_CHOICES, null=True)
     educativoOtro = models.CharField(max_length=100, blank=True, null=True)
     
     # Anexo8
-    contacto = models.IntegerField(choices=CONTACTO_CHOICES)
-    participar = models.IntegerField(choices=PARTICIPAR_CHOICES)
+    contacto = models.IntegerField(choices=CONTACTO_CHOICES, null=True)
+    participar = models.IntegerField(choices=PARTICIPAR_CHOICES, null=True)
     aporte = models.IntegerField(choices=APORTE_CHOICES, blank=True, null=True)
     aporteOtro = models.CharField(max_length=100, blank=True, null=True)
     
@@ -853,33 +874,33 @@ class AnexoS4(models.Model):
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
     
     # Anexo9
-    herramientas = models.IntegerField(choices=HERRAMIENTAS_CHOICES)
+    herramientas = models.IntegerField(choices=HERRAMIENTAS_CHOICES, null=True)
     herramientasOtra = models.CharField(max_length=100, blank=True, null=True)
-    colabora = models.IntegerField(choices=COLABORA_CHOICES)
+    colabora = models.IntegerField(choices=COLABORA_CHOICES, null=True)
     tipoInvestigacion = models.IntegerField(choices=TIPO_INVESTIGACION_CHOICES, blank=True, null=True)
     tipoInvestigacionOtra = models.CharField(max_length=100, blank=True, null=True)
     
     # Anexo10
-    participaRedes = models.IntegerField(choices=PARTICIPA_REDES_CHOICES)
-    certificacion = models.IntegerField(choices=CERTIFICACION_CHOICES)
+    participaRedes = models.IntegerField(choices=PARTICIPA_REDES_CHOICES, null=True)
+    certificacion = models.IntegerField(choices=CERTIFICACION_CHOICES, null=True)
     certificacionCuales = models.CharField(max_length=200, blank=True, null=True)
-    servicios = models.IntegerField(choices=SERVICIOS_CHOICES)
+    servicios = models.IntegerField(choices=SERVICIOS_CHOICES, null=True)
     serviciosOtro = models.CharField(max_length=100, blank=True, null=True)
-    idiomas = models.IntegerField(choices=IDIOMAS_CHOICES)
+    idiomas = models.IntegerField(choices=IDIOMAS_CHOICES, null=True)
     idiomasOtro = models.CharField(max_length=100, blank=True, null=True)
     
     # Anexo11
-    publicacion = models.IntegerField(choices=PUBLICACION_CHOICES)
+    publicacion = models.IntegerField(choices=PUBLICACION_CHOICES, null=True)
     publicacionEspecifique = models.CharField(max_length=200, blank=True, null=True)
-    documentos = models.IntegerField(choices=DOCUMENTOS_CHOICES)
+    documentos = models.IntegerField(choices=DOCUMENTOS_CHOICES, null=True)
     documentosOtro = models.CharField(max_length=100, blank=True, null=True)
-    calidad = models.IntegerField(choices=CALIDAD_CHOICES)
+    calidad = models.IntegerField(choices=CALIDAD_CHOICES, null=True)
     calidadOtra = models.CharField(max_length=100, blank=True, null=True)
     
     # Anexo12
-    asociacion = models.IntegerField(choices=ASOCIACION_CHOICES)
+    asociacion = models.IntegerField(choices=ASOCIACION_CHOICES, null=True)
     asociacionEspecifique = models.CharField(max_length=200, blank=True, null=True)
-    etica = models.IntegerField(choices=ETICA_CHOICES)
+    etica = models.IntegerField(choices=ETICA_CHOICES, null=True)
     
     def __str__(self):
         return f"Anexo S4 - Encuesta {self.folioEncuesta}"
@@ -894,9 +915,9 @@ class OpcionesSeleccionMultiple(models.Model):
     ]
     
     idOpcion = models.BigAutoField(primary_key=True)
-    codigoPregunta = models.CharField(max_length=5, choices=CODIGO_PREGUNTA_CHOICES)
-    textoOpcion = models.CharField(max_length=100)
-    valorNumerico = models.IntegerField()
+    codigoPregunta = models.CharField(max_length=5, choices=CODIGO_PREGUNTA_CHOICES,null=True)
+    textoOpcion = models.CharField(max_length=100,null=True)
+    valorNumerico = models.IntegerField(null=True)
     
     class Meta:
         ordering = ['codigoPregunta', 'valorNumerico']
@@ -905,8 +926,8 @@ class OpcionesSeleccionMultiple(models.Model):
         return f"{self.codigoPregunta} - {self.textoOpcion}"
 class RespuestaSeleccionMultiple(models.Model):
     id = models.BigAutoField(primary_key=True)
-    folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
-    opcion = models.ForeignKey(OpcionesSeleccionMultiple, on_delete=models.CASCADE)
+    folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE,null=True)
+    opcion = models.ForeignKey(OpcionesSeleccionMultiple, on_delete=models.CASCADE,null=True)
     
     class Meta:
         unique_together = (('folioEncuesta', 'opcion'),)

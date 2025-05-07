@@ -25,6 +25,8 @@
             <div class="section-subtitle">Situación Laboral</div>
         </div>
         
+        <form method="POST" action="{% url 'anexo3' %}">
+            {% csrf_token %}
         <div class="form-content">
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
             
@@ -80,11 +82,37 @@
                 </div>
             </div>
         </div>
+    </form>
         
         <div class="buttons">
-            <button class="button">Regresar</button>
-            <button class="button">Continuar</button>
+            <button class="button" type="button" onclick="window.location.href='{% url 'anexo2' %}'">Regresar</button>
+            <button class="button" type="submit">Continuar</button>
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener el formulario
+        const form = document.querySelector('form');
+        
+        // Agregar un evento submit al formulario
+        form.addEventListener('submit', function(event) {
+            // Verificar si la opción "Otras" está seleccionada
+            const razon5 = document.getElementById('razon5');
+            if (razon5.checked) {
+                // Obtener el valor del campo de texto
+                const otraRazon = razon5.parentElement.querySelector('input[type="text"]').value;
+                
+                // Crear un campo oculto para enviar el valor
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'razonNoTrabajaOtra';
+                hiddenInput.value = otraRazon;
+                
+                // Agregar el campo oculto al formulario
+                form.appendChild(hiddenInput);
+            }
+        });
+    });
+</script>
 </html>

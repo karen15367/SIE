@@ -90,6 +90,16 @@ def a3(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
+    
+    if request.method == 'POST':
+        # Iniciar recopilación de datos para AnexoS2
+        request.session['anexo_s2'] = {
+            'trabaja': request.POST.get('trabaja'),
+            'razon_no_trabaja': request.POST.get('razonNoTrabaja'),
+            'razon_no_trabaja_otra': request.POST.get('razonNoTrabajaOtra', '')
+        }
+        return redirect('anexo4')
+    
     return render(request, 'Anexo3.html')
 
 
@@ -102,6 +112,25 @@ def a4(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
+    
+    if request.method == 'POST':
+        # Recuperar datos previos
+        datos_previos = request.session.get('anexo_s2', {})
+        
+        # Añadir nuevos datos
+        datos_previos['relacion_trabajo_carrera'] = request.POST.get('trabaja')  # Nota: mismo nombre en el HTML
+        datos_previos['antiguedad'] = request.POST.get('antiguedad')
+        datos_previos['tiempo_trabajo_relacionado'] = request.POST.get('tiempoTrabajoRelacionado')
+        
+        # Verificar si seleccionó "Aún no lo consigo" y capturar el motivo
+        if request.POST.get('tiempoTrabajoRelacionado') == '4':
+            datos_previos['razon_no_conseguir_trabajo'] = request.POST.get('razonNoConseguirTrabajo', '')
+            
+        # Actualizar sesión
+        request.session['anexo_s2'] = datos_previos
+        
+        return redirect('anexo5')
+    
     return render(request, 'Anexo4.html')
 
 
@@ -114,6 +143,32 @@ def a5(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
+    
+    if request.method == 'POST':
+        # Recuperar datos previos
+        datos_previos = request.session.get('anexo_s2', {})
+        
+        # Añadir nuevos datos
+        datos_previos['sector'] = request.POST.get('sector')
+        # Verificar si seleccionó "Otro" sector y capturar el texto
+        if request.POST.get('sector') == '4':
+            datos_previos['sector_otro'] = request.POST.get('sectorOtro', '')
+            
+        datos_previos['rol'] = request.POST.get('rol')
+        # Verificar si seleccionó "Otras" en rol y capturar el texto
+        if request.POST.get('rol') == '7':
+            datos_previos['rol_otro'] = request.POST.get('rolOtro', '')
+            
+        datos_previos['area'] = request.POST.get('area')
+        # Verificar si seleccionó "Otras" en área y capturar el texto
+        if request.POST.get('area') == '7':
+            datos_previos['area_otra'] = request.POST.get('areaOtra', '')
+            
+        # Actualizar sesión
+        request.session['anexo_s2'] = datos_previos
+        
+        return redirect('anexo6')
+    
     return render(request, 'Anexo5.html')
 
 
@@ -126,6 +181,51 @@ def a6(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
+    
+    if request.method == 'POST':
+        # Recuperar datos previos
+        datos_previos = request.session.get('anexo_s2', {})
+        
+        # Añadir nuevos datos
+        datos_previos['medio_trabajo'] = request.POST.get('medioTrabajo')
+        # Verificar si seleccionó "Otras" en medio_trabajo y capturar el texto
+        if request.POST.get('medioTrabajo') == '5':
+            datos_previos['medio_trabajo_otro'] = request.POST.get('medioTrabajoOtro', '')
+            
+        datos_previos['satisfaccion'] = request.POST.get('satisfaccion')
+        
+        # Obtener la conexión con la encuesta correspondiente
+        encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
+        
+        if encuesta:
+            # Crear el registro en la tabla AnexoS2
+            AnexoS2.objects.create(
+                folioEncuesta=encuesta,
+                trabaja=datos_previos.get('trabaja'),
+                razonNoTrabaja=datos_previos.get('razon_no_trabaja'),
+                razonNoTrabajaOtra=datos_previos.get('razon_no_trabaja_otra'),
+                relacionTrabajoCarrera=datos_previos.get('relacion_trabajo_carrera'),
+                antiguedad=datos_previos.get('antiguedad'),
+                tiempoTrabajoRelacionado=datos_previos.get('tiempo_trabajo_relacionado'),
+                razonNoConseguirTrabajo=datos_previos.get('razon_no_conseguir_trabajo'),
+                sector=datos_previos.get('sector'),
+                sectorOtro=datos_previos.get('sector_otro'),
+                rol=datos_previos.get('rol'),
+                rolOtro=datos_previos.get('rol_otro'),
+                area=datos_previos.get('area'),
+                areaOtra=datos_previos.get('area_otra'),
+                medioTrabajo=datos_previos.get('medio_trabajo'),
+                medioTrabajoOtro=datos_previos.get('medio_trabajo_otro'),
+                satisfaccion=datos_previos.get('satisfaccion')
+            )
+            
+            # Limpiar datos de sesión
+            request.session.pop('anexo_s2', None)
+            
+            return redirect('anexo7')
+        else:
+            return redirect('index')  # En caso de que no haya encuesta activa
+    
     return render(request, 'Anexo6.html')
 
 
