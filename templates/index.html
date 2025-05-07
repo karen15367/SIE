@@ -300,9 +300,19 @@
             <!-- Contenido específico según el tipo de usuario -->
             {% if tipo == 'egresado' %}
                 <!-- Contenido para Egresados -->
+                {% if carrera == 'Ing. Química' or  carrera == 'Ing. Bioquímica'%}
+                    <div id="dvEncuesta">
+                        <a href="{% url 'anexo1' %}">
+                            <button class="button-28" role="button">RESPONDER ENCUESTA QUIMICA Y BIOQUIMICA</button>
+                        </a>
+                    </div>
+                {% else %}
                 <div id="dvEncuesta">
-                    <button class="button-28" role="button">RESPONDER ENCUESTA</button>
+                    
+                        <button class="button-28" role="button">RESPONDER ENCUESTA</button>
+                    
                 </div>
+                {% endif %}
             {% elif tipo == 'admin' %}
                 {% if carrera == 'general' %}
                     <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">

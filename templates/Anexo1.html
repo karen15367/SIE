@@ -25,58 +25,61 @@
             <div class="section-subtitle">Datos Generales</div>
         </div>
         
-        <div class="form-content">
-            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
-            
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label class="form-label">Nombre completo:</label>
-                        <div class="form-input">
-                            <input type="text" class="line-input">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Redes Sociales :</label>
-                        <div class="form-input">
-                            <input type="text" class="line-input">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Fecha ingreso :</label>
-                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" />
-                    </div>
-                </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-content">
+                <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
                 
-                <div class="form-column">
-                    <div class="form-group">
-                        <label class="form-label">Teléfono Celular:</label>
-                        <div class="form-input">
-                            <input type="text" class="line-input">
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Nombre completo:</label>
+                            <div class="form-input">
+                                <input type="text" name="nombre_completo" class="line-input">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Redes Sociales :</label>
+                            <div class="form-input">
+                                <input type="text" name="redes_sociales" class="line-input">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Fecha ingreso :</label>
+                            <input type="date" name="fecha_ingreso" />
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label class="form-label">Correo Electrónico:</label>
-                        <div class="form-input">
-                            <input type="email" class="line-input">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Teléfono Celular:</label>
+                            <div class="form-input">
+                                <input type="text" name="telefono" class="line-input">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Fecha egreso:</label>
-                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" />
+                        
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico:</label>
+                            <div class="form-input">
+                                <input type="date" name="fecha_egreso" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Fecha egreso:</label>
+                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" />
+                        </div>
                     </div>
                 </div>
             </div>
+            
+            <div class="buttons">
+                <button class="button" type="button" onclick="window.history.back()">Regresar</button>
+                <button class="button" type="submit">Continuar</button>
+            </div>
         </div>
-        
-        <div class="buttons">
-            <button class="button">Regresar</button>
-            <button class="button">Continuar</button>
-        </div>
-    </div>
+    </form>
 </body>
 </html>

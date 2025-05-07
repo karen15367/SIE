@@ -40,10 +40,17 @@ def vistaLogin(request):
 
 def verify(request):
     if request.method == "POST":
+        curp = request.POST.get("curp")
+        
+        # Validar existencia
+        if Egresado.objects.filter(curp=curp).exists():
+            return render(request, "vistaSignUp.html", {
+                "error": "Este CURP ya está registrado."
+            })
+        
         fechaN = request.POST.get("fechaNacimiento")
         sexo = request.POST.get("sexo") != "masculino"
         titulado = request.POST.get("titulado") != "no"
-        curp = request.POST.get("curp")
         
         temp = EgresadoTemporal(
             curp=curp,

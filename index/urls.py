@@ -8,4 +8,5 @@ urlpatterns = [
     path('crear-aviso/', views.crear_aviso, name='crear_aviso'),
     path('editar-aviso/<int:idNotificacion>/', views.editar_aviso, name='editar_aviso'),
     path('vistaSignUpAdmin/', views.vistaSignUpAdmin, name='vistaSignUpAdmin'),
+    
 ]

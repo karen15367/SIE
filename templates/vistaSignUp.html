@@ -31,6 +31,11 @@
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
             <form action="/sign-in/verify/" method="post" id="mainForm">
                 {% csrf_token %}
+                {% if error %}
+                    <div style="color: red; margin-bottom: 15px;">
+                        {{ error }}
+                    </div>
+                {% endif %}
                 <div class="form-row">
                     <div class="form-column">
                         <div class="form-group">
@@ -108,8 +113,8 @@
                             <select id="carrera" name="carrera" required>
                                 <option value="">Seleccione una opción</option>
                                 <option>Ing. Sistemas Computacionales</option>
-                                <option>Ing. Quimica</option>
-                                <option>Ing. Bioquimica</option>
+                                <option>Ing. Química</option>
+                                <option>Ing. Bioquímica</option>
                                 <option>Ing. Industrial</option>
                                 <option>Ing. Mecatrónica</option>
                                 <option>Ing. Eléctrica</option>

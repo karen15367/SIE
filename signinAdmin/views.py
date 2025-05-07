@@ -44,7 +44,12 @@ def verify(request):
         rfc = request.POST.get("rfc")
         if len(rfc) > 13:
             return HttpResponse("El RFC no puede tener más de 13 caracteres.", status=400)
-
+        
+        if Administrador.objects.filter(rfc=rfc).exists():
+            return render(request, "vistaSignUpAdmin.html", {
+                "error": "Este RFC ya ha sido registrado."
+            })
+            
         temp = AdministradorTemporal(
             rfc=rfc,
             nombre=request.POST.get("nombre"),
