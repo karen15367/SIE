@@ -26,4 +26,5 @@ urlpatterns = [
     path('index/', include('index.urls') ),
     path('anexo/', include('anexo.urls') ),
     path('admin-signup/', include('signinAdmin.urls')),
+    path('encuesta/', include('encuesta.urls') ),
 ]

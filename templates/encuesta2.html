@@ -1,98 +1,158 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Perfil del Egresado</title>
-  <link rel="stylesheet" href="styles/encuesta2.css"> 
-</head>
-<body>
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
   <div class="container">
-    <!-- Encabezado -->
     <div class="header">
-      <img src="img/logo-sep.png" alt="Logo SEP">
+      <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
       <div class="header-text">
         <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
         <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
       </div>
     </div>
 
-    <!-- Sección Título -->
     <div class="form-section">
-      <div class="section-title">I. PERFIL DEL EGRESADO</div>
-      <div class="section-subtitle">Ingrese los datos de acuerdo a su situación actual</div>
+      <div class="section-title">II. PERTINENCIA Y DISPONIBILIDAD DE MEDIOS Y RECURSOS PARA EL APRENDIZAJE</div>
+      <div class="section-subtitle">Califique la calidad de los siguientes aspectos proporcionados por la institución
+      </div>
     </div>
 
-    <!-- Contenido del Formulario -->
     <div class="form-content">
-      <form>
+      <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-        <div class="form-grid"> <!-- NUEVO contenedor para 2 columnas -->
+      <form action="/encuesta/encuesta2/" method="post" id="aprendizaje">
+        {% csrf_token %}
 
-          <div class="form-group">
-            <label class="form-label" for="carrera">Carrera:</label>
-            <input type="text" id="carrera" class="form-input line-input">
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.1 Calidad de docentes
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="0" required> Excelente</label>
+
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="1"> Bueno</label>
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="2"> Regular</label>
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="3"> Malo</label>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label class="form-label" for="especialidad">Especialidad:</label>
-            <input type="text" id="especialidad" class="form-input line-input">
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.2 Plan de estudios
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="3"> Malo</label>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label class="form-label" for="fecha-ingreso">Fecha de Ingreso:</label>
-            <input type="date" id="fecha-ingreso" class="form-input line-input">
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.3 Oportunidades de participar en proyectos de investigación y desarrollo
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="3"> Malo</label>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label class="form-label" for="fecha-egreso">Fecha de Egreso:</label>
-            <input type="date" id="fecha-egreso" class="form-input line-input">
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.4 Énfasis que se le prestaba a la investigación dentro del proceso de enseñanza
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="3"> Malo</label>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label class="form-label">Titulado:</label>
-            <div class="radio-group">
-              <label class="radio-option"><input type="radio" name="titulado" value="sí"> Sí</label>
-              <label class="radio-option"><input type="radio" name="titulado" value="no"> No</label>
-            </div>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.5 Satisfacción con las condiciones de estudio
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="3"> Malo</label>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label class="form-label" for="ingles">Dominio de Inglés:</label>
-            <input type="text" id="ingles" class="form-input line-input">%
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.6 Experiencia obtenida a través de la residencia profesional
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="3"> Malo</label>
           </div>
-
-          <div class="form-group">
-            <label class="form-label" for="otro-idioma">Otro idioma:</label>
-            <input type="text" id="otro-idioma" class="form-input line-input">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Manejo de paquetes computacionales:</label>
-            <div class="radio-group">
-              <label class="radio-option"><input type="radio" name="paquetes" value="sí"> Sí</label>
-              <label class="radio-option"><input type="radio" name="paquetes" value="no"> No</label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="especificar">Especificar:</label>
-            <input type="text" id="especificar" class="form-input line-input">
-          </div>
-
-        </div> <!-- cierre form-grid -->
-
-        <!-- Botones -->
-        <div class="buttons">
-          <button type="button" class="button">Regresar</button>
-          <button type="submit" class="button">Continuar</button>
         </div>
 
       </form>
     </div>
-
-  </div>
-
+    <div class="buttons">
+      <button class="button">Regresar</button>
+      <button class="button" type="submit" form="aprendizaje">Continuar</button>
+    </div>
 </body>
+
 </html>

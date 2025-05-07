@@ -1,0 +1,93 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" width="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">IV. DESEMPEÑO PROFESIONAL DEL EGRESADO </div>
+            <div class="section-subtitle"> Marcar los campos que correspondan a su trayectoria profesional</div>
+        </div>
+
+        <div class="form-content">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+            <div style="margin-bottom: 50px; position: relative; z-index: 2;">
+                <h3 style="font-weight: bold; font-size: 16px; margin-bottom: 15px;">
+                    IV.1 Eficiencia para realizar actividades laborales, en relación con su formación académica
+                </h3>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 10px;">
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="eficiencia"> Muy eficiente</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="eficiencia"> Eficiente</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="eficiencia"> Poco eficiente</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="eficiencia"> Deficiente</label>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 50px; position: relative; z-index: 2;">
+                <h3 style="font-weight: bold; font-size: 16px; margin-bottom: 15px;">
+                    IV.2 Cómo califica su formación académica respecto a su desempeño laboral
+                </h3>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 10px;">
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="formacion"> Excelente</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="formacion"> Bueno</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="formacion"> Regular</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="formacion"> Malo</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="formacion"> Pésimo</label>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 50px; position: relative; z-index: 2;">
+                <h3 style="font-weight: bold; font-size: 16px; margin-bottom: 15px;">
+                    IV.3 Utilidad de las residencias profesionales o prácticas profesionales para su desarrollo laboral
+                    y profesional
+                </h3>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 10px;">
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="residencias"> Excelente</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="residencias"> Bueno</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="residencias"> Regular</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="residencias"> Malo</label>
+                    <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                            name="residencias"> Pésimo</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="buttons">
+            <button class="button">Regresar</button>
+            <button class="button">Continuar</button>
+        </div>
+    </div>
+</body>
+
+</html>

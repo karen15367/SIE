@@ -1,0 +1,133 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" width="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">III. UBICACION LABORAL DE LOS EGRESADOS</div>
+            <div class="section-subtitle">Indique a cual de los siguientes puntos indica su situación actual</div>
+        </div>
+
+        <div class="form-content">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+            <div style="margin-bottom: 50px; position: relative; z-index: 2;">
+                <h3 style="font-weight: bold; font-size: 16px; margin-bottom: 15px;">
+                    III.13 Sector económico de la empresa
+                </h3>
+
+                <table style="width: 100%; margin-top: 15px;">
+                    <tr>
+                        <td style="width: 150px; font-weight: bold;">Sector primario:</td>
+                        <td style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Agroindustria <input type="radio" name="sectorPrimario" value="Agroindustria">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Pesquero <input type="radio" name="sectorPrimario" value="Pesquero">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Minero <input type="radio" name="sectorPrimario" value="Minero">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Otros <input type="radio" name="sectorPrimario" value="OtrosPrimario">
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; margin-bottom: 20px;">Sector secundario:</td>
+                        <td style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Industrial <input type="radio" name="sectorSecundario" value="Industrial">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Construcción <input type="radio" name="sectorSecundario" value="Construccion">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Petrolero <input type="radio" name="sectorSecundario" value="Petrolero">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Otros <input type="radio" name="sectorSecundario" value="OtrosSecundario">
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Sector terciario:</td>
+                        <td style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Educativo <input type="radio" name="sectorTerciario" value="Educativo">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Turismo <input type="radio" name="sectorTerciario" value="Turismo">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Comercio <input type="radio" name="sectorTerciario" value="Comercio">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Servicios financieros <input type="radio" name="sectorTerciario"
+                                    value="ServiciosFinancieros">
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                Otros <input type="radio" name="sectorTerciario" value="OtrosTerciario">
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+
+                <h3 style="font-weight: bold; font-size: 16px; margin: 30px 0 15px;">
+                    III.14 Tamaño de la empresa
+                </h3>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 30px; margin-left: 10px;">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        Microempresa (1-30) <input type="radio" name="tamanoEmpresa" value="Microempresa">
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        Pequeña (31-100) <input type="radio" name="tamanoEmpresa" value="Pequena">
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        Mediana (101-500) <input type="radio" name="tamanoEmpresa" value="Mediana">
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        Grande (más de 500) <input type="radio" name="tamanoEmpresa" value="Grande">
+                    </label>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="buttons"
+            style="background-color: #2b5d8e; padding: 15px 0; display: flex; justify-content: center; gap: 90px; margin: 20px 20px 40px 20px; border-radius: 15px;">
+            <button
+                style="background-color: #e6e6e6; color: #333; border: none; padding: 6px 15px; font-size: 14px; font-weight: bold; border-radius: 50px; cursor: pointer;">
+                Regresar
+            </button>
+            <button
+                style="background-color: #e6e6e6; color: #333; border: none; padding: 6px 15px; font-size: 14px; font-weight: bold; border-radius: 50px; cursor: pointer;">
+                Continuar
+            </button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

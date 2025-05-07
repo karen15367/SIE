@@ -1,0 +1,104 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="styles/Anexo1.css">
+    <link rel="stylesheet" href="styles/vistaEncuestaP7.css">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" width="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">III. UBICACION LABORAL DE LOS EGRESADOS</div>
+            <div class="section-subtitle">Indique a cual de los siguientes puntos indica su situacion actual</div>
+        </div>
+
+        <div class="form-content">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+            <div class="form-block" style="padding: 10px;">
+                <div class="header-form" style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <h3 class="form-heading" style="margin: 0;">III.12 Datos de la empresa u organismo</h3>
+
+                    <div class="radio-group" style="align-self: center; margin-top: 10px; text-align: center;">
+                        Organismo:
+                        <label><input type="radio" name="organismo" value="Publico">Público</label>
+                        <label><input type="radio" name="organismo" value="Privado">Privado</label>
+                        <label><input type="radio" name="organismo" value="Social">Social</label>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
+                    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                        <label style="font-size: 14px;">Giro o Actividad:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
+                        </label>
+                        <label style="font-size: 14px;">Razón social:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
+                        </label>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                        <label style="font-size: 14px;">Domicilio:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 180px; text-align: center;">
+                        </label>
+                        <label style="font-size: 14px;">Ciudad:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 120px; text-align: center;">
+                        </label>
+                        <label style="font-size: 14px;">CP:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 80px; text-align: center;">
+                        </label>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                        <label style="font-size: 14px;">Email:
+                            <input type="email"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 180px; text-align: center;">
+                        </label>
+                        <label style="font-size: 14px;">Teléfono:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 180px; text-align: center;">
+                        </label>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+                        <label style="font-size: 14px;">Nombre del jefe inmediato:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
+                        </label>
+                        <label style="font-size: 14px;">Puesto:
+                            <input type="text"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="button">Regresar</button>
+            <button class="button">Continuar</button>
+        </div>
+    </div>
+</body>
+
+</html>
