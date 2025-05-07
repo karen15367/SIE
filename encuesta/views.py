@@ -22,6 +22,8 @@ def e3(request):
 
 
 def e4(request):
+    if request.method == "POST":
+        print(request.POST)
     return render(request, "encuesta4.html")
 
 
