@@ -120,5 +120,21 @@
         </div>
     </div>
 </body>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            // Para "Otras" en aporte
+            const razon5 = document.getElementById('razon5');
+            if (razon5 && razon5.checked) {
+                const otro = razon5.parentElement.querySelector('input[type="text"]').value;
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'aporteOtro';
+                hiddenInput.value = otro;
+                form.appendChild(hiddenInput);
+            }
+        });
+    });
+</script>
 </html>
