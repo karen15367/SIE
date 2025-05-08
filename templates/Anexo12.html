@@ -28,6 +28,8 @@
             <div class="section-subtitle">Desempeño Laboral</div>
         </div>
 
+        <form method="POST">
+            {% csrf_token %}
         <div class="form-content">
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
@@ -87,10 +89,27 @@
         </div>
 
         <div class="buttons">
-            <button class="button">Regresar</button>
-            <button class="button">Continuar</button>
+            <button class="button" type="button" onclick="window.location.href='{% url 'anexo11' %}'">Regresar</button>
+            <button class="button" type="submit">Continuar</button>
         </div>
+    </form>
     </div>
 </body>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            // Para "Si especifique" en asociacion
+            const asociacionSi = document.getElementById('asociacionSi');
+            if (asociacionSi && asociacionSi.checked) {
+                const valor = asociacionSi.parentElement.querySelector('input[type="text"]').value;
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'asociacionEspecifique';
+                hiddenInput.value = valor;
+                form.appendChild(hiddenInput);
+            }
+        });
+    });
+</script>
 </html>

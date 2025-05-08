@@ -28,6 +28,8 @@
             <div class="section-subtitle">Desempeño Laboral</div>
         </div>
 
+        <form method="POST">
+            {% csrf_token %}
         <div class="form-content">
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
@@ -86,23 +88,23 @@
 
             <div class="radio-group" style="width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="herramientas" value="1" id="aplicada" />
+                    <input type="radio" name="tipoInvestigacion" value="1" id="aplicada" />
                     <label for="aplicada">Aplicada</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="herramientas" value="0" id="experimental" />
+                    <input type="radio" name="tipoInvestigacion" value="2" id="experimental" />
                     <label for="experimental">Experimental</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="herramientas" value="0" id="documental"/>
+                    <input type="radio" name="tipoInvestigacion" value="3" id="documental"/>
                     <label for="documental">Documental</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="herramientas" value="0" id="poco" />
+                    <input type="radio" name="tipoInvestigacion" value="4" id="poco" />
                     <label for="poco">Descriptiva</label>
                 </span>
                 <span class="radio-option" style="width: 15%;" >
-                    <input type="radio" name="herramientas" value="5" id="razon5" />
+                    <input type="radio" name="tipoInvestigacion" value="5" id="razon5" />
                     <label for="razon5">Otras</label>
                     <input type="text" class="line-input">
                 </span>
@@ -110,9 +112,37 @@
         </div>
 
         <div class="buttons ma">
-            <button class="button">Regresar</button>
-            <button class="button">Continuar</button>
+            <button class="button" type="button" onclick="window.location.href='{% url 'anexo8' %}'">Regresar</button>
+            <button class="button" type="submit">Continuar</button>
         </div>
+    </form>
 </body>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            // Para "Otras" en herramientas
+            const otras = document.getElementById('otras');
+            if (otras && otras.checked) {
+                const otro = otras.parentElement.querySelector('input[type="text"]').value;
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'herramientasOtra';
+                hiddenInput.value = otro;
+                form.appendChild(hiddenInput);
+            }
+            
+            // Para "Otras" en tipoInvestigacion
+            const razon5 = document.getElementById('razon5');
+            if (razon5 && razon5.checked) {
+                const otro = razon5.parentElement.querySelector('input[type="text"]').value;
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'tipoInvestigacionOtra';
+                hiddenInput.value = otro;
+                form.appendChild(hiddenInput);
+            }
+        });
+    });
+</script>
 </html>
