@@ -62,7 +62,7 @@ class Administrador(models.Model):
 class Encuesta(models.Model):
     folioEncuesta = models.BigAutoField(primary_key=True)
     fechaInicio = models.DateField()
-    fechaFin = models.DateField()
+    fechaFin = models.DateField(null=True, blank=True)
     curp = models.ForeignKey(Egresado, on_delete=models.CASCADE, to_field='curp')
     lapso = models.CharField(max_length=9)
 

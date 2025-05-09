@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: white;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            justify-content: center;
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color:  #2b5d8e;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 15px 15px 0 0;
+            width: 100%;
+        }
+
+        .header img {
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .header-text {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .form-section {
+            background-color: #2b5d8e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 20px 40px;
+            border-radius: 15px;
+        }
+
+        .form-content {
+            background-color: #e9e9e9;
+            margin: 20px 40px;
+            padding: 30px;
+            position: relative;
+            min-height: 300px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .logo-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            opacity: 0.2;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .thank-you {
+            text-align: center;
+            color: #f39c12;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            background-color: #2b5d8e;
+            padding: 15px;
+            margin: 20px 40px;
+            border-radius: 15px;
+            color: white;
+            align-items: center;
+        }
+
+        .actions span {
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .action-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            background-color: #2b5d8e;
+            padding: 15px;
+            margin: 20px 40px;
+            border-radius: 15px;
+        }
+
+        .button {
+            padding: 8px 25px;
+            background-color: #e0e0e0;
+            border: 1px solid #999;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <div class="section-title">RESPUESTAS PARA EL PERIODO XYZ RECIBIDAS</div>
+        </div>
+        
+        <div class="form-content">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+            <div class="thank-you">
+                Muchas gracias por tu respuesta
+            </div>
+        </div>
+        
+        <div class="actions">
+            <span>Descargar o imprimir acuse</span>
+            <div class="action-buttons">
+                <button class="action-button" onclick="descargarAcuse()">
+                    <a href="{% url 'acuse_pdf' %}" class="action-button">
+                        <img src="{% static 'img/boton-imprimir.png' %}" alt="Descargar" width="20" height="20">
+                    </a>
+                </button>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <a href="{% url 'index' %}" class="action-button">
+                Finalizar
+            </a>
+        </div>
+    </div>
+</body>
+</html>

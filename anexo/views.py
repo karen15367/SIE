@@ -3,9 +3,23 @@ from core.models import Egresado, Encuesta
 from django.shortcuts import render, redirect
 from core.models import AnexoS1, AnexoS2, AnexoS3, AnexoS4
 from django.contrib import messages
+from datetime import date
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from datetime import datetime
+from django.http import HttpResponse
+
 
 
 # Create your views here.
+def index(request):
+    return render(request, 'index.html')
+
+def calcular_lapso():
+    hoy = date.today()
+    año = hoy.year
+    semestre = 1 if hoy.month <= 6 else 2
+    return f"{año}-{semestre}"
 
 
 def a1(request):
@@ -20,7 +34,7 @@ def a1(request):
 
     try:
         if request.method == 'POST':
-            # Guardar en sesión datos de Anexo1
+            print("SE ENVÍO POST DESDE ANEXO1")
             request.session['anexo_s1'] = {
                 'nombre_completo': request.POST.get('nombre_completo'),
                 'redes_sociales': request.POST.get('redes_sociales'),
@@ -29,10 +43,24 @@ def a1(request):
                 'correo': request.POST.get('correo'),
                 'fecha_egreso': request.POST.get('fecha_egreso'),
             }
+
+            print("CURP en sesión:", curp)
+            egresado = Egresado.objects.filter(curp=curp).first()
+            print("Egresado encontrado:", egresado)
+            if egresado and not Encuesta.objects.filter(curp=egresado).exists():
+                print("Creando encuesta...")
+                Encuesta.objects.create(
+                    curp=egresado,
+                    fechaInicio=date.today(),
+                    lapso=calcular_lapso()
+                    # fechaFin queda pendiente
+                )
+            else:
+                print("No se creó la encuesta (ya existe o no hay egresado)")
             return redirect('anexo2')
-    except:
-        pass
-    
+    except Exception as e:
+        print("ERROR EN A1:", e)
+
     return render(request, 'Anexo1.html')
 
 
@@ -48,13 +76,20 @@ def a2(request):
     
     try:
         if request.method == 'POST':
-            # Recuperar datos guardados desde a1
-            datos_previos = request.session.get('anexo_s1', {})
+            titulado_raw = request.POST.get('titulado')
+            if titulado_raw is None:
+                messages.error(request, 'Por favor, selecciona si estás titulado.')
+                return render(request, 'Anexo2.html')
 
-            # Capturar nuevos datos desde el formulario de Anexo2
-            datos_previos['titulado'] = request.POST.get('titulado')
+            titulado = titulado_raw == '1'
+
+            datos_previos = request.session.get('anexo_s1', {})
+            datos_previos['titulado'] = titulado
             datos_previos['razon_no_titulo'] = request.POST.get('razonNoTitulo')
             datos_previos['razon_no_titulo_otra'] = request.POST.get('razonNoTituloOtra')
+
+            print("Datos recibidos:", request.POST)
+            print("TITULADO:", titulado)
 
             #obtener la conexion con la encuesta correspondiente
             encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
@@ -73,15 +108,13 @@ def a2(request):
                     razonNoTitulo=datos_previos.get('razon_no_titulo'),
                     razonNoTituloOtra=datos_previos.get('razon_no_titulo_otra')
                 )
-
                 # Limpiar datos de sesión
-                request.session.pop('anexo_s1', None)
-
+                request.session.pop('anexo_s1')
                 return redirect('anexo3')
             else:
                 return redirect('index')  # En caso de que no haya encuesta activa
-    except:
-        pass
+    except Exception as e:
+        print("ERROR EN A2:", e)
 
     return render(request, 'Anexo2.html')
 
@@ -105,9 +138,28 @@ def a3(request):
                 'razon_no_trabaja': request.POST.get('razonNoTrabaja'),
                 'razon_no_trabaja_otra': request.POST.get('razonNoTrabajaOtra', '')
             }
-            return redirect('anexo4')
-    except:
-        pass
+
+            trabaja = request.POST.get('trabaja')
+            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
+            datos_previos = request.session.get('anexo_s2', {})
+
+            if trabaja == '1':
+                return redirect('anexo4')
+            else:
+                # Crear el registro en la tabla AnexoS2
+                AnexoS2.objects.create(
+                    folioEncuesta=encuesta,
+                    trabaja=datos_previos.get('trabaja'),
+                    razonNoTrabaja=datos_previos.get('razon_no_trabaja'),
+                    razonNoTrabajaOtra=datos_previos.get('razon_no_trabaja_otra')
+                )
+                # Limpiar datos de sesión
+                request.session.pop('anexo_s2', None)
+                return redirect('anexo7')
+    except Exception as e:
+        print("Error:", e)
+
+
     
     return render(request, 'Anexo3.html')
 
@@ -140,8 +192,9 @@ def a4(request):
             request.session['anexo_s2'] = datos_previos
             
             return redirect('anexo5')
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo4.html')
 
 
@@ -180,8 +233,9 @@ def a5(request):
             request.session['anexo_s2'] = datos_previos
             
             return redirect('anexo6')
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo5.html')
 
 
@@ -239,8 +293,9 @@ def a6(request):
                 return redirect('anexo7')
             else:
                 return redirect('index')  # En caso de que no haya encuesta activa
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo6.html')
 
 
@@ -269,8 +324,9 @@ def a7(request):
                 request.session['anexo_s3']['educativo_otro'] = request.POST.get('educativoOtro', '')
                 
             return redirect('anexo8')
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo7.html')
 
 
@@ -322,8 +378,9 @@ def a8(request):
                 return redirect('anexo9')
             else:
                 return redirect('index')  # En caso de que no haya encuesta activa
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo8.html')
 
 
@@ -462,22 +519,20 @@ def a12(request):
     if request.method == 'POST':
         # Recuperar datos previos
         datos_previos = request.session.get('anexo_s4', {})
-        
+
         # Añadir nuevos datos
         datos_previos['asociacion'] = request.POST.get('asociacion')
         datos_previos['asociacion_especifique'] = ''
-        
-        # Verificar si seleccionó "Si" en asociacion y capturar el texto
+
         if request.POST.get('asociacion') == '1':
             datos_previos['asociacion_especifique'] = request.POST.get('asociacionEspecifique', '')
-            
+
         datos_previos['etica'] = request.POST.get('etica')
-        
-        # Obtener la conexión con la encuesta correspondiente
+
         encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
-        
+
         if encuesta:
-            # Crear el registro en la tabla AnexoS4
+            # Guardar datos del AnexoS4
             AnexoS4.objects.create(
                 folioEncuesta=encuesta,
                 herramientas=datos_previos.get('herramientas'),
@@ -502,17 +557,100 @@ def a12(request):
                 asociacionEspecifique=datos_previos.get('asociacion_especifique'),
                 etica=datos_previos.get('etica')
             )
-            
+
+            # ✅ Guardar fecha de finalización
+            encuesta.fechaFin = date.today()
+            encuesta.save()
+
             # Limpiar datos de sesión
             request.session.pop('anexo_s4', None)
-            
-            # Redireccionar a una página de agradecimiento o similar
-            # TODO: Crear vista de agradecimiento
-            return redirect('index')  # Por ahora, redirigimos al índice
+
+            # Redirigir a vista de agradecimiento
+            return redirect('encuesta_finalizada')
+
         else:
-            return redirect('index')  # En caso de que no haya encuesta activa
-    
+            return redirect('index')
+
     return render(request, 'Anexo12.html')
+
+def encuesta_finalizada(request):
+    curp = request.session.get('usuario_id')
+    if not curp:
+        return redirect('index')
+
+    # Obtener encuesta activa
+    egresado = Egresado.objects.filter(curp=curp).first()
+    encuesta = Encuesta.objects.filter(curp=egresado).order_by('-folioEncuesta').first()
+
+    if encuesta:
+        encuesta.fechaFin = date.today()
+        encuesta.save()
+
+    return render(request, 'encuestaFinalizada.html')
+
+def generar_acuse_pdf(request):
+    curp = request.session.get('usuario_id')
+    if not curp:
+        return redirect('index')
+
+    egresado = Egresado.objects.filter(curp=curp).first()
+    encuesta = Encuesta.objects.filter(curp=egresado).order_by('-folioEncuesta').first()
+
+    if not egresado or not encuesta:
+        return redirect('index')
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="acuse_encuesta.pdf"'
+
+    p = canvas.Canvas(response, pagesize=letter)
+    width, height = letter
+
+    # Logo (si tienes 'logo_itv.png' en static/img/)
+    try:
+        from django.conf import settings
+        import os
+        logo_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'itv.png')
+        if os.path.exists(logo_path):
+            p.drawImage(logo_path, 40, height - 100, width=100, preserveAspectRatio=True)
+    except:
+        pass
+
+    # Encabezado institucional
+    p.setFont("Helvetica-Bold", 14)
+    p.drawCentredString(width / 2, height - 50, "TECNOLÓGICO NACIONAL DE MÉXICO")
+    p.drawCentredString(width / 2, height - 70, "INSTITUTO TECNOLÓGICO DE VERACRUZ")
+
+    # Subtítulo
+    p.setFont("Helvetica-Bold", 12)
+    p.drawCentredString(width / 2, height - 120, "ACUSE DE RESPUESTA A ENCUESTA")
+
+    # Información principal
+    nombre = egresado.nombre
+    lapso = encuesta.lapso
+    fecha_final = encuesta.fechaFin.strftime('%d de %B de %Y') if encuesta.fechaFin else "pendiente"
+    hora = encuesta.fechaFin.strftime('%H:%M:%S') if encuesta.fechaFin else "pendiente"
+
+    p.setFont("Helvetica", 11)
+    mensaje = f"Por medio de la presente hago constar que el/la C. {nombre}"
+    p.drawString(72, height - 160, mensaje)
+    mensaje2 = f"respondió la encuesta correspondiente al periodo {lapso} el día {fecha_final} a las {hora}."
+    p.drawString(72, height - 180, mensaje2)
+
+    # Cadena digital
+    cadena = f"{curp}|{nombre}|{fecha_final}|{hora}"
+    p.setFont("Courier", 9)
+    p.drawString(72, height - 220, "Cadena digital:")
+    p.drawString(72, height - 235, cadena)
+
+    # Pie de página
+    p.setFont("Helvetica", 9)
+    p.drawString(72, 72, "Calz. Miguel Ángel de Quevedo 2779, Col. Formando Hogar. C.P. 91897, H. Veracruz, Ver.")
+    p.drawString(72, 60, "Tel. (229) 934 15 00 · https://www.veracruz.tecnm.mx")
+
+    p.showPage()
+    p.save()
+
+    return response
 
 # TODO agregar acuse y vista agradecimiento
 # def a1(request):

@@ -25,7 +25,7 @@
         </div>
 
         <form method="POST">
-        {% csrf_token %}
+            {% csrf_token %}
         <div class="form-content">
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
             
@@ -97,6 +97,7 @@
             <button class="button" type="button" onclick="window.location.href='{% url 'anexo3' %}'">Regresar</button>
             <button class="button" type="submit">Continuar</button>
         </div>
+        </form>
     </div>
 </body>
 <script>
