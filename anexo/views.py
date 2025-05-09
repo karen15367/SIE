@@ -76,13 +76,20 @@ def a2(request):
     
     try:
         if request.method == 'POST':
-            # Recuperar datos guardados desde a1
-            datos_previos = request.session.get('anexo_s1', {})
+            titulado_raw = request.POST.get('titulado')
+            if titulado_raw is None:
+                messages.error(request, 'Por favor, selecciona si estás titulado.')
+                return render(request, 'Anexo2.html')
 
-            # Capturar nuevos datos desde el formulario de Anexo2
-            datos_previos['titulado'] = request.POST.get('titulado')
+            titulado = titulado_raw == '1'
+
+            datos_previos = request.session.get('anexo_s1', {})
+            datos_previos['titulado'] = titulado
             datos_previos['razon_no_titulo'] = request.POST.get('razonNoTitulo')
             datos_previos['razon_no_titulo_otra'] = request.POST.get('razonNoTituloOtra')
+
+            print("Datos recibidos:", request.POST)
+            print("TITULADO:", titulado)
 
             #obtener la conexion con la encuesta correspondiente
             encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
@@ -106,8 +113,8 @@ def a2(request):
                 return redirect('anexo3')
             else:
                 return redirect('index')  # En caso de que no haya encuesta activa
-    except:
-        pass
+    except Exception as e:
+        print("ERROR EN A2:", e)
 
     return render(request, 'Anexo2.html')
 
@@ -132,16 +139,26 @@ def a3(request):
                 'razon_no_trabaja_otra': request.POST.get('razonNoTrabajaOtra', '')
             }
 
+            trabaja = request.POST.get('trabaja')
             encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
             datos_previos = request.session.get('anexo_s2', {})
 
-            print("CURP:", curp)
-            print("Encuesta encontrada:", encuesta)
-            print("Datos previos:", datos_previos)
+            if trabaja == '1':
+                return redirect('anexo4')
+            else:
+                # Crear el registro en la tabla AnexoS2
+                AnexoS2.objects.create(
+                    folioEncuesta=encuesta,
+                    trabaja=datos_previos.get('trabaja'),
+                    razonNoTrabaja=datos_previos.get('razon_no_trabaja'),
+                    razonNoTrabajaOtra=datos_previos.get('razon_no_trabaja_otra')
+                )
+                # Limpiar datos de sesión
+                request.session.pop('anexo_s2', None)
+                return redirect('anexo7')
+    except Exception as e:
+        print("Error:", e)
 
-            return redirect('anexo4')
-    except:
-        pass
 
     
     return render(request, 'Anexo3.html')
@@ -175,8 +192,9 @@ def a4(request):
             request.session['anexo_s2'] = datos_previos
             
             return redirect('anexo5')
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo4.html')
 
 
@@ -215,8 +233,9 @@ def a5(request):
             request.session['anexo_s2'] = datos_previos
             
             return redirect('anexo6')
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo5.html')
 
 
@@ -274,8 +293,9 @@ def a6(request):
                 return redirect('anexo7')
             else:
                 return redirect('index')  # En caso de que no haya encuesta activa
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo6.html')
 
 
@@ -304,8 +324,9 @@ def a7(request):
                 request.session['anexo_s3']['educativo_otro'] = request.POST.get('educativoOtro', '')
                 
             return redirect('anexo8')
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo7.html')
 
 
@@ -357,8 +378,9 @@ def a8(request):
                 return redirect('anexo9')
             else:
                 return redirect('index')  # En caso de que no haya encuesta activa
-    except:
-        pass
+    except Exception as e:
+        print("Error:", e)
+
     return render(request, 'Anexo8.html')
 
 
