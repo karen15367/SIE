@@ -1,108 +1,222 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Encuesta 6 - Sistema Institucional de Encuestas</title>
-  <link rel="stylesheet" href="styles/encuesta6.css" /> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+  <link rel="stylesheet" href="{% static '/styles/encuesta1.css' %}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
 </head>
+
 <body>
-
   <div class="container">
-
-    <!-- Encabezado -->
     <div class="header">
-      <img src="img/logo-sep.png" alt="Logo SEP">
+      <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
       <div class="header-text">
         <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
         <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
       </div>
     </div>
 
-    <!-- Sección Título -->
     <div class="form-section">
-      <div class="section-title">III. UBICACIÓN LABORAL DE LOS EGRESADOS</div>
-      <div class="section-subtitle">Indique a cuál de los siguientes puntos corresponde su situación actual</div>
+      <div class="section-title">III. UBICACIÓN LABORAL DE LOS EGRESADOS </div>
+      <div class="section-subtitle">Indique a cuál de los siguientes puntos indica su situación actual</div>
     </div>
 
-    <!-- Contenido del Formulario -->
     <div class="form-content">
-      <form>
-        
-        <!-- III.7 Antigüedad en el empleo -->
-        <div class="form-group">
-          <label class="form-label">III.7 Antigüedad en el empleo:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="antiguedad"> Menos de un año</label>
-            <label class="radio-option"><input type="radio" name="antiguedad"> Un año</label>
-            <label class="radio-option"><input type="radio" name="antiguedad"> Dos años</label>
-            <label class="radio-option"><input type="radio" name="antiguedad"> Tres años</label>
-            <label class="radio-option"><input type="radio" name="antiguedad"> Más de tres años</label>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Año de ingreso:</label>
-            <input type="text" name="añoIngreso" class="form-input line-input">
+      <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+      <form action="/encuesta/encuesta5/" method="post" id="ubicacion">
+        {% csrf_token %}
+
+        <div class="question-group">
+          <div class="question">III.7 Antigüedad en el empleo:</div>
+        </div>
+
+        <div class="options-group" style="width: 100%;">
+          <div class="radio-row">
+            <span class="radio-option">
+              <input type="radio" name="empleo" value="1" id="t1" required />
+              <label for="t1">Menos de un año</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="empleo" value="2" id="t2" />
+              <label for="t2">Un año</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="empleo" value="3" id="t3" />
+              <label for="t3">Dos años</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="empleo" value="4" id="t4" />
+              <label for="t4">Tres años</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="empleo" value="3" id="t5" />
+              <label for="t5"> Más de tres años </label>
+            </span>
           </div>
         </div>
 
-        <!-- III.8 Ingreso (salario mínimo diario) -->
-        <div class="form-group">
-          <label class="form-label">III.8 Ingreso (salario mínimo diario):</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="ingreso"> Menos de cinco</label>
-            <label class="radio-option"><input type="radio" name="ingreso"> Entre cinco y siete</label>
-            <label class="radio-option"><input type="radio" name="ingreso"> Entre ocho y diez</label>
-            <label class="radio-option"><input type="radio" name="ingreso"> Más de diez</label>
+        <div class="options-group" style="width: 100%; margin-top: 20px;">
+          <div class="radio-row">
+            <span class="radio-option">
+              <label>Año de ingreso:</label>
+              <input name="año" type="text" class="line-input" style="width: 50px;" required>
+            </span>
+
           </div>
         </div>
 
-        <!-- III.9 Nivel jerárquico en el trabajo -->
-        <div class="form-group">
-          <label class="form-label">III.9 Nivel jerárquico en el trabajo:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="nivel"> Técnico</label>
-            <label class="radio-option"><input type="radio" name="nivel"> Supervisor</label>
-            <label class="radio-option"><input type="radio" name="nivel"> Jefe de área</label>
-            <label class="radio-option"><input type="radio" name="nivel"> Funcionario</label>
-            <label class="radio-option"><input type="radio" name="nivel"> Directivo</label>
-            <label class="radio-option"><input type="radio" name="nivel"> Empresario</label>
+        <div class="question-group" style="margin-top: 20px;">
+          <div class="question">III.8 Ingreso (salario mínimo diario):</div>
+        </div>
+
+        <div class="options-group" style="width: 100%;">
+          <div class="radio-row">
+            <span class="radio-option">
+              <input type="radio" name="salario" value="1" id="s1" required />
+              <label for="s1">Menos de cinco</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="salario" value="2" id="s2" />
+              <label for="s2">Entre cinco y siete</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="salario" value="3" id="s3" />
+              <label for="s3">Entre ocho y diez</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="salario" value="3" id="razon3" />
+              <label for="razon3">Más de diez</label>
+            </span>
           </div>
         </div>
 
-        <!-- III.10 Condición de trabajo -->
-        <div class="form-group">
-          <label class="form-label">III.10 Condición de trabajo:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="condicion"> Base</label>
-            <label class="radio-option"><input type="radio" name="condicion"> Eventual</label>
-            <label class="radio-option"><input type="radio" name="condicion"> Contrato</label>
-            <label class="radio-option">Otros: <input type="text" name="otrosCondicion" class="form-input line-input"></label>
+        <div class="question-group" style="margin-top: 20px;">
+          <div class="question">III.9 Nivel jerárquico en el trabajo:</div>
+        </div>
+
+        <div class="options-group" style="width: 100%;">
+          <div class="radio-row">
+            <span class="radio-option">
+              <input type="radio" name="nivel" value="1" id="n1" required />
+              <label for="n1">Técnico</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="nivel" value="2" id="n2" />
+              <label for="n2">Supervisor</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="nivel" value="3" id="n3" />
+              <label for="n3"> Jefe de área </label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="nivel" value="3" id="razon3" />
+              <label for="n3">Funcionario</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="nivel" value="4" id="n4" />
+              <label for="n4">Directivo</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="nivel" value="5" id="n5" />
+              <label for="n5">Empresario</label>
+            </span>
           </div>
         </div>
 
-        <!-- III.11 Relación del trabajo con su área de formación -->
-        <div class="form-group">
-          <label class="form-label">III.11 Relación del trabajo con su área de formación:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="relacion"> 0%</label>
-            <label class="radio-option"><input type="radio" name="relacion"> 20%</label>
-            <label class="radio-option"><input type="radio" name="relacion"> 40%</label>
-            <label class="radio-option"><input type="radio" name="relacion"> 60%</label>
-            <label class="radio-option"><input type="radio" name="relacion"> 80%</label>
-            <label class="radio-option"><input type="radio" name="relacion"> 100%</label>
+        <div class="question-group" style="margin-top: 20px;">
+          <div class="question">III.10 Condición de trabajo:</div>
+        </div>
+
+        <div class="options-group" style="width: 100%;">
+          <div class="radio-row">
+            <span class="radio-option">
+              <input type="radio" name="condicion" value="1" id="c1" required />
+              <label for="c1">Base</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="condicion" value="2" id="c2" />
+              <label for="c2">Eventual</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="condicion" value="3" id="c3" />
+              <label for="c3"> Contrato </label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="condicion" value="4" id="c4" />
+              <label for="c4">Otro:</label>
+              <input name="otroCondicion" type="text" class="line-input">
+            </span>
           </div>
         </div>
 
-        <!-- Botones -->
-        <div class="buttons">
-          <button type="button" class="button">Regresar</button>
-          <button type="submit" class="button">Continuar</button>
+        <div class="question-group" style="margin-top: 20px;">
+          <div class="question">III.11 Relación del trabajo con su área de formación:</div>
+        </div>
+
+        <div class="options-group" style="width: 100%;">
+          <div class="radio-row">
+            <span class="radio-option">
+              <input type="radio" name="relacion" value="1" id="razon1" required />
+              <label for="re1">0%</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="relacion" value="2" id="re2" />
+              <label for="re2">20%</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="relacion" value="3" id="re3" />
+              <label for="razon3"> 40% </label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="relacion" value="4" id="re4" />
+              <label for="re4">60%</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="relacion" value="5" id="re5" />
+              <label for="re5">80%</label>
+            </span>
+
+            <span class="radio-option">
+              <input type="radio" name="relacion" value="6" id="re6" />
+              <label for="re6">100%</label>
+            </span>
+          </div>
         </div>
 
       </form>
     </div>
-
+    <div class="buttons">
+      <button class="button">Regresar</button>
+      <button class="button" type="submit" form="ubicacion">Continuar</button>
+    </div>
   </div>
-
 </body>
+
 </html>

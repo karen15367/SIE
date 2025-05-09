@@ -31,139 +31,91 @@
     <div class="form-content">
       <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-      <form action="/encuesta/encuesta5/" method="post" id="ubicacion">
+      <form action="/encuesta/encuesta4/" method="post" id="medios">
         {% csrf_token %}
 
         <div class="question-group">
-          <div class="question">III.7 Antigüedad en el empleo:</div>
+          <div class="question">III.3 Medio para obtener el empleo:</div>
         </div>
 
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
               <input type="radio" name="empleo" value="1" id="razon1" required />
-              <label for="razon1">Menos de un año</label>
+              <label for="razon1">Bolsa de trabajo del plantel</label>
             </span>
 
             <span class="radio-option">
               <input type="radio" name="empleo" value="2" id="razon2" />
-              <label for="razon2">Un año</label>
+              <label for="razon2">Contactos personales</label>
             </span>
 
             <span class="radio-option">
               <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">Dos años</label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">Tres años</label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3"> Más de tres años </label>
+              <label for="razon3">Residencia profesional</label>
             </span>
           </div>
-        </div>
-
-        <div class="options-group" style="width: 100%; margin-top: 20px;">
-          <div class="radio-row">
-            <span class="radio-option">
-              <label>Año de ingreso:</label>
-              <input name="año" type="text" class="line-input" style="width: 50px;" required>
-            </span>
-
-          </div>
-        </div>
-
-        <div class="question-group" style="margin-top: 20px;">
-          <div class="question">III.8 Ingreso (salario mínimo diario):</div>
         </div>
 
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="empleo" value="1" id="razon1" required />
-              <label for="razon1">Menos de cinco</label>
+              <input type="radio" name="empleo" value="4" id="razon4" />
+              <label for="razon4">Medios masivos de comunicación </label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="2" id="razon2" />
-              <label for="razon2">Entre cinco y siete</label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">Entre ocho y diez</label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">Más de diez</label>
+              <input type="radio" name="empleo" value="5" id="razon5" />
+              <label for="razon5">Otro:</label>
+              <input name="otroEmpleo" type="text" class="line-input">
             </span>
           </div>
         </div>
 
-        <div class="question-group" style="margin-top: 20px;">
-          <div class="question">III.9 Nivel jerárquico en el trabajo:</div>
+        <div class="question-group">
+          <div class="question">III.4 Requisitos de contratación:</div>
         </div>
 
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="empleo" value="1" id="razon1" required />
-              <label for="razon1">Técnico</label>
+              <input type="radio" name="requisito" value="1" id="r1" required />
+              <label for="r1">Competencias laborales</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="2" id="razon2" />
-              <label for="razon2">Supervisor</label>
+              <input type="radio" name="requisito" value="2" id="r2" />
+              <label for="r2">Titulo profesional</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3"> Jefe de área </label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">Funcionario</label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">Directivo</label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">Empresario</label>
+              <input type="radio" name="requisito" value="3" id="r3" />
+              <label for="r3">Examen de selección</label>
             </span>
           </div>
-        </div>
-
-        <div class="question-group" style="margin-top: 20px;">
-          <div class="question">III.10 Condición de trabajo:</div>
         </div>
 
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="empleo" value="1" id="razon1" required />
-              <label for="razon1">Base</label>
+              <input type="radio" name="requisito" value="4" id="r4" />
+              <label for="r4">Idioma extranjero </label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="2" id="razon2" />
-              <label for="razon2">Eventual</label>
+              <input type="radio" name="requisito" value="5" id="r5" />
+              <label for="r5">Actitudes y habilidades socio-comunicativas </label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3"> Contrato </label>
+              <input type="radio" name="requisito" value="6" id="r6" />
+              <label for="r6">Ninguno </label>
             </span>
+          </div>
+        </div>
 
+        <div class="options-group" style="width: 100%;">
+          <div class="radio-row">
             <span class="radio-option">
               <input type="radio" name="requisito" value="7" id="r7" />
               <label for="r7">Otro:</label>
@@ -172,49 +124,86 @@
           </div>
         </div>
 
-        <div class="question-group" style="margin-top: 20px;">
-          <div class="question">III.11 Relación del trabajo con su área de formación:</div>
+        <div class="question-group">
+          <div class="question">III.5 Idioma que utiliza en su trabajo:</div>
         </div>
 
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="empleo" value="1" id="razon1" required />
-              <label for="razon1">0%</label>
+              <input type="radio" name="idioma" value="1" id="i1" required />
+              <label for="i1">Inglés</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="2" id="razon2" />
-              <label for="razon2">20%</label>
+              <input type="radio" name="idioma" value="2" id="i2" />
+              <label for="i2">Frances</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3"> 40% </label>
+              <input type="radio" name="idioma" value="3" id="i3" />
+              <label for="i3">Alemán</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">60%</label>
+              <input type="radio" name="idioma" value="4" id="i4" />
+              <label for="i4">Japones</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">80%</label>
+              <input type="radio" name="idioma" value="5" id="i5" />
+              <label for="i5">Otro:</label>
+              <input name="otroIdioma" type="text" class="line-input">
             </span>
 
-            <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="razon3" />
-              <label for="razon3">100%</label>
-            </span>
           </div>
         </div>
+
+        <div class="question-group">
+          <div class="question">III.6 Proporción del uso del idioma extranjero:</div>
+        </div>
+
+        <div class="options-group" style="width: 100%;">
+          <div class="radio-row">
+            <!--* poner los porcentajes-->
+            <div class="radio-row">
+              <span class="radio-option">
+                <label>Hablar:</label>
+                <input name="habla" type="text" class="line-input" style="width: 50px;" required>
+              </span>
+            </div>
+
+            <div class="radio-row">
+              <span class="radio-option">
+                <label>Escribir:</label>
+                <input name="escribe" type="text" class="line-input" style="width: 50px;" required>
+              </span>
+            </div>
+
+            <div class="radio-row">
+              <span class="radio-option">
+                <label>Leer:</label>
+                <input name="lee" type="text" class="line-input" style="width: 50px;" required>
+              </span>
+            </div>
+
+            <div class="radio-row">
+              <span class="radio-option">
+                <label>Escuchar:</label>
+                <input name="oye" type="text" class="line-input" style="width: 50px;" required>
+              </span>
+            </div>
+
+
+          </div>
+        </div>
+
 
       </form>
     </div>
     <div class="buttons">
       <button class="button">Regresar</button>
-      <button class="button" type="submit" form="ubicacion">Continuar</button>
+      <button class="button" type="submit" form="medios">Continuar</button>
     </div>
   </div>
 </body>

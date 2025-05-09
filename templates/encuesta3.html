@@ -7,8 +7,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
-  <link rel="stylesheet" href="{% static '/styles/encuesta1.css' %}">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
 </head>
@@ -24,121 +22,137 @@
     </div>
 
     <div class="form-section">
-      <div class="section-title">III. UBICACIÓN LABORAL DE LOS EGRESADOS </div>
-      <div class="section-subtitle">Indique a cuál de los siguientes puntos indica su situación actual</div>
+      <div class="section-title">II. PERTINENCIA Y DISPONIBILIDAD DE MEDIOS Y RECURSOS PARA EL APRENDIZAJE</div>
+      <div class="section-subtitle">Califique la calidad de los siguientes aspectos proporcionados por la institución
+      </div>
     </div>
 
     <div class="form-content">
       <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-      <form action="/encuesta/encuesta3/" method="post" id="ubicacion">
+      <form action="/encuesta/encuesta2/" method="post" id="aprendizaje">
         {% csrf_token %}
 
-        <div class="question-group">
-          <div class="question">III.1 Actividad a la que se dedica actualmente</div>
-        </div>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.1 Calidad de docentes
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
-        <div class="options-group">
-          <div class="radio-row">
-            <span class="radio-option">
-              <input type="radio" name="actividad" value="1" id="razon1" required/>
-              <label for="razon1">Trabaja</label>
-            </span>
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="0" required> Excelente</label>
 
-            <span class="radio-option">
-              <input type="radio" name="actividad" value="2" id="razon2" />
-              <label for="razon2">Estudia</label>
-            </span>
-
-            <span class="radio-option">
-              <input type="radio" name="actividad" value="3" id="razon3" />
-              <label for="razon3">Trabaja y estudia</label>
-            </span>
-            <span class="radio-option">
-              <input type="radio" name="actividad" value="4" id="razon3" />
-              <label for="razon3">No estudia ni trabaja</label>
-            </span>
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="1"> Bueno</label>
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="2"> Regular</label>
+            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="formacion" value="3"> Malo</label>
           </div>
         </div>
 
-        <div class="question-group" style="margin-top: 20px;">
-          <div>Encaso de estudiar, Indique:</div>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.2 Plan de estudios
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="docentes" value="3"> Malo</label>
+          </div>
         </div>
-        <div class="options-group">
-          <div class="radio-row">
-            <span class="radio-option">
-              <input type="radio" name="estudio" value="compromiso" id="razon1" />
-              <label for="razon1">Especialidad</label>
-            </span>
 
-            <span class="radio-option">
-              <input type="radio" name="estudio" value="1" id="razon2" />
-              <label for="razon2">Maestría</label>
-            </span>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.3 Oportunidades de participar en proyectos de investigación y desarrollo
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
-            <span class="radio-option">
-              <input type="radio" name="estudio" value="2" id="razon3" />
-              <label for="razon3">Doctorado</label>
-            </span>
-            <span class="radio-option">
-              <input type="radio" name="estudio" value="3" id="razon3" />
-              <label for="razon3">Idiomas</label>
-            </span>
-            <div class="radio-row">
-              <span class="radio-option">
-                <input type="radio" name="estudio" value="4" id="razon4" />
-                <label for="razon4">Otro:</label>
-                <input name="otroEstudio" type="text" class="line-input">
-              </span>
-            </div>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="estudios" value="3"> Malo</label>
           </div>
-          <div class="form-group">
-            <label>Institución:</label>
-            <div class="form-input">
-              <input name="instituto" type="text" class="line-input" style="text-align: center;" required>
-            </div>
+        </div>
+
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.4 Énfasis que se le prestaba a la investigación dentro del proceso de enseñanza
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="investigacion" value="3"> Malo</label>
           </div>
+        </div>
 
-          <div class="question-group">
-            <div class="question" style="width: 100%;">III.2 En caso de trabajar: Tiempo Transcurrido para obtener el primer empleo</div>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.5 Satisfacción con las condiciones de estudio
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="0" required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="condiciones" value="3"> Malo</label>
           </div>
+        </div>
 
-          <div class="options-group">
-            <div class="radio-row">
-              <span class="radio-option" style="width: 30%;">
-                <input type="radio" name="tiempo" value="1" id="razon1" />
-                <label for="razon1">Antes de egresar:</label>
-              </span>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.6 Experiencia obtenida a través de la residencia profesional
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
-              <span class="radio-option">
-                <input type="radio" name="tiempo" value="2" id="razon2" />
-                <label for="razon2">Menos de seis meses</label>
-              </span>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="0" required> Excelente</label>
 
-            </div>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="1"> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="2"> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experiencia" value="3"> Malo</label>
           </div>
-          
-          <div class="options-group">
-            <div class="radio-row">
-              <span class="radio-option" style="width: 30%;">
-                <input type="radio" name="tiempo" value="3" id="razon3" />
-                <label for="razon3">Entre seis meses y un año</label>
-              </span>
-              <span class="radio-option">
-                <input type="radio" name="tiempo" value="4" id="razon3" />
-                <label for="razon3"> Más de un año</label>
-              </span>
-            </div>
+        </div>
 
-
-          </div>
       </form>
     </div>
-  </div>
-  <div class="buttons">
-    <button class="button">Regresar</button>
-    <button class="button" type="submit" form="ubicacion">Continuar</button>
-  </div>
+    <div class="buttons">
+      <button class="button">Regresar</button>
+      <button class="button" type="submit" form="aprendizaje">Continuar</button>
+    </div>
 </body>
 
 </html>

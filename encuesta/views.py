@@ -28,10 +28,8 @@ def e4(request):
 
 
 def e5(request):
-    return render(request, "encuesta5.html")
-
-
-def e5(request):
+    if request.method == "POST":
+        print(request.POST)
     return render(request, "encuesta5.html")
 
 

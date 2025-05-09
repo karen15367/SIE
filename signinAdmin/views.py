@@ -11,13 +11,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import redirect
 from django.conf import settings
-from datetime import datetime
 from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.utils.dateparse import parse_date
 from django.urls import reverse
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
 from datetime import timedelta
@@ -25,7 +23,7 @@ from datetime import timedelta
 
 
 # * Create your views here. comentar esto al migrar la base de datos
-AdministradorTemporal.objects.filter(fecha_creacion__lt=now() - timedelta(hours=1)).delete()
+#AdministradorTemporal.objects.filter(fecha_creacion__lt=now() - timedelta(hours=1)).delete()
 
 def vistaSignUpAdmin(request):
     return render(request, "vistaSignUpAdmin.html")
