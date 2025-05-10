@@ -1,19 +1,19 @@
+import os
 from django.shortcuts import render, redirect
 from core.models import Egresado, Encuesta
 from django.shortcuts import render, redirect
 from core.models import AnexoS1, AnexoS2, AnexoS3, AnexoS4
 from django.contrib import messages
 from datetime import date
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
 from datetime import datetime
 from django.http import HttpResponse
-
+from . import acuse
 
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
+
 
 def calcular_lapso():
     hoy = date.today()
@@ -73,26 +73,30 @@ def a2(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     try:
         if request.method == 'POST':
             titulado_raw = request.POST.get('titulado')
             if titulado_raw is None:
-                messages.error(request, 'Por favor, selecciona si estás titulado.')
+                messages.error(
+                    request, 'Por favor, selecciona si estás titulado.')
                 return render(request, 'Anexo2.html')
 
             titulado = titulado_raw == '1'
 
             datos_previos = request.session.get('anexo_s1', {})
             datos_previos['titulado'] = titulado
-            datos_previos['razon_no_titulo'] = request.POST.get('razonNoTitulo')
-            datos_previos['razon_no_titulo_otra'] = request.POST.get('razonNoTituloOtra')
+            datos_previos['razon_no_titulo'] = request.POST.get(
+                'razonNoTitulo')
+            datos_previos['razon_no_titulo_otra'] = request.POST.get(
+                'razonNoTituloOtra')
 
             print("Datos recibidos:", request.POST)
             print("TITULADO:", titulado)
 
-            #obtener la conexion con la encuesta correspondiente
-            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
+            # obtener la conexion con la encuesta correspondiente
+            encuesta = Encuesta.objects.filter(
+                curp=curp).order_by('-folioEncuesta').first()
 
             if encuesta:
                 # Crear el registro en la tabla AnexoS1
@@ -112,12 +116,12 @@ def a2(request):
                 request.session.pop('anexo_s1')
                 return redirect('anexo3')
             else:
-                return redirect('index')  # En caso de que no haya encuesta activa
+                # En caso de que no haya encuesta activa
+                return redirect('index')
     except Exception as e:
         print("ERROR EN A2:", e)
 
     return render(request, 'Anexo2.html')
-
 
 
 def a3(request):
@@ -129,7 +133,7 @@ def a3(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     try:
         if request.method == 'POST':
             # Iniciar recopilación de datos para AnexoS2
@@ -140,7 +144,8 @@ def a3(request):
             }
 
             trabaja = request.POST.get('trabaja')
-            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
+            encuesta = Encuesta.objects.filter(
+                curp=curp).order_by('-folioEncuesta').first()
             datos_previos = request.session.get('anexo_s2', {})
 
             if trabaja == '1':
@@ -151,7 +156,8 @@ def a3(request):
                     folioEncuesta=encuesta,
                     trabaja=datos_previos.get('trabaja'),
                     razonNoTrabaja=datos_previos.get('razon_no_trabaja'),
-                    razonNoTrabajaOtra=datos_previos.get('razon_no_trabaja_otra')
+                    razonNoTrabajaOtra=datos_previos.get(
+                        'razon_no_trabaja_otra')
                 )
                 # Limpiar datos de sesión
                 request.session.pop('anexo_s2', None)
@@ -159,8 +165,6 @@ def a3(request):
     except Exception as e:
         print("Error:", e)
 
-
-    
     return render(request, 'Anexo3.html')
 
 
@@ -173,24 +177,27 @@ def a4(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     try:
         if request.method == 'POST':
             # Recuperar datos previos
             datos_previos = request.session.get('anexo_s2', {})
-            
+
             # Añadir nuevos datos
-            datos_previos['relacion_trabajo_carrera'] = request.POST.get('trabaja')  # Nota: mismo nombre en el HTML
+            datos_previos['relacion_trabajo_carrera'] = request.POST.get(
+                'trabaja')  # Nota: mismo nombre en el HTML
             datos_previos['antiguedad'] = request.POST.get('antiguedad')
-            datos_previos['tiempo_trabajo_relacionado'] = request.POST.get('tiempoTrabajoRelacionado')
-            
+            datos_previos['tiempo_trabajo_relacionado'] = request.POST.get(
+                'tiempoTrabajoRelacionado')
+
             # Verificar si seleccionó "Aún no lo consigo" y capturar el motivo
             if request.POST.get('tiempoTrabajoRelacionado') == '4':
-                datos_previos['razon_no_conseguir_trabajo'] = request.POST.get('razonNoConseguirTrabajo', '')
-                
+                datos_previos['razon_no_conseguir_trabajo'] = request.POST.get(
+                    'razonNoConseguirTrabajo', '')
+
             # Actualizar sesión
             request.session['anexo_s2'] = datos_previos
-            
+
             return redirect('anexo5')
     except Exception as e:
         print("Error:", e)
@@ -207,31 +214,32 @@ def a5(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     try:
         if request.method == 'POST':
             # Recuperar datos previos
             datos_previos = request.session.get('anexo_s2', {})
-            
+
             # Añadir nuevos datos
             datos_previos['sector'] = request.POST.get('sector')
             # Verificar si seleccionó "Otro" sector y capturar el texto
             if request.POST.get('sector') == '4':
-                datos_previos['sector_otro'] = request.POST.get('sectorOtro', '')
-            
+                datos_previos['sector_otro'] = request.POST.get(
+                    'sectorOtro', '')
+
             datos_previos['rol'] = request.POST.get('rol')
             # Verificar si seleccionó "Otras" en rol y capturar el texto
             if request.POST.get('rol') == '7':
                 datos_previos['rol_otro'] = request.POST.get('rolOtro', '')
-                
+
             datos_previos['area'] = request.POST.get('area')
             # Verificar si seleccionó "Otras" en área y capturar el texto
             if request.POST.get('area') == '7':
                 datos_previos['area_otra'] = request.POST.get('areaOtra', '')
-                
+
             # Actualizar sesión
             request.session['anexo_s2'] = datos_previos
-            
+
             return redirect('anexo6')
     except Exception as e:
         print("Error:", e)
@@ -248,34 +256,40 @@ def a6(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     try:
         if request.method == 'POST':
             # Recuperar datos previos
             datos_previos = request.session.get('anexo_s2', {})
-            
+
             # Añadir nuevos datos
             datos_previos['medio_trabajo'] = request.POST.get('medioTrabajo')
             # Verificar si seleccionó "Otras" en medio_trabajo y capturar el texto
             if request.POST.get('medioTrabajo') == '5':
-                datos_previos['medio_trabajo_otro'] = request.POST.get('medioTrabajoOtro', '')
-                
+                datos_previos['medio_trabajo_otro'] = request.POST.get(
+                    'medioTrabajoOtro', '')
+
             datos_previos['satisfaccion'] = request.POST.get('satisfaccion')
-            
+
             # Obtener la conexión con la encuesta correspondiente
-            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
-            
+            encuesta = Encuesta.objects.filter(
+                curp=curp).order_by('-folioEncuesta').first()
+
             if encuesta:
                 # Crear el registro en la tabla AnexoS2
                 AnexoS2.objects.create(
                     folioEncuesta=encuesta,
                     trabaja=datos_previos.get('trabaja'),
                     razonNoTrabaja=datos_previos.get('razon_no_trabaja'),
-                    razonNoTrabajaOtra=datos_previos.get('razon_no_trabaja_otra'),
-                    relacionTrabajoCarrera=datos_previos.get('relacion_trabajo_carrera'),
+                    razonNoTrabajaOtra=datos_previos.get(
+                        'razon_no_trabaja_otra'),
+                    relacionTrabajoCarrera=datos_previos.get(
+                        'relacion_trabajo_carrera'),
                     antiguedad=datos_previos.get('antiguedad'),
-                    tiempoTrabajoRelacionado=datos_previos.get('tiempo_trabajo_relacionado'),
-                    razonNoConseguirTrabajo=datos_previos.get('razon_no_conseguir_trabajo'),
+                    tiempoTrabajoRelacionado=datos_previos.get(
+                        'tiempo_trabajo_relacionado'),
+                    razonNoConseguirTrabajo=datos_previos.get(
+                        'razon_no_conseguir_trabajo'),
                     sector=datos_previos.get('sector'),
                     sectorOtro=datos_previos.get('sector_otro'),
                     rol=datos_previos.get('rol'),
@@ -286,13 +300,14 @@ def a6(request):
                     medioTrabajoOtro=datos_previos.get('medio_trabajo_otro'),
                     satisfaccion=datos_previos.get('satisfaccion')
                 )
-                
+
                 # Limpiar datos de sesión
                 request.session.pop('anexo_s2', None)
-                
+
                 return redirect('anexo7')
             else:
-                return redirect('index')  # En caso de que no haya encuesta activa
+                # En caso de que no haya encuesta activa
+                return redirect('index')
     except Exception as e:
         print("Error:", e)
 
@@ -308,7 +323,7 @@ def a7(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     try:
         if request.method == 'POST':
             # Iniciar recopilación de datos para AnexoS3
@@ -318,11 +333,12 @@ def a7(request):
                 'educativo': request.POST.get('educativo'),
                 'educativo_otro': ''
             }
-            
+
             # Verificar si seleccionó "Otras" y capturar el texto
             if request.POST.get('educativo') == '5':
-                request.session['anexo_s3']['educativo_otro'] = request.POST.get('educativoOtro', '')
-                
+                request.session['anexo_s3']['educativo_otro'] = request.POST.get(
+                    'educativoOtro', '')
+
             return redirect('anexo8')
     except Exception as e:
         print("Error:", e)
@@ -339,25 +355,28 @@ def a8(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     try:
         if request.method == 'POST':
             # Recuperar datos previos
             datos_previos = request.session.get('anexo_s3', {})
-            
+
             # Añadir nuevos datos
             datos_previos['contacto'] = request.POST.get('contacto')
             datos_previos['participar'] = request.POST.get('participar')
             datos_previos['aporte'] = request.POST.get('aporte')
             datos_previos['aporte_otro'] = ''
-            
+
             # Verificar si seleccionó "Otras" y capturar el texto
-            if request.POST.get('aporte') == '4' or request.POST.get('aporte') == '7':  # Parece haber un error en los IDs
-                datos_previos['aporte_otro'] = request.POST.get('aporteOtro', '')
-            
+            # Parece haber un error en los IDs
+            if request.POST.get('aporte') == '4' or request.POST.get('aporte') == '7':
+                datos_previos['aporte_otro'] = request.POST.get(
+                    'aporteOtro', '')
+
             # Obtener la conexión con la encuesta correspondiente
-            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
-            
+            encuesta = Encuesta.objects.filter(
+                curp=curp).order_by('-folioEncuesta').first()
+
             if encuesta:
                 # Crear el registro en la tabla AnexoS3
                 AnexoS3.objects.create(
@@ -371,13 +390,14 @@ def a8(request):
                     aporte=datos_previos.get('aporte'),
                     aporteOtro=datos_previos.get('aporte_otro')
                 )
-                
+
                 # Limpiar datos de sesión
                 request.session.pop('anexo_s3', None)
-                
+
                 return redirect('anexo9')
             else:
-                return redirect('index')  # En caso de que no haya encuesta activa
+                # En caso de que no haya encuesta activa
+                return redirect('index')
     except Exception as e:
         print("Error:", e)
 
@@ -393,7 +413,7 @@ def a9(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     if request.method == 'POST':
         # Iniciar recopilación de datos para AnexoS4
         request.session['anexo_s4'] = {
@@ -403,17 +423,19 @@ def a9(request):
             'tipo_investigacion': request.POST.get('tipoInvestigacion'),
             'tipo_investigacion_otra': ''
         }
-        
+
         # Verificar si seleccionó "Otras" en herramientas y capturar el texto
         if request.POST.get('herramientas') == '5':
-            request.session['anexo_s4']['herramientas_otra'] = request.POST.get('herramientasOtra', '')
-            
+            request.session['anexo_s4']['herramientas_otra'] = request.POST.get(
+                'herramientasOtra', '')
+
         # Verificar si seleccionó "Otras" en tipo_investigacion y capturar el texto
         if request.POST.get('tipoInvestigacion') == '5':
-            request.session['anexo_s4']['tipo_investigacion_otra'] = request.POST.get('tipoInvestigacionOtra', '')
-            
+            request.session['anexo_s4']['tipo_investigacion_otra'] = request.POST.get(
+                'tipoInvestigacionOtra', '')
+
         return redirect('anexo10')
-    
+
     return render(request, 'Anexo9.html')
 
 
@@ -426,39 +448,42 @@ def a10(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     if request.method == 'POST':
         # Recuperar datos previos
         datos_previos = request.session.get('anexo_s4', {})
-        
+
         # Añadir nuevos datos
-        datos_previos['participa_redes'] = request.POST.get('trabaja')  # Parece haber un error en el nombre del campo
+        datos_previos['participa_redes'] = request.POST.get(
+            'trabaja')  # Parece haber un error en el nombre del campo
         datos_previos['certificacion'] = request.POST.get('certificacion')
         datos_previos['certificacion_cuales'] = ''
-        
+
         # Verificar si seleccionó "Si" en certificacion y capturar el texto
         if request.POST.get('certificacion') == '1':
-            datos_previos['certificacion_cuales'] = request.POST.get('certificacionCuales', '')
-            
+            datos_previos['certificacion_cuales'] = request.POST.get(
+                'certificacionCuales', '')
+
         datos_previos['servicios'] = request.POST.get('servicios')
         datos_previos['servicios_otro'] = ''
-        
+
         # Verificar si seleccionó "Otras" en servicios y capturar el texto
         if request.POST.get('servicios') == '5':
-            datos_previos['servicios_otro'] = request.POST.get('serviciosOtro', '')
-            
+            datos_previos['servicios_otro'] = request.POST.get(
+                'serviciosOtro', '')
+
         datos_previos['idiomas'] = request.POST.get('idiomas')
         datos_previos['idiomas_otro'] = ''
-        
+
         # Verificar si seleccionó "Otro" en idiomas y capturar el texto
         if request.POST.get('idiomas') == '5':
             datos_previos['idiomas_otro'] = request.POST.get('idiomasOtro', '')
-            
+
         # Actualizar sesión
         request.session['anexo_s4'] = datos_previos
-        
+
         return redirect('anexo11')
-    
+
     return render(request, 'Anexo10.html')
 
 
@@ -471,38 +496,40 @@ def a11(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     if request.method == 'POST':
         # Recuperar datos previos
         datos_previos = request.session.get('anexo_s4', {})
-        
+
         # Añadir nuevos datos
         datos_previos['publicacion'] = request.POST.get('publicacion')
         datos_previos['publicacion_especifique'] = ''
-        
+
         # Verificar si seleccionó "Si" en publicacion y capturar el texto
         if request.POST.get('publicacion') == '1':
-            datos_previos['publicacion_especifique'] = request.POST.get('publicacionEspecifique', '')
-            
+            datos_previos['publicacion_especifique'] = request.POST.get(
+                'publicacionEspecifique', '')
+
         datos_previos['documentos'] = request.POST.get('documentos')
         datos_previos['documentos_otro'] = ''
-        
+
         # Verificar si seleccionó "Otro" en documentos y capturar el texto
         if request.POST.get('documentos') == '4':
-            datos_previos['documentos_otro'] = request.POST.get('documentosOtro', '')
-            
+            datos_previos['documentos_otro'] = request.POST.get(
+                'documentosOtro', '')
+
         datos_previos['calidad'] = request.POST.get('calidad')
         datos_previos['calidad_otra'] = ''
-        
+
         # Verificar si seleccionó "Otras" en calidad y capturar el texto
         if request.POST.get('calidad') == '3':
             datos_previos['calidad_otra'] = request.POST.get('calidadOtra', '')
-            
+
         # Actualizar sesión
         request.session['anexo_s4'] = datos_previos
-        
+
         return redirect('anexo12')
-    
+
     return render(request, 'Anexo11.html')
 
 
@@ -515,7 +542,7 @@ def a12(request):
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
-    
+
     if request.method == 'POST':
         # Recuperar datos previos
         datos_previos = request.session.get('anexo_s4', {})
@@ -525,11 +552,13 @@ def a12(request):
         datos_previos['asociacion_especifique'] = ''
 
         if request.POST.get('asociacion') == '1':
-            datos_previos['asociacion_especifique'] = request.POST.get('asociacionEspecifique', '')
+            datos_previos['asociacion_especifique'] = request.POST.get(
+                'asociacionEspecifique', '')
 
         datos_previos['etica'] = request.POST.get('etica')
 
-        encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
+        encuesta = Encuesta.objects.filter(
+            curp=curp).order_by('-folioEncuesta').first()
 
         if encuesta:
             # Guardar datos del AnexoS4
@@ -539,7 +568,8 @@ def a12(request):
                 herramientasOtra=datos_previos.get('herramientas_otra'),
                 colabora=datos_previos.get('colabora'),
                 tipoInvestigacion=datos_previos.get('tipo_investigacion'),
-                tipoInvestigacionOtra=datos_previos.get('tipo_investigacion_otra'),
+                tipoInvestigacionOtra=datos_previos.get(
+                    'tipo_investigacion_otra'),
                 participaRedes=datos_previos.get('participa_redes'),
                 certificacion=datos_previos.get('certificacion'),
                 certificacionCuales=datos_previos.get('certificacion_cuales'),
@@ -548,13 +578,15 @@ def a12(request):
                 idiomas=datos_previos.get('idiomas'),
                 idiomasOtro=datos_previos.get('idiomas_otro'),
                 publicacion=datos_previos.get('publicacion'),
-                publicacionEspecifique=datos_previos.get('publicacion_especifique'),
+                publicacionEspecifique=datos_previos.get(
+                    'publicacion_especifique'),
                 documentos=datos_previos.get('documentos'),
                 documentosOtro=datos_previos.get('documentos_otro'),
                 calidad=datos_previos.get('calidad'),
                 calidadOtra=datos_previos.get('calidad_otra'),
                 asociacion=datos_previos.get('asociacion'),
-                asociacionEspecifique=datos_previos.get('asociacion_especifique'),
+                asociacionEspecifique=datos_previos.get(
+                    'asociacion_especifique'),
                 etica=datos_previos.get('etica')
             )
 
@@ -573,6 +605,7 @@ def a12(request):
 
     return render(request, 'Anexo12.html')
 
+
 def encuesta_finalizada(request):
     curp = request.session.get('usuario_id')
     if not curp:
@@ -580,7 +613,8 @@ def encuesta_finalizada(request):
 
     # Obtener encuesta activa
     egresado = Egresado.objects.filter(curp=curp).first()
-    encuesta = Encuesta.objects.filter(curp=egresado).order_by('-folioEncuesta').first()
+    encuesta = Encuesta.objects.filter(
+        curp=egresado).order_by('-folioEncuesta').first()
 
     if encuesta:
         encuesta.fechaFin = date.today()
@@ -594,68 +628,49 @@ def generar_acuse_pdf(request):
         return redirect('index')
 
     egresado = Egresado.objects.filter(curp=curp).first()
-    encuesta = Encuesta.objects.filter(curp=egresado).order_by('-folioEncuesta').first()
+    encuesta = Encuesta.objects.filter(
+        curp=egresado).order_by('-folioEncuesta').first()
 
     if not egresado or not encuesta:
         return redirect('index')
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="acuse_encuesta.pdf"'
-
-    p = canvas.Canvas(response, pagesize=letter)
-    width, height = letter
-
-    # Logo (si tienes 'logo_itv.png' en static/img/)
-    try:
-        from django.conf import settings
-        import os
-        logo_path = os.path.join(settings.BASE_DIR, 'static', 'img', 'itv.png')
-        if os.path.exists(logo_path):
-            p.drawImage(logo_path, 40, height - 100, width=100, preserveAspectRatio=True)
-    except:
-        pass
-
-    # Encabezado institucional
-    p.setFont("Helvetica-Bold", 14)
-    p.drawCentredString(width / 2, height - 50, "TECNOLÓGICO NACIONAL DE MÉXICO")
-    p.drawCentredString(width / 2, height - 70, "INSTITUTO TECNOLÓGICO DE VERACRUZ")
-
-    # Subtítulo
-    p.setFont("Helvetica-Bold", 12)
-    p.drawCentredString(width / 2, height - 120, "ACUSE DE RESPUESTA A ENCUESTA")
-
-    # Información principal
     nombre = egresado.nombre
-    lapso = encuesta.lapso
     fecha_final = encuesta.fechaFin.strftime('%d de %B de %Y') if encuesta.fechaFin else "pendiente"
     hora = encuesta.fechaFin.strftime('%H:%M:%S') if encuesta.fechaFin else "pendiente"
-
-    p.setFont("Helvetica", 11)
-    mensaje = f"Por medio de la presente hago constar que el/la C. {nombre}"
-    p.drawString(72, height - 160, mensaje)
-    mensaje2 = f"respondió la encuesta correspondiente al periodo {lapso} el día {fecha_final} a las {hora}."
-    p.drawString(72, height - 180, mensaje2)
-
-    # Cadena digital
+    lapso = encuesta.lapso
     cadena = f"{curp}|{nombre}|{fecha_final}|{hora}"
-    p.setFont("Courier", 9)
-    p.drawString(72, height - 220, "Cadena digital:")
-    p.drawString(72, height - 235, cadena)
 
-    # Pie de página
-    p.setFont("Helvetica", 9)
-    p.drawString(72, 72, "Calz. Miguel Ángel de Quevedo 2779, Col. Formando Hogar. C.P. 91897, H. Veracruz, Ver.")
-    p.drawString(72, 60, "Tel. (229) 934 15 00 · https://www.veracruz.tecnm.mx")
+    IMAGES_DIR = "templates/static/img" 
+    vars = {
+        'nombre': f'{nombre}',
+        'dependencia': 'ANEXO Quím y bio Quím.',
+        'expediente':  f'{egresado.noControl}',
+        'content': (
+            f"Perteneciente a la carrera de <b>{egresado.carrera}</b> realizó el anexo "
+            f"perteneciente a la carrera de Quím y Bio Quím el día <b>{fecha_final}</b> "
+            f"en la hora marcada como <b>{hora}</b> correspondiente al periodo <b>{lapso}</b>. "
+            "Por tal motivo sus registros correspondientes a sus datos personales han quedado registrados satisfactoriamente."
+        ),
+        'cadena_digital': f'{cadena}',
+        'signature': 'Nombre y firma autorizada',
+        'direccion': (
+            "Calz. Miguel Ángel de Quevedo 2779, Col. Formando Hogar. C.P. 91897 H. Veracruz, Ver. Tel. (229) 934 15 00 · https://www.veracruz.tecnm.mx"
+        ),
+        'logo_sep_path': os.path.join(IMAGES_DIR, 'sepB.png'),
+        'logo_footer_path': os.path.join(IMAGES_DIR, 'logo.png'),
+        'watermark_path': os.path.join(IMAGES_DIR, 'uemex.jpg')
+    }
 
-    p.showPage()
-    p.save()
+    # Verificar existencia de imágenes
+    for key in ['logo_sep_path', 'logo_footer_path', 'watermark_path']:
+        if not os.path.exists(vars[key]):
+            print(f"Advertencia: no se encontró {vars[key]}")
+
+    # Ejemplo de uso para guardar en un archivo
+    bytesMap= acuse.generate_document(return_bytes=True,variables= vars)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="acuse.pdf"'
+
+    response.write(bytesMap.getvalue())
 
     return response
-
-# TODO agregar acuse y vista agradecimiento
-# def a1(request):
-#     return render(request, 'Anexo1.html')
-
-
-# def a1(request):
-#     return render(request, 'Anexo1.html')
