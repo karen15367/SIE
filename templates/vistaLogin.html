@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="{% static '/styles/PersonalEgresado.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -97,7 +98,12 @@
             Olvidé mi Contraseña
           </a>
         </div>
+        <div class="mt-4 w-[270px] overflow-hidden">
+          <div class="g-recaptcha" data-sitekey="6LcPMTUrAAAAAOq3Euxv6-U3inntiCTa-X3nTM5X"></div>
+        </div>
       </form>
+
+
         <a href="/sign-in/"
           class="text-xs text-gray-900 dark:text-white hover:text-[#163e68] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1f4d7e]">
           Registrarse

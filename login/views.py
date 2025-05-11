@@ -1,14 +1,31 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
+import requests
+from SIE import settings
 from core.models import Egresado
 from core.models import Administrador
 from django.contrib.auth.hashers import check_password
+
 # Create your views here.
 
 
 def login(request):
     if request.method == 'POST':
+        recaptcha_response = request.POST.get("g-recaptcha-response")
+        data = {
+            "secret": settings.RECAPTCHA_PRIVATE_KEY,
+            "response": recaptcha_response,
+        }
+        response = requests.post("https://www.google.com/recaptcha/api/siteverify", data=data)
+        result = response.json()
+        
+        if not result["success"]:
+            #messages.error(request, "¡Completa el reCAPTCHA!")
+            return redirect("/")
+        
+        
+
         identificador = request.POST.get('curp_rfc')
         password = request.POST.get('password')
         if request.POST.get('tipo') == '0':
