@@ -83,7 +83,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'SIE.wsgi.application'
 
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 DATABASES = {
@@ -167,10 +166,12 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-#* datos del captcha
-RECAPTCHA_PUBLIC_KEY='6LcPMTUrAAAAAOq3Euxv6-U3inntiCTa-X3nTM5X'
-RECAPTCHA_PRIVATE_KEY='6LcPMTUrAAAAAJ6SWH3Le7cv453VMucvfagH_WS7'
-"""
-RECAPTCHA_PRIVATE_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"  # Clave de prueba
-RECAPTCHA_PUBLIC_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"  # Clave de prueba
-"""
+# * datos del captcha
+RECAPTCHA_PUBLIC_KEY = '6LcPMTUrAAAAAOq3Euxv6-U3inntiCTa-X3nTM5X'
+RECAPTCHA_PRIVATE_KEY = '6LcPMTUrAAAAAJ6SWH3Le7cv453VMucvfagH_WS7'
+
+
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
+
+EMAIL_SSL_CERT_FILE = certifi.where()

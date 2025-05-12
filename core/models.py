@@ -25,6 +25,7 @@ class Egresado(models.Model):
     titulado = models.BooleanField()
     fechaEgreso = models.DateField()
     contraseña = models.CharField(max_length=128)
+    tempPwd = models.CharField(max_length=128, blank=True, null=True)
     sesion = models.CharField(max_length=255, blank=True, null=True)
 
     def clean(self):

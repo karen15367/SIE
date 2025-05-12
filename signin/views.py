@@ -12,7 +12,6 @@ from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import redirect
 from django.conf import settings
 from django.core.mail import send_mail
-from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.utils.dateparse import parse_date
 from django.urls import reverse
@@ -21,7 +20,7 @@ from datetime import timedelta
 
 
 # * Create your views here. comentar esto al migrar la base de datos
-#EgresadoTemporal.objects.filter(fecha_creacion__lt=now() - timedelta(hours=1)).delete()
+# EgresadoTemporal.objects.filter(fecha_creacion__lt=now() - timedelta(hours=1)).delete()
 
 def signin(request):
     return render(request, "vistaSignUp.html")
@@ -36,20 +35,19 @@ def vistaLogin(request):
 
 
 def verify(request):
-    try:
-        if request.method == "POST":
+    if request.method == "POST":
+        try:
             curp = request.POST.get("curp")
-            
             # Validar existencia
             if Egresado.objects.filter(curp=curp).exists():
                 return render(request, "vistaSignUp.html", {
                     "error": "Este CURP ya está registrado."
                 })
-            
+
             fechaN = request.POST.get("fechaNacimiento")
             sexo = request.POST.get("sexo") != "masculino"
             titulado = request.POST.get("titulado") != "no"
-            
+
             temp = EgresadoTemporal(
                 curp=curp,
                 nombre=request.POST.get("nombre"),
@@ -67,18 +65,19 @@ def verify(request):
             # Firmar el token
             signer = TimestampSigner()
             signed_token = signer.sign(curp)
-            confirm_url = request.build_absolute_uri(reverse("confirm_email", args=[signed_token]))
-            
+            confirm_url = request.build_absolute_uri(
+                reverse("confirm_email", args=[signed_token]))
             send_mail(
                 subject="Verifica tu cuenta en SIE",
                 message=f"Hola {temp.nombre}, confirma tu cuenta: {confirm_url}",
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[temp.correo],
             )
-            
+
             return render(request, "vistaVerificacionPendiente.html")
-    except:
-        pass
+        except:
+            pass
+
     return render(request, "vistaSignUp.html")
 
 
@@ -93,7 +92,8 @@ def confirm_email(request, token):
             temp = EgresadoTemporal.objects.get(curp=curp)
 
             # Validar que todos los datos existen (por seguridad extra)
-            campos_requeridos = [temp.nombre, temp.no_control, temp.correo, temp.fecha_nacimiento, temp.carrera, temp.fecha_egreso, temp.contraseña]
+            campos_requeridos = [temp.nombre, temp.no_control, temp.correo,
+                                 temp.fecha_nacimiento, temp.carrera, temp.fecha_egreso, temp.contraseña]
             if any(valor is None for valor in campos_requeridos):
                 return HttpResponse("Faltan datos en el registro temporal.", status=400)
 
