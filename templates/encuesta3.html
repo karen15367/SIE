@@ -1,104 +1,154 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pertinencia y Recursos</title>
-  <link rel="stylesheet" href="styles/encuesta3.css"> <!-- Usa el CSS bonito -->
-</head>
+  <link rel="stylesheet" href="styles/encuesta3.css"> 
 <body>
-
   <div class="container">
-    
-    <!-- Encabezado -->
     <div class="header">
-      <img src="static/img/sepB.png" alt="Logo SEP">
+      <img src="img/logo-sep.png" alt="Logo SEP">
       <div class="header-text">
         <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
         <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
       </div>
     </div>
 
-    <!-- Sección de título -->
     <div class="form-section">
       <div class="section-title">II. PERTINENCIA Y DISPONIBILIDAD DE MEDIOS Y RECURSOS PARA EL APRENDIZAJE</div>
-      <div class="section-subtitle">Califique la calidad de los siguientes aspectos proporcionados por la institución</div>
+      <div class="section-subtitle">Califique la calidad de los siguientes aspectos proporcionados por la institución
+      </div>
     </div>
 
-    <!-- Contenido del formulario -->
     <div class="form-content">
-      <form>
+      <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-        <div class="form-group">
-          <label class="form-label">II.1 Calidad de docentes:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="p1"> Muy buena</label>
-            <label class="radio-option"><input type="radio" name="p1"> Buena</label>
-            <label class="radio-option"><input type="radio" name="p1"> Regular</label>
-            <label class="radio-option"><input type="radio" name="p1"> Mala</label>
+      <form action="{% url 'e3' %}" method="post" id="aprendizaje">
+        {% csrf_token %}
+
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.1 Calidad de docentes
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=1 required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=2> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=3> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=4> Malo</label>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">II.2 Plan de estudios:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="p2"> Muy buena</label>
-            <label class="radio-option"><input type="radio" name="p2"> Buena</label>
-            <label class="radio-option"><input type="radio" name="p2"> Regular</label>
-            <label class="radio-option"><input type="radio" name="p2"> Mala</label>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.2 Plan de estudios
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="planEstudios" value=1 required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="planEstudios" value=2> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="planEstudios" value=3> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="planEstudios" value=4> Malo</label>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">II.3 Oportunidades de participar en proyectos de investigación y desarrollo:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="p3"> Muy buena</label>
-            <label class="radio-option"><input type="radio" name="p3"> Buena</label>
-            <label class="radio-option"><input type="radio" name="p3"> Regular</label>
-            <label class="radio-option"><input type="radio" name="p3"> Mala</label>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.3 Oportunidades de participar en proyectos de investigación y desarrollo
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="oportunidadesProyectos" value=1 required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="oportunidadesProyectos" value=2> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="oportunidadesProyectos" value=3> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="oportunidadesProyectos" value=4> Malo</label>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">II.4 Énfasis en investigación dentro del proceso de enseñanza:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="p4"> Muy buena</label>
-            <label class="radio-option"><input type="radio" name="p4"> Buena</label>
-            <label class="radio-option"><input type="radio" name="p4"> Regular</label>
-            <label class="radio-option"><input type="radio" name="p4"> Mala</label>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.4 Énfasis que se le prestaba a la investigación dentro del proceso de enseñanza
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="enfasisInvestigacion" value=1 required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="enfasisInvestigacion" value=2> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="enfasisInvestigacion" value=3> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="enfasisInvestigacion" value=4> Malo</label>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">II.5 Satisfacción con condiciones de estudio:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="p5"> Muy buena</label>
-            <label class="radio-option"><input type="radio" name="p5"> Buena</label>
-            <label class="radio-option"><input type="radio" name="p5"> Regular</label>
-            <label class="radio-option"><input type="radio" name="p5"> Mala</label>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.5 Satisfacción con las condiciones de estudio
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="satisfaccionCondiciones" value=1 required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="satisfaccionCondiciones" value=2> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="satisfaccionCondiciones" value=3> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="satisfaccionCondiciones" value=4> Malo</label>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">II.6 Experiencia obtenida a través de la residencia profesional:</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="p6"> Muy buena</label>
-            <label class="radio-option"><input type="radio" name="p6"> Buena</label>
-            <label class="radio-option"><input type="radio" name="p6"> Regular</label>
-            <label class="radio-option"><input type="radio" name="p6"> Mala</label>
+        <div class="question-group" style=" position: relative; z-index: 2;">
+          <label class="question" style="font-weight: bold; font-size: 16px; ">
+            II.6 Experiencia obtenida a través de la residencia profesional
+          </label>
+          <div class="radio-group"
+            style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experienciaResidencia" value=1 required> Excelente</label>
+
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experienciaResidencia" value=2> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experienciaResidencia" value=3> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
+                name="experienciaResidencia" value=4> Malo</label>
           </div>
         </div>
-
-        <!-- Botones -->
-        <div class="buttons">
-          <button type="button" class="button">Regresar</button>
-          <button type="submit" class="button">Continuar</button>
-        </div>
-
       </form>
     </div>
-
-  </div>
-
+    <div class="buttons">
+      <button class="button">Regresar</button>
+      <button class="button" type="submit" form="aprendizaje">Continuar</button>
+    </div>
 </body>
+
 </html>

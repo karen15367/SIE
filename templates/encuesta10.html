@@ -1,0 +1,134 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+  <link rel="stylesheet" href="{% static '/styles/VistaEcuesta10.css' %}">
+  <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+      <div class="header-text">
+        <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+        <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title">IV. DESEMPEÑO PROFESIONAL DEL EGRESADO</div>
+      <div class="section-subtitle">Marcar los campos que correspondan a su trayectoria profesional</div>
+    </div>
+
+    <div class="form-content">
+      <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+      <div style="margin-bottom: 50px; position: relative; z-index: 2;">
+        <h3 style="font-weight: bold; font-size: 16px; margin-bottom: 20px;">
+          IV.4 Aspectos que valora la empresa u organismo para la contratación de egresados (1 poco, 5 mucho):
+        </h3>
+
+        <form action="{% url 'e10' %}" method="post" id="desempeno">
+                {% csrf_token %}
+        <table style="width: 100%; border-collapse: collapse;">
+          <tbody>
+            <tr>
+              <td>1. Área o campo de estudio</td>
+              <td>1 (<input type="radio" name="aspecto1" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto1" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto1" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto1" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto1" value=5>)</td>
+            </tr>
+            <tr>
+              <td>2. Titulación</td>
+              <td>1 (<input type="radio" name="aspecto2" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto2" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto2" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto2" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto2" value=5>)</td>
+            </tr>
+            <tr>
+              <td>3. Experiencia laboral/práctica</td>
+              <td>1 (<input type="radio" name="aspecto3" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto3" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto3" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto3" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto3" value=5>)</td>
+            </tr>
+            <tr>
+              <td>4. Competencia laboral</td>
+              <td>1 (<input type="radio" name="aspecto4" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto4" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto4" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto4" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto4" value=5>)</td>
+            </tr>
+            <tr>
+              <td>5. Posicionamiento de la institución</td>
+              <td>1 (<input type="radio" name="aspecto5" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto5" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto5" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto5" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto5" value=5>)</td>
+            </tr>
+            <tr>
+              <td>6. Conocimiento de idiomas</td>
+              <td>1 (<input type="radio" name="aspecto6" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto6" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto6" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto6" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto6" value=5>)</td>
+            </tr>
+            <tr>
+              <td>7. Recomendaciones/referencias</td>
+              <td>1 (<input type="radio" name="aspecto7" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto7" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto7" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto7" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto7" value=5>)</td>
+            </tr>
+            <tr>
+              <td>8. Personalidad/actitudes</td>
+              <td>1 (<input type="radio" name="aspecto8" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto8" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto8" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto8" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto8" value=5>)</td>
+            </tr>
+            <tr>
+              <td>9. Capacidad de liderazgo</td>
+              <td>1 (<input type="radio" name="aspecto9" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto9" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto9" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto9" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto9" value=5>)</td>
+            </tr>
+            <tr>
+              <td>10. Otros</td>
+              <td>1 (<input type="radio" name="aspecto10" value=1>)</td>
+              <td>2 (<input type="radio" name="aspecto10" value=2>)</td>
+              <td>3 (<input type="radio" name="aspecto10" value=3>)</td>
+              <td>4 (<input type="radio" name="aspecto10" value=4>)</td>
+              <td>5 (<input type="radio" name="aspecto10" value=5>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div> <!-- cierre de div margen tabla -->
+    </form>
+    </div> <!-- cierre de form-content -->
+    <div class="buttons">
+      <button class="button">Regresar</button>
+      <button class="button" type="submit" form="desempeno">Continuar</button>
+    </div>
+  </div> <!-- cierre de container -->
+
+</body>
+
+</html>

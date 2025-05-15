@@ -1,0 +1,146 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+  <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+  <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+      <div class="header-text">
+        <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+        <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title">RECUPERACIÓN DE CONTRASEÑA </div>
+      <div class="section-subtitle">Indique sus datos y su contraseña será mandada a su correo</div>
+    </div>
+
+    <div class="form-content">
+      <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+      <form action="/recuperacion/" method="post" id="mainForm">
+        {% csrf_token %}
+        {% if error %}
+        <div style="color: red; margin-bottom: 15px;">
+          {{ error }}
+        </div>
+        {% endif %}
+        <div class="form-row">
+          <div class="form-column">
+            
+            <div class="form-group">
+              <label class="form-label">CURP:</label>
+              <div class="form-input">
+                <input name="curp" type="text" class="line-input" maxlength="18" style="text-transform: uppercase;"
+                  required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nueva contraseña :</label>
+              <div class="form-input">
+                <div class="password-container">
+                  <input name="pwd1" type="password" class="line-input" id="password" required
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
+                    title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
+                  <i class="password-toggle fas fa-eye-slash" id="togglePassword"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-column">
+            
+
+            <div class="form-group">
+              <label class="form-label">Correo Electrónico:</label>
+              <div class="form-input">
+                <input name="correo" type="email" class="line-input" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirma Contraseña :</label>
+              <div class="form-input">
+                <div class="password-container">
+                  <input name="pwd2" type="password" class="line-input" id="confirmPassword" required
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
+                    title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
+                  <i class="password-toggle fas fa-eye-slash" id="toggleConfirmPassword"></i>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="buttons">
+      <form action="/" method="get">
+        {{form.as_p}}
+        <button class="button">Regresar</button>
+      </form>
+      <button class="button" id="continuar" form="mainForm" type="submit">Continuar</button>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript para mostrar/ocultar contraseña
+    document.addEventListener('DOMContentLoaded', function () {
+      // Para el primer campo de contraseña
+      const togglePassword = document.querySelector('#togglePassword');
+      const password = document.querySelector('#password');
+
+      togglePassword.addEventListener('click', function () {
+        // Alternar  el tipo de entrada entre "password" y "text"
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        // Alternar el icono entre ojo y ojo tachado
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+      });
+
+      // Para el campo de confirmar contraseña
+      const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+      const confirmPassword = document.querySelector('#confirmPassword');
+
+      toggleConfirmPassword.addEventListener('click', function () {
+        // Alternar el tipo de entrada entre "password" y "text"
+        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPassword.setAttribute('type', type);
+
+        // Alternar el icono entre ojo y ojo tachado
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+      });
+    });
+
+    //validar ambas pwd
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('mainForm');
+      const password = document.getElementById('password');
+      const confirmPassword = document.getElementById('confirmPassword');
+
+      form.addEventListener('submit', function (event) {
+        if (password.value !== confirmPassword.value) {
+          event.preventDefault(); // Evita que el formulario se envíe
+          alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo de nuevo.');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

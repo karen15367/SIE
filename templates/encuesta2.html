@@ -1,98 +1,132 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Perfil del Egresado</title>
-  <link rel="stylesheet" href="static/styles/encuesta2.css"> 
+  <link rel="stylesheet" href="styles/encuesta2.css"> 
 </head>
-<body>
 
+<body>
   <div class="container">
-    <!-- Encabezado -->
     <div class="header">
-      <img src="static/img/sepB.png" alt="Logo SEP">
+      <img src="img/logo-sep.png" alt="Logo SEP">
       <div class="header-text">
         <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
         <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
       </div>
     </div>
 
-    <!-- Sección Título -->
     <div class="form-section">
       <div class="section-title">I. PERFIL DEL EGRESADO</div>
       <div class="section-subtitle">Ingrese los datos de acuerdo a su situación actual</div>
     </div>
 
-    <!-- Contenido del Formulario -->
     <div class="form-content">
-      <form>
+      <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-        <div class="form-grid"> <!-- NUEVO contenedor para 2 columnas -->
+      <form action="{% url 'e2' %}" method="post" id="Perfil">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="form-column">
 
-          <div class="form-group">
-            <label class="form-label" for="carrera">Carrera:</label>
-            <input type="text" id="carrera" class="form-input line-input">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="especialidad">Especialidad:</label>
-            <input type="text" id="especialidad" class="form-input line-input">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="fecha-ingreso">Fecha de Ingreso:</label>
-            <input type="date" id="fecha-ingreso" class="form-input line-input">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="fecha-egreso">Fecha de Egreso:</label>
-            <input type="date" id="fecha-egreso" class="form-input line-input">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Titulado:</label>
-            <div class="radio-group">
-              <label class="radio-option"><input type="radio" name="titulado" value="sí"> Sí</label>
-              <label class="radio-option"><input type="radio" name="titulado" value="no"> No</label>
+            <div class="form-group">
+              <label class="form-label">Carrera:</label>
+                  <select id="carrera" name="carrera" required>
+                      <option value="">Seleccione una opción</option>
+                      <option>Ing. Sistemas Computacionales</option>
+                      <option>Ing. Química</option>
+                      <option>Ing. Bioquímica</option>
+                      <option>Ing. Industrial</option>
+                      <option>Ing. Mecatrónica</option>
+                      <option>Ing. Eléctrica</option>
+                      <option>Ing. Electrónica</option>
+                      <option>Ing. Mecánica</option>
+                      <option>Ing. Renovables</option>
+                      <option>Ing. Gestión Empresarial</option>
+                      <option>Lic. Administración</option>
+                  </select>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="form-label" for="ingles">Dominio de Inglés:</label>
-            <input type="text" id="ingles" class="form-input line-input">%
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="otro-idioma">Otro idioma:</label>
-            <input type="text" id="otro-idioma" class="form-input line-input">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Manejo de paquetes computacionales:</label>
-            <div class="radio-group">
-              <label class="radio-option"><input type="radio" name="paquetes" value="sí"> Sí</label>
-              <label class="radio-option"><input type="radio" name="paquetes" value="no"> No</label>
+            <div class="form-group">
+              <label class="form-label">Fecha de ingreso :</label>
+              <input type="date" id="fechaingreso" name="fechaingreso" />
             </div>
+
+            <div class="form-group">
+              <label class="form-label">Titulado:</label>
+              <div class="radio-group">
+                <span class="radio-option">
+                  <input type="radio" name="titulo" value=1 id="tituloSi" required />
+                  <label for="Femenino">Si</label>
+                </span>
+                <span class="radio-option">
+                  <input type="radio" name="titulo" value=0 id="tituloNo" required />
+                  <label for="Masculino">No</label>
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Dominio del ingles %:</label>
+              <div class="form-input">
+                <input type="text" class="line-input" name="dominio" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Otro idioma:</label>
+              <div class="form-input">
+                <input name="idioma" type="text" class="line-input" >
+              </div>
+            </div>
+
           </div>
+          <div class="form-column">
+            <div class="form-group">
+              <label class="form-label">Especialidad:</label>
+              <div class="form-input">
+                <input name="Especialidad" type="text" class="line-input" required>
+              </div>
+            </div>
 
-          <div class="form-group">
-            <label class="form-label" for="especificar">Especificar:</label>
-            <input type="text" id="especificar" class="form-input line-input">
+            <div class="form-group">
+              <label class="form-label">Fecha de egreso :</label>
+              <input type="date" id="fechaEgreso" name="fechaEgreso" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Manejo de Paquetes computacionales:</label>
+              <div class="radio-group">
+                <span class="radio-option">
+                  <input type="radio" name="paquetes" value=1 id="paqueteSi" required />
+                  <label for="paqueteSi">Si</label>
+                </span>
+                <span class="radio-option">
+                  <input type="radio" name="paquetes" value=0 id="paqueteNo" required />
+                  <label for="paqueteNo">No</label>
+                </span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Especificar Paquetes:</label>
+              <div class="form-input">
+                <input name="paquetesE" type="text" class="line-input" >
+              </div>
+            </div>
+
           </div>
-
-        </div> <!-- cierre form-grid -->
-
-        <!-- Botones -->
-        <div class="buttons">
-          <button type="button" class="button">Regresar</button>
-          <button type="submit" class="button">Continuar</button>
         </div>
-
       </form>
     </div>
-
-  </div>
-
+    <div class="buttons">
+      <button class="button">Regresar</button>
+      <button class="button" type="submit" form="Perfil">Continuar</button>
+    </div>
 </body>
+
 </html>

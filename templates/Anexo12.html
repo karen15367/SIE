@@ -1,11 +1,14 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/general.css">
-    <link rel="stylesheet" href="styles/Anexo2.css">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/Anexo4.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
 </head>
@@ -13,7 +16,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="recursos/image 5.png" alt="logo de la SEP" width="150" />
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" width="150" />
             <div class="header-text">
                 <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
                 <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
@@ -22,11 +25,13 @@
 
         <div class="form-section">
             <div class="section-title">Anexo de Química y Bioquímica</div>
-            <div class="section-subtitle">Situación Laboral</div>
+            <div class="section-subtitle">Desempeño Laboral</div>
         </div>
 
+        <form method="POST">
+            {% csrf_token %}
         <div class="form-content">
-            <img src="recursos/image 1.png" alt="Logo Instituto" class="logo-center">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
             <div class="question-group">
                 <div class="question" style="width: 100%;">¿Perteneces a alguna asociación profesional relacionada con tu carrera?</div>
@@ -46,7 +51,6 @@
                 <div class="question" style="margin-top: 10px; width: 100%;">¿En cuál de los siguientes documentos has
                     participado en su elaboración?</div>
             </div>
-
             <div class="options-group">
                 <div class="radio-row">
                     <span class="radio-option">
@@ -85,10 +89,27 @@
         </div>
 
         <div class="buttons">
-            <button class="button">Regresar</button>
-            <button class="button">Continuar</button>
+            <button class="button" type="button" onclick="window.location.href='{% url 'anexo11' %}'">Regresar</button>
+            <button class="button" type="submit">Continuar</button>
         </div>
+    </form>
     </div>
 </body>
-
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            // Para "Si especifique" en asociacion
+            const asociacionSi = document.getElementById('asociacionSi');
+            if (asociacionSi && asociacionSi.checked) {
+                const valor = asociacionSi.parentElement.querySelector('input[type="text"]').value;
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'asociacionEspecifique';
+                hiddenInput.value = valor;
+                form.appendChild(hiddenInput);
+            }
+        });
+    });
+</script>
 </html>

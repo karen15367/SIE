@@ -9,13 +9,16 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+from decouple import config
 from pathlib import Path
 import os
+import certifi
+from dotenv import load_dotenv
+import requests
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+load_dotenv()
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,10 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'core',
     'templates',
     'login',
     'signin',
     'index',
+    'anexo',
+    'signinAdmin',
 ]
 
 MIDDLEWARE = [
@@ -78,11 +85,27 @@ WSGI_APPLICATION = 'SIE.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+    }
+}
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -125,10 +148,30 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates/static'),  # Si tienes una carpeta 'static' en la raíz del proyecto
+    # Si tienes una carpeta 'static' en la raíz del proyecto
+    os.path.join(BASE_DIR, 'templates/static'),
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+# * datos del captcha
+RECAPTCHA_PUBLIC_KEY = '6LcPMTUrAAAAAOq3Euxv6-U3inntiCTa-X3nTM5X'
+RECAPTCHA_PRIVATE_KEY = '6LcPMTUrAAAAAJ6SWH3Le7cv453VMucvfagH_WS7'
+
+
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
+
+EMAIL_SSL_CERT_FILE = certifi.where()
