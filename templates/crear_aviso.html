@@ -143,15 +143,14 @@
         /* Contenedor principal */
         .form-container {
             width: 80%;
-            margin-top: 30px
-            max-width: 1000px;
+            margin-top: 30px max-width: 1000px;
             margin: 20px auto;
             background-color: #f8f9fa;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
+
         /* Barra de botones */
         .button-bar {
             background-color: #1d4e89;
@@ -161,7 +160,7 @@
             display: flex;
             justify-content: space-between;
         }
-        
+
         .button-bar button {
             background-color: #ffffff;
             color: #1d4e89;
@@ -171,28 +170,27 @@
             cursor: pointer;
             font-weight: bold;
         }
-        
+
         /* Título del formulario */
         .form-title {
-            margin-top: 50px
-            color: #1d4e89;
+            margin-top: 50px color: #1d4e89;
             font-size: 22px;
             margin-bottom: 15px;
             text-align: center;
         }
-        
+
         /* Campos de entrada */
         .form-group {
             margin-bottom: 15px;
         }
-        
+
         .form-group label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
             color: #1d4e89;
         }
-        
+
         .form-control {
             width: 100%;
             padding: 10px;
@@ -201,12 +199,12 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        
+
         textarea.form-control {
             min-height: 150px;
             resize: vertical;
         }
-        
+
         /* Contenedor de fechas */
         .date-container {
             display: flex;
@@ -214,11 +212,11 @@
             gap: 20px;
             margin-bottom: 15px;
         }
-        
+
         .date-group {
             flex: 1;
         }
-        
+
         /* Barra inferior */
         .footer-bar {
             background-color: #1d4e89;
@@ -228,7 +226,7 @@
             border-radius: 5px;
             margin-top: 20px;
         }
-        
+
         .footer-bar h2 {
             margin: 0;
             font-size: 18px;
@@ -259,24 +257,26 @@
         <div class="form-container">
             <form method="POST" action="{% url 'crear_aviso' %}">
                 {% csrf_token %}
-                
+
                 <div class="button-bar">
                     <button type="button" onclick="window.location.href='{% url 'index' %}'">Regresar</button>
                     <button type="submit">Publicar</button>
                 </div>
-                
+
                 <h2 class="form-title">Crear Nuevo Aviso</h2>
-                
+
                 <div class="form-group">
                     <label for="tituloAviso">Título</label>
-                    <input type="text" class="form-control" id="tituloAviso" name="titulo" placeholder="Agregar Título" required maxlength="50">
+                    <input type="text" class="form-control" id="tituloAviso" name="titulo" placeholder="Agregar Título"
+                        required maxlength="50">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="mensajeAviso">Mensaje</label>
-                    <textarea class="form-control" id="mensajeAviso" name="descripcion" placeholder="Agregar mensaje" required maxlength="300"></textarea>
+                    <textarea class="form-control" id="mensajeAviso" name="descripcion" placeholder="Agregar mensaje"
+                        required maxlength="300"></textarea>
                 </div>
-                
+
                 <div class="date-container">
                     <div class="date-group">
                         <label for="fecha_inicio">Fecha de inicio:</label>
@@ -287,13 +287,13 @@
                         <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
                     </div>
                 </div>
-                
+
                 <div class="footer-bar">
                     <h2>Nuevo Aviso</h2>
                 </div>
             </form>
         </div>
-        
+
         <!-- Popup de avisos 
         <div id="dvAvisos" class="popup">
             <div class="popup-content">
@@ -311,34 +311,34 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Manejo del popup
             var btnAvisos = document.getElementById('btnAvisos');
             var dvAvisos = document.getElementById('dvAvisos');
             var closePopup = document.getElementById('closePopup');
-            
-            if(btnAvisos && dvAvisos && closePopup) {
-                btnAvisos.addEventListener('click', function() {
+
+            if (btnAvisos && dvAvisos && closePopup) {
+                btnAvisos.addEventListener('click', function () {
                     dvAvisos.style.display = 'block';
                 });
-                
-                closePopup.addEventListener('click', function() {
+
+                closePopup.addEventListener('click', function () {
                     dvAvisos.style.display = 'none';
                 });
-                
-                window.addEventListener('click', function(event) {
+
+                window.addEventListener('click', function (event) {
                     if (event.target == dvAvisos) {
                         dvAvisos.style.display = 'none';
                     }
                 });
             }
-            
+
             // Configuración de fechas mínimas
             var today = new Date().toISOString().split('T')[0];
             var fechaInicio = document.getElementById('fecha_inicio');
             var fechaFin = document.getElementById('fecha_fin');
-            
-            if(fechaInicio && fechaFin) {
+
+            if (fechaInicio && fechaFin) {
                 fechaInicio.setAttribute('min', today);
                 fechaFin.setAttribute('min', today);
             }

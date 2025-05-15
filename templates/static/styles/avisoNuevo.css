@@ -7,7 +7,7 @@
     background-color: #f8f9fa;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Barra de botones */
@@ -32,8 +32,7 @@
 
 /* Título del formulario */
 .form-title {
-    margin-top: 50px
-    color: #1d4e89;
+    margin-top: 50px color: #1d4e89;
     font-size: 22px;
     margin-bottom: 15px;
     text-align: center;

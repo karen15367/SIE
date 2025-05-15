@@ -11,9 +11,6 @@ from . import acuse
 
 
 # Create your views here.
-def index(request):
-    return render(request, 'index.html')
-
 
 def calcular_lapso():
     hoy = date.today()
