@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
 import datetime
+from django.utils.timezone import now
 
 from core.validators import (
     solo_letras_espacios,
@@ -103,7 +104,7 @@ class EgresadoTemporal(models.Model):
     titulado = models.BooleanField()
     fecha_egreso = models.DateField()
     contraseña = models.CharField(max_length=128)  # Hasheada
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_creacion = models.DateTimeField(default=now)
 
 # ---------------------------
 # MODELOS de Secciones de Encuesta
@@ -112,7 +113,7 @@ class EncuestaS1(models.Model):
     # Opciones para el campo "sexo"
     SEXO_CHOICES = [
         (1, 'Femenino'),
-        (2, 'Masculino')
+        (0, 'Masculino')
     ]
     
     # Opciones para el campo "estadoCivil"
@@ -250,6 +251,16 @@ class EncuestaS3(models.Model):
         (5, 'Otros')
     ]
     
+    REQUISITOS_CONTRATACION_CHOICES = [
+        (1, 'Competencias laborales'),
+        (2, 'Titulo profesional'),
+        (3, 'Examen de selección'),
+        (4, 'Idioma extranjero'),
+        (5, 'Actitudes y habilidades socio-comunicativas'),
+        (6, 'Ninguno'),
+        (7, 'Otro')
+    ]
+    
     # Opciones para el campo "idiomaUtiliza"
     IDIOMA_UTILIZA_CHOICES = [
         (1, 'Inglés'),
@@ -317,6 +328,8 @@ class EncuestaS3(models.Model):
     # Campos de Imagen 2
     medioEmpleo = models.IntegerField(choices=MEDIO_EMPLEO_CHOICES, blank=True, null=True)
     medioEmpleoOtro = models.CharField(max_length=100, blank=True, null=True)
+    requisitosContratacion = models.IntegerField(choices=REQUISITOS_CONTRATACION_CHOICES, blank=True, null=True)
+    requisitosContratacionOtro = models.CharField(max_length=100, blank=True, null=True)
     idiomaUtiliza = models.IntegerField(choices=IDIOMA_UTILIZA_CHOICES, blank=True, null=True)
     idiomaUtilizaOtro = models.CharField(max_length=50, blank=True, null=True)
     hablarPorcentaje = models.IntegerField(blank=True, null=True)
@@ -406,6 +419,29 @@ class EncuestaS3Empresa(models.Model):
 
 class EncuestaS4(models.Model):
     # Constante para los valores de calificación
+    EFICIENCIA_CHOICES = [
+        (1, 'Muy eficiente'),
+        (2, 'Eficiente'),
+        (3, 'Poco eficiente'),
+        (4, 'Deficiente')
+    ]
+    
+    FORMACION_CHOICES = [
+        (1, 'Educativo'),
+        (2, 'Turismo'),
+        (3, 'Comercio'),
+        (4, 'Servicios financieros'),
+        (5, 'Otros')
+    ]
+    
+    UTILIDAD_CHOICES = [
+        (1, 'Educativo'),
+        (2, 'Turismo'),
+        (3, 'Comercio'),
+        (4, 'Servicios financieros'),
+        (5, 'Otros')
+    ]
+    
     VALORACION_CHOICES = [
         (1, '1 (poco)'),
         (2, '2'),
@@ -417,6 +453,9 @@ class EncuestaS4(models.Model):
     folioEncuestaS4 = models.BigAutoField(primary_key=True)
     folioEncuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
     
+    eficiencia = models.IntegerField(choices=EFICIENCIA_CHOICES, blank=True, null=True)
+    formacion = models.IntegerField(choices=FORMACION_CHOICES, blank=True, null=True)
+    utilidad = models.IntegerField(choices=UTILIDAD_CHOICES, blank=True, null=True)
     # Aspectos valorados para contratación (IV.4)
     areaCampoEstudio = models.IntegerField(
         choices=VALORACION_CHOICES,
@@ -595,6 +634,7 @@ class AnexoS1(models.Model):
 
     def __str__(self):
         return f"Anexo S1 - Encuesta {self.folioEncuesta}"
+
 class AnexoS2(models.Model):
     # Opciones para el campo "trabaja" (Anexo3)
     TRABAJA_CHOICES = [

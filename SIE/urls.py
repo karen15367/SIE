@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from signin import views as signin_views
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('login.urls')),

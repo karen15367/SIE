@@ -31,7 +31,7 @@
     <div class="form-content">
       <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-      <form action="/encuesta/encuesta5/" method="post" id="ubicacion">
+      <form action="{% url 'e6' %}" method="post" id="ubicacion">
         {% csrf_token %}
 
         <div class="question-group">
@@ -41,27 +41,27 @@
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="empleo" value="1" id="t1" required />
+              <input type="radio" name="antiguedad" value=1 id="t1" required />
               <label for="t1">Menos de un año</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="2" id="t2" />
+              <input type="radio" name="antiguedad" value=2 id="t2" />
               <label for="t2">Un año</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="t3" />
+              <input type="radio" name="antiguedad" value=3 id="t3" />
               <label for="t3">Dos años</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="4" id="t4" />
+              <input type="radio" name="antiguedad" value=4 id="t4" />
               <label for="t4">Tres años</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="empleo" value="3" id="t5" />
+              <input type="radio" name="antiguedad" value=5 id="t5" />
               <label for="t5"> Más de tres años </label>
             </span>
           </div>
@@ -71,7 +71,7 @@
           <div class="radio-row">
             <span class="radio-option">
               <label>Año de ingreso:</label>
-              <input name="año" type="text" class="line-input" style="width: 50px;" required>
+              <input name="anioIngreso" type="text" class="line-input" style="width: 50px;" required>
             </span>
 
           </div>
@@ -84,22 +84,22 @@
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="salario" value="1" id="s1" required />
+              <input type="radio" name="ingreso" value=1 id="s1" required />
               <label for="s1">Menos de cinco</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="salario" value="2" id="s2" />
+              <input type="radio" name="ingreso" value=2 id="s2" />
               <label for="s2">Entre cinco y siete</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="salario" value="3" id="s3" />
+              <input type="radio" name="ingreso" value=3 id="s3" />
               <label for="s3">Entre ocho y diez</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="salario" value="3" id="razon3" />
+              <input type="radio" name="ingreso" value=4 id="razon3" />
               <label for="razon3">Más de diez</label>
             </span>
           </div>
@@ -112,32 +112,32 @@
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="nivel" value="1" id="n1" required />
+              <input type="radio" name="nivelJerarquico" value=1 id="n1" required />
               <label for="n1">Técnico</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="nivel" value="2" id="n2" />
+              <input type="radio" name="nivelJerarquico" value=2 id="n2" />
               <label for="n2">Supervisor</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="nivel" value="3" id="n3" />
+              <input type="radio" name="nivelJerarquico" value=3 id="n3" />
               <label for="n3"> Jefe de área </label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="nivel" value="3" id="razon3" />
+              <input type="radio" name="nivelJerarquico" value=4 id="razon3" />
               <label for="n3">Funcionario</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="nivel" value="4" id="n4" />
+              <input type="radio" name="nivelJerarquico" value=5 id="n4" />
               <label for="n4">Directivo</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="nivel" value="5" id="n5" />
+              <input type="radio" name="nivelJerarquico" value=5 id="n5" />
               <label for="n5">Empresario</label>
             </span>
           </div>
@@ -150,24 +150,24 @@
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="condicion" value="1" id="c1" required />
+              <input type="radio" name="condicionTrabajo" value=1 id="c1" required />
               <label for="c1">Base</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="condicion" value="2" id="c2" />
+              <input type="radio" name="condicionTrabajo" value=2 id="c2" />
               <label for="c2">Eventual</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="condicion" value="3" id="c3" />
+              <input type="radio" name="condicionTrabajo" value=3 id="c3" />
               <label for="c3"> Contrato </label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="condicion" value="4" id="c4" />
+              <input type="radio" name="condicionTrabajo" value=4 id="c4" />
               <label for="c4">Otro:</label>
-              <input name="otroCondicion" type="text" class="line-input">
+              <input name="condicionTrabajoOtro" type="text" class="line-input">
             </span>
           </div>
         </div>
@@ -179,32 +179,32 @@
         <div class="options-group" style="width: 100%;">
           <div class="radio-row">
             <span class="radio-option">
-              <input type="radio" name="relacion" value="1" id="razon1" required />
+              <input type="radio" name="relacionTrabajo" value=1 id="razon1" required />
               <label for="re1">0%</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="relacion" value="2" id="re2" />
+              <input type="radio" name="relacionTrabajo" value=2 id="re2" />
               <label for="re2">20%</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="relacion" value="3" id="re3" />
+              <input type="radio" name="relacionTrabajo" value=3 id="re3" />
               <label for="razon3"> 40% </label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="relacion" value="4" id="re4" />
+              <input type="radio" name="relacionTrabajo" value=4 id="re4" />
               <label for="re4">60%</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="relacion" value="5" id="re5" />
+              <input type="radio" name="relacionTrabajo" value=5 id="re5" />
               <label for="re5">80%</label>
             </span>
 
             <span class="radio-option">
-              <input type="radio" name="relacion" value="6" id="re6" />
+              <input type="radio" name="relacionTrabajo" value=6 id="re6" />
               <label for="re6">100%</label>
             </span>
           </div>

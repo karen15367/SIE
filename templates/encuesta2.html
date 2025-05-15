@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
   <link rel="stylesheet" href="{% static '/styles/Anexo1.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
   <link rel="stylesheet" href="{% static '/styles/encuesta1.css' %}">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -32,16 +33,27 @@
     <div class="form-content">
       <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-      <form action="/encuesta/" method="post" id="Perfil">
+      <form action="{% url 'e2' %}" method="post" id="Perfil">
         {% csrf_token %}
         <div class="form-row">
           <div class="form-column">
 
             <div class="form-group">
               <label class="form-label">Carrera:</label>
-              <div class="form-input">
-                <input type="text" class="line-input" name="carrera" required>
-              </div>
+                  <select id="carrera" name="carrera" required>
+                      <option value="">Seleccione una opción</option>
+                      <option>Ing. Sistemas Computacionales</option>
+                      <option>Ing. Química</option>
+                      <option>Ing. Bioquímica</option>
+                      <option>Ing. Industrial</option>
+                      <option>Ing. Mecatrónica</option>
+                      <option>Ing. Eléctrica</option>
+                      <option>Ing. Electrónica</option>
+                      <option>Ing. Mecánica</option>
+                      <option>Ing. Renovables</option>
+                      <option>Ing. Gestión Empresarial</option>
+                      <option>Lic. Administración</option>
+                  </select>
             </div>
 
             <div class="form-group">
@@ -53,11 +65,11 @@
               <label class="form-label">Titulado:</label>
               <div class="radio-group">
                 <span class="radio-option">
-                  <input type="radio" name="titulo" value="si" id="tituloSi" required />
+                  <input type="radio" name="titulo" value=1 id="tituloSi" required />
                   <label for="Femenino">Si</label>
                 </span>
                 <span class="radio-option">
-                  <input type="radio" name="titulo" value="no" id="tituloNo" required />
+                  <input type="radio" name="titulo" value=0 id="tituloNo" required />
                   <label for="Masculino">No</label>
                 </span>
               </div>
@@ -71,16 +83,9 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Manejo de Paquetes computacionales:</label>
-              <div class="radio-group">
-                <span class="radio-option">
-                  <input type="radio" name="paquetes" value="Si" id="paqueteSi" required />
-                  <label for="paqueteSi">Si</label>
-                </span>
-                <span class="radio-option">
-                  <input type="radio" name="paquetes" value="No" id="paqueteNo" required />
-                  <label for="paqueteNo">No</label>
-                </span>
+              <label class="form-label">Otro idioma:</label>
+              <div class="form-input">
+                <input name="idioma" type="text" class="line-input" >
               </div>
             </div>
 
@@ -99,18 +104,25 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Otro idioma:</label>
-              <div class="form-input">
-                <input name="idioma" type="text" class="line-input" required>
+              <label class="form-label">Manejo de Paquetes computacionales:</label>
+              <div class="radio-group">
+                <span class="radio-option">
+                  <input type="radio" name="paquetes" value=1 id="paqueteSi" required />
+                  <label for="paqueteSi">Si</label>
+                </span>
+                <span class="radio-option">
+                  <input type="radio" name="paquetes" value=0 id="paqueteNo" required />
+                  <label for="paqueteNo">No</label>
+                </span>
               </div>
             </div>
             
             <div class="form-group">
               <label class="form-label">Especificar Paquetes:</label>
               <div class="form-input">
-                <input name="paquetesE" type="text" class="line-input" required>
+                <input name="paquetesE" type="text" class="line-input" >
               </div>
-            </div>            
+            </div>
 
           </div>
         </div>

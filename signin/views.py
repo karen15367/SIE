@@ -23,7 +23,9 @@ from datetime import timedelta
 # EgresadoTemporal.objects.filter(fecha_creacion__lt=now() - timedelta(hours=1)).delete()
 
 def signin(request):
+    print(">>> Estoy en signin")
     return render(request, "vistaSignUp.html")
+
 
 
 def vistaVerificacionPendiente(request):
@@ -35,11 +37,14 @@ def vistaLogin(request):
 
 
 def verify(request):
+    print(">>> Entrando a verify")
     if request.method == "POST":
         try:
+            print(">>> Método POST detectado")
+
             curp = request.POST.get("curp")
-            # Validar existencia
             if Egresado.objects.filter(curp=curp).exists():
+                print(">>> CURP ya registrado")
                 return render(request, "vistaSignUp.html", {
                     "error": "Este CURP ya está registrado."
                 })
@@ -47,6 +52,8 @@ def verify(request):
             fechaN = request.POST.get("fechaNacimiento")
             sexo = request.POST.get("sexo") != "masculino"
             titulado = request.POST.get("titulado") != "no"
+
+            print(">>> Creando objeto temporal")
 
             temp = EgresadoTemporal(
                 curp=curp,
@@ -58,32 +65,39 @@ def verify(request):
                 carrera=request.POST.get("carrera"),
                 titulado=titulado,
                 fecha_egreso=fechaN,
-                contraseña=make_password(request.POST.get("pwd1"))
+                contraseña=make_password(request.POST.get("pwd1")),
+                # No se pasa fecha_creacion, se genera con default=now
             )
             temp.save()
+            print(">>> Temporal guardado:", temp.curp)
 
-            # Firmar el token
             signer = TimestampSigner()
             signed_token = signer.sign(curp)
             confirm_url = request.build_absolute_uri(
-                reverse("confirm_email", args=[signed_token]))
+                reverse("confirm_email", args=[signed_token])
+            )
+
+            print(">>> Enviando correo a:", temp.correo)
             send_mail(
                 subject="Verifica tu cuenta en SIE",
                 message=f"Hola {temp.nombre}, confirma tu cuenta: {confirm_url}",
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[temp.correo],
             )
+            print(">>> Correo enviado correctamente")
 
             return render(request, "vistaVerificacionPendiente.html")
-        except:
-            pass
 
+        except Exception as e:
+            print(">>> ERROR durante verificación:", str(e))
+
+    print(">>> Renderizando vistaSignUp.html final")
     return render(request, "vistaSignUp.html")
-
 
 def confirm_email(request, token):
     try:
         signer = TimestampSigner()
+
         try:
             # Token válido por 30 minutos
             curp = signer.unsign(token, max_age=1800)
@@ -92,8 +106,11 @@ def confirm_email(request, token):
             temp = EgresadoTemporal.objects.get(curp=curp)
 
             # Validar que todos los datos existen (por seguridad extra)
-            campos_requeridos = [temp.nombre, temp.no_control, temp.correo,
-                                 temp.fecha_nacimiento, temp.carrera, temp.fecha_egreso, temp.contraseña]
+            campos_requeridos = [
+                temp.nombre, temp.no_control, temp.correo,
+                temp.fecha_nacimiento, temp.carrera,
+                temp.fecha_egreso, temp.contraseña
+            ]
             if any(valor is None for valor in campos_requeridos):
                 return HttpResponse("Faltan datos en el registro temporal.", status=400)
 
@@ -122,5 +139,7 @@ def confirm_email(request, token):
             return HttpResponse("El enlace ha expirado.", status=400)
         except BadSignature:
             return HttpResponse("Enlace inválido.", status=400)
-    except:
-        pass
+
+    except Exception as e:
+        print(">>> ERROR en confirm_email:", str(e))
+        return HttpResponse("Error inesperado al confirmar el correo.", status=500)

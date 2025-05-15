@@ -77,19 +77,27 @@ def a2(request):
     try:
         if request.method == 'POST':
             titulado_raw = request.POST.get('titulado')
-            if titulado_raw is None:
-                messages.error(
-                    request, 'Por favor, selecciona si estás titulado.')
-                return render(request, 'Anexo2.html')
-
-            titulado = titulado_raw == '1'
+            titulado = 0
+            if titulado_raw == '1':
+                titulado = 1
+            
+            razon_no_titulo = request.POST.get('razonNoTitulo')
+            if razon_no_titulo == 'compromiso':
+                razon_no_titulo = 1
+            elif razon_no_titulo == 'tiempo':
+                razon_no_titulo =  2
+            elif razon_no_titulo == 'apoyo':
+                razon_no_titulo =  3
+            elif razon_no_titulo == 'otro':
+                razon_no_titulo =  4
 
             datos_previos = request.session.get('anexo_s1', {})
             datos_previos['titulado'] = titulado
-            datos_previos['razon_no_titulo'] = request.POST.get(
-                'razonNoTitulo')
-            datos_previos['razon_no_titulo_otra'] = request.POST.get(
-                'razonNoTituloOtra')
+            datos_previos['razon_no_titulo'] = razon_no_titulo
+            # Verificar si seleccionó "Otro" y capturar el texto
+            if razon_no_titulo == 4:
+                datos_previos['razon_no_titulo_otra'] = request.POST.get(
+                    'razonNoTituloOtra', '')
 
             print("Datos recibidos:", request.POST)
             print("TITULADO:", titulado)

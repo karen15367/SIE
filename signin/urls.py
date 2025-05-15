@@ -1,14 +1,9 @@
 from django.urls import path
-from  . import views
-from django.urls import include
+from . import views
 
 urlpatterns = [
-    
-    path('', views.signin),
-    path('', views.vistaLogin),
-    path('verify/', views.verify),
-    path("confirmar/<str:token>/", views.confirm_email, name="confirm_email"),
-    path('verificacion-pendiente/', views.vistaVerificacionPendiente, name="verificacion_pendiente"),
-    
+    path('', views.signin, name='sign_in'),  # Esto conecta directamente a /sign-in/
+    path('verify/', views.verify, name='verify'),
+    path('confirmar/<str:token>/', views.confirm_email, name='confirm_email'),
+    path('verificacion-pendiente/', views.vistaVerificacionPendiente, name='verificacion_pendiente'),
 ]
-

@@ -30,7 +30,7 @@
     <div class="form-content">
       <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-      <form action="/encuesta/encuesta2/" method="post" id="aprendizaje">
+      <form action="{% url 'e3' %}" method="post" id="aprendizaje">
         {% csrf_token %}
 
         <div class="question-group" style=" position: relative; z-index: 2;">
@@ -40,15 +40,15 @@
           <div class="radio-group"
             style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
-            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
-                type="radio" name="formacion" value="0" required> Excelente</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=1 required> Excelente</label>
 
-            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
-                type="radio" name="formacion" value="1"> Bueno</label>
-            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
-                type="radio" name="formacion" value="2"> Regular</label>
-            <label name="docentes" style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
-                type="radio" name="formacion" value="3"> Malo</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=2> Bueno</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=3> Regular</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input
+                type="radio" name="calidadDocentes" value=4> Malo</label>
           </div>
         </div>
 
@@ -60,14 +60,14 @@
             style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="docentes" value="0" required> Excelente</label>
+                name="planEstudios" value=1 required> Excelente</label>
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="docentes" value="1"> Bueno</label>
+                name="planEstudios" value=2> Bueno</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="docentes" value="2"> Regular</label>
+                name="planEstudios" value=3> Regular</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="docentes" value="3"> Malo</label>
+                name="planEstudios" value=4> Malo</label>
           </div>
         </div>
 
@@ -79,14 +79,14 @@
             style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="estudios" value="0" required> Excelente</label>
+                name="oportunidadesProyectos" value=1 required> Excelente</label>
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="estudios" value="1"> Bueno</label>
+                name="oportunidadesProyectos" value=2> Bueno</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="estudios" value="2"> Regular</label>
+                name="oportunidadesProyectos" value=3> Regular</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="estudios" value="3"> Malo</label>
+                name="oportunidadesProyectos" value=4> Malo</label>
           </div>
         </div>
 
@@ -98,14 +98,14 @@
             style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="investigacion" value="0" required> Excelente</label>
+                name="enfasisInvestigacion" value=1 required> Excelente</label>
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="investigacion" value="1"> Bueno</label>
+                name="enfasisInvestigacion" value=2> Bueno</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="investigacion" value="2"> Regular</label>
+                name="enfasisInvestigacion" value=3> Regular</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="investigacion" value="3"> Malo</label>
+                name="enfasisInvestigacion" value=4> Malo</label>
           </div>
         </div>
 
@@ -117,14 +117,14 @@
             style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="condiciones" value="0" required> Excelente</label>
+                name="satisfaccionCondiciones" value=1 required> Excelente</label>
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="condiciones" value="1"> Bueno</label>
+                name="satisfaccionCondiciones" value=2> Bueno</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="condiciones" value="2"> Regular</label>
+                name="satisfaccionCondiciones" value=3> Regular</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="condiciones" value="3"> Malo</label>
+                name="satisfaccionCondiciones" value=4> Malo</label>
           </div>
         </div>
 
@@ -136,17 +136,16 @@
             style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 25px; margin-top: 10px; width: 100%;">
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="experiencia" value="0" required> Excelente</label>
+                name="experienciaResidencia" value=1 required> Excelente</label>
 
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="experiencia" value="1"> Bueno</label>
+                name="experienciaResidencia" value=2> Bueno</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="experiencia" value="2"> Regular</label>
+                name="experienciaResidencia" value=3> Regular</label>
             <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                name="experiencia" value="3"> Malo</label>
+                name="experienciaResidencia" value=4> Malo</label>
           </div>
         </div>
-
       </form>
     </div>
     <div class="buttons">

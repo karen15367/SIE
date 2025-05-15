@@ -301,17 +301,13 @@
             {% if tipo == 'egresado' %}
                 <!-- Contenido para Egresados -->
                 {% if carrera == 'Ing. Química' or  carrera == 'Ing. Bioquímica'%}
-                    <div id="dvEncuesta">
-                        <a href="{% url 'anexo1' %}">
-                            <button class="button-28" role="button">RESPONDER ENCUESTA QUIMICA Y BIOQUIMICA</button>
-                        </a>
-                    </div>
-                {% else %}
-                <div id="dvEncuesta">
-                    
+                    <a href="{% url 'anexo1' %}">
                         <button class="button-28" role="button">RESPONDER ENCUESTA</button>
-                    
-                </div>
+                    </a>
+                {% else %}
+                    <a href="{% url 'e1' %}">
+                        <button class="button-28" role="button">RESPONDER ENCUESTA</button>
+                    </a>
                 {% endif %}
             {% elif tipo == 'admin' %}
                 {% if carrera == 'general' %}
@@ -324,11 +320,9 @@
                         </a>
                     </div>
                 {% else %}
-                    <div id="dvEncuesta">
                         <a href="{% url 'crear_aviso' %}">
                             <button class="button-28" role="button">HACER AVISO</button>
                         </a>
-                    </div>
                 {% endif %}
             {% endif %}
             
