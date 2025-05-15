@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">ALTA DEL ADMINISTRADOR</div>
+        </div>
+
+        <form action="{% url 'signinAdmin:verify' %}" method="post" id="mainForm">
+            {% csrf_token %}
+            {% if error %}
+            <div style="color: red; margin-bottom: 15px;">
+                {{ error }}
+            </div>
+            {% endif %}
+            <div class="form-content">
+
+
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Nombre completo:</label>
+                            <div class="form-input">
+                                <input type="text" style="text-transform: uppercase;" class="line-input" name="nombre"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">RFC:</label>
+                            <div class="form-input">
+                                <input name="rfc" type="text" class="line-input" maxlength="13"
+                                    style="text-transform: uppercase;" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Crea contraseña:</label>
+                            <div class="form-input">
+                                <div class="password-container">
+                                    <input name="pwd1" type="password" class="line-input" id="password" required
+                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
+                                        title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
+                                    <i class="password-toggle fas fa-eye-slash" id="togglePassword"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Correo Electrónico:</label>
+                            <div class="form-input">
+                                <input name="correo" type="email" class="line-input" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" style="margin-top: 10px;">Carrera (opcional):</label>
+                            <select id="carrera" name="carrera">
+                                <option value="">Seleccione una opción</option>
+                                <option>General</option>
+                                <option>Ing. Sistemas Computacionales</option>
+                                <option>Ing. Química</option>
+                                <option>Ing. Bioquímica</option>
+                                <option>Ing. Industrial</option>
+                                <option>Ing. Mecatrónica</option>
+                                <option>Ing. Eléctrica</option>
+                                <option>Ing. Electrónica</option>
+                                <option>Ing. Mecánica</option>
+                                <option>Ing. Renovables</option>
+                                <option>Ing. Gestión Empresarial</option>
+                                <option>Lic. Administración</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" style="margin-top: 10px;">Confirma Contraseña:</label>
+                            <div class="form-input">
+                                <div class="password-container">
+                                    <input name="pwd2" type="password" class="line-input" id="confirmPassword" required
+                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
+                                        title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
+                                    <i class="password-toggle fas fa-eye-slash" id="toggleConfirmPassword"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="buttons">
+            <form action="/index/" method="get">
+                <button class="button" >Regresar</button>
+            </form>
+            <button class="button" type="submit" form="mainForm" id="continuar">Continuar</button>
+        </div>
+
+    </div>
+
+    
+
+</body>
+
+</html>
