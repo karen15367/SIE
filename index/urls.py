@@ -11,4 +11,5 @@ urlpatterns = [
     path('vistaSignUpAdmin/', views.vistaSignUpAdmin, name='vistaSignUpAdmin'),
     path('consulta/', views.resultados, name='resultados'),
     path('modUser/', views.modUser, name='modUser'),
+    path('modCampos/', views.modCampos, name='modCampos'),
 ]

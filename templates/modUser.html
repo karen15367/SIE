@@ -24,103 +24,246 @@
         </div>
 
         <div class="form-section">
-            <div class="section-title">ALTA DEL ADMINISTRADOR</div>
+            <div class="section-title">MODIFICAR USUARIO</div>
         </div>
 
-        <form action="{% url 'signinAdmin:verify' %}" method="post" id="mainForm">
+        <form action="/index/modCampos/" method="POST" id="mainForm">
             {% csrf_token %}
+
             {% if error %}
             <div style="color: red; margin-bottom: 15px;">
                 {{ error }}
             </div>
             {% endif %}
             <div class="form-content">
-
-
+                {% if admin == 'si' %}
+                <input type="hidden" name="real" value="{{ usuario.rfc}}">
                 <div class="form-row">
                     <div class="form-column">
                         <div class="form-group">
                             <label class="form-label">Nombre completo:</label>
                             <div class="form-input">
                                 <input type="text" style="text-transform: uppercase;" class="line-input" name="nombre"
-                                    required>
+                                    value="{{ usuario.nombre }}" required>
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label class="form-label">RFC:</label>
                             <div class="form-input">
                                 <input name="rfc" type="text" class="line-input" maxlength="13"
-                                    style="text-transform: uppercase;" required>
-                            </div>
+                                style="text-transform: uppercase;" value="{{ usuario.rfc }}" required>
+                            </div>    
                         </div>
-
+                        
                         <div class="form-group">
-                            <label class="form-label">Crea contraseña:</label>
-                            <div class="form-input">
-                                <div class="password-container">
-                                    <input name="pwd1" type="password" class="line-input" id="password" required
-                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
-                                        title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
-                                    <i class="password-toggle fas fa-eye-slash" id="togglePassword"></i>
-                                </div>
-                            </div>
+                            <button type="button" style="width: 100%; background-color: red; color: white;">Restablecer contraseña</button>
                         </div>
                     </div>
-
+                    
                     <div class="form-column">
                         <div class="form-group">
                             <label class="form-label">Correo Electrónico:</label>
                             <div class="form-input">
-                                <input name="correo" type="email" class="line-input" required>
+                                <input name="correo" type="email" class="line-input" value="{{ usuario.correo }}"
+                                required>
+                            </div>
+                        </div>
+                
+                        <div class="form-group">
+                            <label class="form-label" style="margin-top: 10px;">Carrera (opcional):</label>
+                            <select id="carrera" name="carrera">
+                                <option value="General" {% if usuario.carrera == "General" %}selected{% endif %}>
+                                    General
+                                </option>
+                                <option value="Ing. Sistemas Computacionales"
+                                {% if usuario.carrera == "Ing. Sistemas Computacionales" %}selected{% endif %}>
+                                    Ing. Sistemas Computacionales
+                                </option>
+                                <option value="Ing. Química" 
+                                {% if usuario.carrera == "Ing. Química" %}selected{% endif%}>
+                                    Ing. Química
+                                </option>
+                                <option value="Ing. Bioquímica" 
+                                {% if usuario.carrera == "Ing. Bioquímica"%}selected{%endif %}>
+                                    Ing. Bioquímica
+                                </option>
+                                <option value="Ing. Industrial" 
+                                {% if usuario.carrera == "Ing. Industrial"%}selected{%endif %}>
+                                    Ing. Industrial
+                                </option>
+                                <option value="Ing. Mecatrónica" 
+                                {% if usuario.carrera == "Ing. Mecatrónica"%}selected{%endif %}>
+                                    Ing. Mecatrónica
+                                </option>
+                                <option value="Ing. Eléctrica" 
+                                {% if usuario.carrera == "Ing. Eléctrica" %}selected{%endif%}>
+                                    Ing. Eléctrica
+                                </option>
+                                <option value="Ing. Electrónica" 
+                                {% if usuario.carrera == "Ing. Electrónica"%}selected{%endif %}>
+                                    Ing. Electrónica
+                                </option>
+                                <option value="Ing. Mecánica" 
+                                {% if usuario.carrera == "Ing. Mecánica" %}selected{%endif%}>
+                                    Ing. Mecánica
+                                </option>
+                                <option value="Ing. Renovables" 
+                                {% if usuario.carrera == "Ing. Renovables"%}selected{%endif %}>
+                                    Ing. Renovables
+                                </option>
+                                <option value="Ing. Gestión Empresarial" 
+                                {% if usuario.carrera == "Ing. Gestión Empresarial" %}selected{% endif %}>
+                                    Ing. Gestión Empresarial
+                                </option>
+                                <option value="Lic. Administración" 
+                                {% if usuario.carrera == "Lic. Administración"%}selected{% endif %}>
+                                    Lic. Administración
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>{% else %}
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">Nombre completo:</label>
+                            <div class="form-input">
+                                <input type="text" style="text-transform: uppercase;" class="line-input" name="nombre"
+                                    value="{{ usuario.nombre }}" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" style="margin-top: 10px;">Carrera (opcional):</label>
+                            <label class="form-label">CURP:</label>
+                            <div class="form-input">
+                                <input name="curp" type="text" class="line-input" maxlength="18" style="text-transform: uppercase;"
+                                value="{{ usuario.curp }}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Nacimiento :</label>
+                            <input name="fechaNacimiento" type="date" id="fechaNacimiento" 
+                            value="{{ usuario.fechaNacimiento|date:'Y-m-d' }}" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Titulado:</label>
+                            <div class="radio-group">
+                                <span class="radio-option">
+                                    <input type="radio" name="titulado" value="si" id="tituladoSi" 
+                                    {% if usuario.titulado %}checked{% endif%} required />
+                                    <label for="tituladoSi">Si</label>
+                                </span>
+                                <span class="radio-option">
+                                    <input type="radio" name="titulado" value="no" id="tituladoNo"  
+                                    {% if not usuario.titulado %}checked{% endif%} required />
+                                    <label for="tituladoNo">No</label>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label class="form-label">No. Control:</label>
+                            <div class="form-input">
+                                <input name="control" type="text" class="line-input" 
+                                value="{{ usuario.noControl }}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                                <label class="form-label">Correo Electrónico:</label>
+                                <div class="form-input">
+                                    <input name="correo" type="email" class="line-input" 
+                                    value="{{ usuario.correo }}" required>
+                                </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" style="margin-top: 10px;">Carrera :</label>
                             <select id="carrera" name="carrera">
-                                <option value="">Seleccione una opción</option>
-                                <option>General</option>
-                                <option>Ing. Sistemas Computacionales</option>
-                                <option>Ing. Química</option>
-                                <option>Ing. Bioquímica</option>
-                                <option>Ing. Industrial</option>
-                                <option>Ing. Mecatrónica</option>
-                                <option>Ing. Eléctrica</option>
-                                <option>Ing. Electrónica</option>
-                                <option>Ing. Mecánica</option>
-                                <option>Ing. Renovables</option>
-                                <option>Ing. Gestión Empresarial</option>
-                                <option>Lic. Administración</option>
+                                <option value="Ing. Sistemas Computacionales"
+                                {% if usuario.carrera == "Ing. Sistemas Computacionales" %}selected{% endif %}>
+                                    Ing. Sistemas Computacionales
+                                </option>
+                                <option value="Ing. Química" 
+                                {% if usuario.carrera == "Ing. Química" %}selected{% endif%}>
+                                    Ing. Química
+                                </option>
+                                <option value="Ing. Bioquímica" 
+                                {% if usuario.carrera == "Ing. Bioquímica"%}selected{%endif %}>
+                                    Ing. Bioquímica
+                                </option>
+                                <option value="Ing. Industrial" 
+                                {% if usuario.carrera == "Ing. Industrial"%}selected{%endif %}>
+                                    Ing. Industrial
+                                </option>
+                                <option value="Ing. Mecatrónica" 
+                                {% if usuario.carrera == "Ing. Mecatrónica"%}selected{%endif %}>
+                                    Ing. Mecatrónica
+                                </option>
+                                <option value="Ing. Eléctrica" 
+                                {% if usuario.carrera == "Ing. Eléctrica" %}selected{%endif%}>
+                                    Ing. Eléctrica
+                                </option>
+                                <option value="Ing. Electrónica" 
+                                {% if usuario.carrera == "Ing. Electrónica"%}selected{%endif %}>
+                                    Ing. Electrónica
+                                </option>
+                                <option value="Ing. Mecánica" 
+                                {% if usuario.carrera == "Ing. Mecánica" %}selected{%endif%}>
+                                    Ing. Mecánica
+                                </option>
+                                <option value="Ing. Renovables" 
+                                {% if usuario.carrera == "Ing. Renovables"%}selected{%endif %}>
+                                    Ing. Renovables
+                                </option>
+                                <option value="Ing. Gestión Empresarial" 
+                                {% if usuario.carrera == "Ing. Gestión Empresarial" %}selected{% endif %}>
+                                    Ing. Gestión Empresarial
+                                </option>
+                                <option value="Lic. Administración" 
+                                {% if usuario.carrera == "Lic. Administración"%}selected{% endif %}>
+                                    Lic. Administración
+                                </option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" style="margin-top: 10px;">Confirma Contraseña:</label>
-                            <div class="form-input">
-                                <div class="password-container">
-                                    <input name="pwd2" type="password" class="line-input" id="confirmPassword" required
-                                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"
-                                        title="La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula, un número y un carácter especial (@#$%^&+=)">
-                                    <i class="password-toggle fas fa-eye-slash" id="toggleConfirmPassword"></i>
-                                </div>
+                            <label class="form-label">Sexo:</label>
+                            <div class="radio-group">
+                                <span class="radio-option">
+                                    <input type="radio" name="sexo" value="femenino" id="sFemenino" 
+                                    {% if usuario.sexo %}checked{% endif%} required />
+                                    <label for="sFemenino">Femenino</label>
+                                </span>
+                                <span class="radio-option">
+                                    <input type="radio" name="sexo" value="masculino" id="sMasculino" 
+                                    {% if not usuario.sexo %}checked{% endif%} required />
+                                    <label for="sMasculino">Masculino</label>
+                                </span>
                             </div>
                         </div>
+
                     </div>
+                
                 </div>
+                {% endif %}
             </div>
 
         </form>
         <div class="buttons">
-            <form action="/index/" method="get">
-                <button class="button" >Regresar</button>
+            <form action="/index/consulta/" method="get">
+                <button class="button">Regresar</button>
             </form>
             <button class="button" type="submit" form="mainForm" id="continuar">Continuar</button>
         </div>
 
     </div>
-
-    
 
 </body>
 
