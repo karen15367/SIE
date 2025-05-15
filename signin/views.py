@@ -36,6 +36,7 @@ def vistaLogin(request):
 
 def verify(request):
     if request.method == "POST":
+
         try:
             curp = request.POST.get("curp")
             # Validar existencia
@@ -43,7 +44,6 @@ def verify(request):
                 return render(request, "vistaSignUp.html", {
                     "error": "Este CURP ya está registrado."
                 })
-
             fechaN = request.POST.get("fechaNacimiento")
             sexo = request.POST.get("sexo") != "masculino"
             titulado = request.POST.get("titulado") != "no"
@@ -58,9 +58,12 @@ def verify(request):
                 carrera=request.POST.get("carrera"),
                 titulado=titulado,
                 fecha_egreso=fechaN,
-                contraseña=make_password(request.POST.get("pwd1"))
+                contraseña=make_password(request.POST.get("pwd1")),
+                tempPwd=None,
+                sesion=None
             )
             temp.save()
+            print('no')
 
             # Firmar el token
             signer = TimestampSigner()
@@ -75,7 +78,8 @@ def verify(request):
             )
 
             return render(request, "vistaVerificacionPendiente.html")
-        except:
+        except ZeroDivisionError as e:
+            print(e)
             pass
 
     return render(request, "vistaSignUp.html")
