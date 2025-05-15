@@ -251,15 +251,47 @@ def resultados(request):
 def modUser(request):
     if request.method == 'POST':
         tipo = request.POST.get('tipo')
-
         try:
-            admin = Administrador.objects.filter(rfc=tipo)
-            user = Egresado.objects.filter(curp=tipo)
-            if user:
-                print('pichule')
-            elif admin:
-                print('pichuleichon')
+            admin = Administrador.objects.filter(rfc=tipo).first()
+            if admin:
+                return render(request, 'modUser.html', {
+                    'admin': 'si',
+                    'usuario': admin,
+                })
+            else:
+                user = Egresado.objects.filter(curp=tipo).first()
+                return render(request, 'modUser.html', {
+                    'admin': 'no',
+                    'usuario': user,
+                })
+
         except:
             pass
+    return render(request, 'modUser.html')
 
+
+def modCampos(request):
+    if request.method == 'POST':
+        if request.method == 'POST':
+            if Egresado.objects.filter(curp=curp).exists():
+                return render(request, "vistaSignUp.html", {
+                    "error": "Este CURP ya está registrado."
+                })
+            tipo = request.POST.get('tipo')
+            try:
+                admin = Administrador.objects.filter(rfc=tipo).first()
+                if admin:
+                    return render(request, 'modUser.html', {
+                        'admin': 'si',
+                        'usuario': admin,
+                    })
+                else:
+                    user = Egresado.objects.filter(curp=tipo).first()
+                    return render(request, 'modUser.html', {
+                        'admin': 'no',
+                        'usuario': user,
+                    })
+
+            except:
+                pass
     return render(request, 'modUser.html')

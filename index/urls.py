@@ -12,4 +12,5 @@ urlpatterns = [
 
     path('consulta/', views.resultados, name='resultados'),
     path('modUser/', views.modUser, name='modUser'),
+    path('modCampos/', views.modCampos, name='modCampos'),
 ]
