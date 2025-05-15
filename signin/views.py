@@ -39,6 +39,7 @@ def vistaLogin(request):
 def verify(request):
     print(">>> Entrando a verify")
     if request.method == "POST":
+
         try:
             print(">>> Método POST detectado")
 
@@ -48,7 +49,6 @@ def verify(request):
                 return render(request, "vistaSignUp.html", {
                     "error": "Este CURP ya está registrado."
                 })
-
             fechaN = request.POST.get("fechaNacimiento")
             sexo = request.POST.get("sexo") != "masculino"
             titulado = request.POST.get("titulado") != "no"
@@ -66,7 +66,9 @@ def verify(request):
                 titulado=titulado,
                 fecha_egreso=fechaN,
                 contraseña=make_password(request.POST.get("pwd1")),
-                # No se pasa fecha_creacion, se genera con default=now
+                # No se pasa fecha_creacion, se genera con default=now,
+                tempPwd=None,
+                sesion=None
             )
             temp.save()
             print(">>> Temporal guardado:", temp.curp)
@@ -88,7 +90,8 @@ def verify(request):
 
             return render(request, "vistaVerificacionPendiente.html")
 
-        except Exception as e:
+        except Exception as e ZeroDivisionError as e:
+            print(e)
             print(">>> ERROR durante verificación:", str(e))
 
     print(">>> Renderizando vistaSignUp.html final")

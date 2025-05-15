@@ -16,7 +16,5 @@ urlpatterns = [
     path('a11/', views.a11, name='anexo11'),
     path('a12/', views.a12, name='anexo12'),
     path('encuesta/finalizada/', views.encuesta_finalizada, name='encuesta_finalizada'),
-    path('acuse/pdf/', views.generar_acuse_pdf, name='acuse_pdf'),
-    path('index/', views.index, name='index')
-
+    path('acuse/pdf/', views.generar_acuse_pdf, name='acuse_pdf')
 ]

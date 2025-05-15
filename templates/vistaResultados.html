@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/vistaResultados.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/cbxadmon.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/avisos.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container" style="max-width:  10000px;">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">LISTA DE USUARIOS </div>
+            <div class="section-subtitle">Ingrese el CURP/RFC o seleccione la carrera</div>
+        </div>
+
+        <div class="form-content">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+
+            <form action="#" method="post" id="ubicacion">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">Carrera:</label>
+                    <select id="carrera" name="carrera">
+                        <option value="">Seleccione una opción</option>
+                        <option>Todos</option>
+                        <option>Ing. Sistemas Computacionales</option>
+                        <option>Ing. Química</option>
+                        <option>Ing. Bioquímica</option>
+                        <option>Ing. Industrial</option>
+                        <option>Ing. Mecatrónica</option>
+                        <option>Ing. Eléctrica</option>
+                        <option>Ing. Electrónica</option>
+                        <option>Ing. Mecánica</option>
+                        <option>Ing. Renovables</option>
+                        <option>Ing. Gestión Empresarial</option>
+                        <option>Lic. Administración</option>
+                    </select>
+                </div>
+
+                <label for="q" class="visually-hidden">Buscar</label>
+                <input type="search" id="q" name="tipo" placeholder="Ingrese el RFC O CURP"
+                    style="width: 80%; text-align: center; text-transform: uppercase;" required>
+                <button type="submit">🔍</button>
+
+                <div class="checkbox-wrapper-35" style="margin-top: 20px;"><input class="switch" type="checkbox"
+                        id="switch" name="switch" value="admon"><label for="switch"><span
+                            class="switch-x-text">PARA</span><span class="switch-x-toggletext"><span
+                                class="switch-x-unchecked"><span class="switch-x-hiddenlabel">Unchecked:
+                                </span>Egresados</span><span class="switch-x-checked"><span
+                                    class="switch-x-hiddenlabel">Checked:
+                                </span>Administradores</span></span></label></div>
+                <script>
+                    // 1. Obtenemos referencias
+                    const selectCarrera = document.getElementById('carrera');
+                    const inputSearch = document.getElementById('q');
+
+                    // 2. Escuchamos cambios en el <select>
+                    selectCarrera.addEventListener('change', () => {
+                        // Si el valor es distinto de la opción vacía, deshabilitamos el input
+                        if (selectCarrera.value !== '') {
+                            inputSearch.disabled = true;                       // :contentReference[oaicite:0]{index=0}
+                            inputSearch.value = '';                            // opcional: limpiar texto previo
+                        } else {
+                            // Si se vuelve a la opción por defecto, lo habilitamos de nuevo
+                            inputSearch.disabled = false;                      // :contentReference[oaicite:1]{index=1}
+                        }
+                    });
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const cells = document.querySelectorAll('#tabla-egresados td');
+
+                        cells.forEach(td => {
+                            let style = window.getComputedStyle(td);
+                            let fontSize = parseFloat(style.fontSize);
+
+                            // Mientras desborde y no se reduzca demasiado
+                            while (td.scrollWidth > td.clientWidth && fontSize > 8) {
+                                fontSize -= 1;                     // reducir 1px
+                                td.style.fontSize = fontSize + 'px';
+                            }
+                        });
+                    });
+                </script>
+            </form>
+
+            <section id="tabla-egresados" style="margin-top: 2%;">
+                <h2>Listado</h2>
+                <table>
+                    {% if admin == 'no' %}
+                    <thead>
+                        <tr>
+                            <th>CURP</th>
+                            <th>Nombre</th>
+                            <th>No. Control</th>
+                            <th>Correo</th>
+                            <th>Carrera</th>
+                            <th>Nacimiento</th>
+                            <th>Titulo</th>
+                            <th>Gestionar</th>
+                            <!-- añade más cabeceras según campos -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usr in usuarios %}
+                        <tr>
+                            <td>{{ usr.curp }}</td>
+                            <td>{{ usr.nombre }}</td>
+                            <td>{{ usr.noControl }}</td>
+                            <td>{{ usr.correo }}</td>
+                            <td>{{ usr.carrera }}</td>
+                            <td>{{ usr.fechaNacimiento }}</td>
+                            <td>{{ usr.titulado }}</td>
+                            <td>
+                                <form action="/index/modUser/" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="tipo" value="{{ usr.curp }}">
+                                    <button type="submit" style="width: 100%;" >
+                                        Gestionar
+                                    </button>
+                                </form>
+                            </td>
+                            <!-- más celdas según tu modelo -->
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7">No hay usuarios registrados.</td>
+                        </tr>
+                        {% endfor %}
+
+                        {% else %}
+                        <thead>
+                            <tr>
+                                <th>RFC</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Carrera</th>
+                                <th>Gestionar</th>
+                                <!-- añade más cabeceras según campos -->
+                            </tr>
+                        </thead>
+                    <tbody>
+                        {% for usr in usuarios %}
+                        <tr>
+                            <td>{{ usr.rfc }}</td>
+                            <td>{{ usr.nombre }}</td>
+                            <td>{{ usr.correo }}</td>
+                            <td>{{ usr.carrera }}</td>
+
+                            <td>
+                                <form action="/index/modUser/" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="tipo" value="{{ usr.rfc }}">
+                                    <button type="submit" style="width: 100%;" class="nueva-pwd">
+                                        Gestionar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No hay usuarios registrados.</td>
+                        </tr>
+                        {% endfor %}
+
+                        {% endif %}
+                    </tbody>
+                </table>
+            </section>
+            <div id="dvAvisos" class="popup">
+                <div class="popup-content">
+                    <span id="closePopup" class="close">&times;</span>
+                    <h2 class="blueText">Avisos</h2>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="buttons">
+            <button class="button" onclick="window.location.href='{% url 'index' %}'">Regresar</button>
+        </div>
+    </div>
+</body>
+
+</html>
