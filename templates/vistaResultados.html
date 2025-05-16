@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
     <link rel="stylesheet" href="{% static '/styles/vistaResultados.css' %}">
     <link rel="stylesheet" href="{% static '/styles/cbxadmon.css' %}">
-    <link rel="stylesheet" href="{% static '/styles/avisos.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
@@ -126,12 +125,12 @@
                             <td>{{ usr.correo }}</td>
                             <td>{{ usr.carrera }}</td>
                             <td>{{ usr.fechaNacimiento }}</td>
-                            <td>{{ usr.titulado }}</td>
+                            <td>{% if usr.titulado == True %}SI{% else %} NO {% endif %}</td>
                             <td>
                                 <form action="/index/modUser/" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" name="tipo" value="{{ usr.curp }}">
-                                    <button type="submit" style="width: 100%;" >
+                                    <button type="submit" style="width: 100%;">
                                         Gestionar
                                     </button>
                                 </form>
@@ -143,7 +142,7 @@
                             <td colspan="7">No hay usuarios registrados.</td>
                         </tr>
                         {% endfor %}
-                        
+
                         {% else %}
                         <thead>
                             <tr>
@@ -183,13 +182,6 @@
                     </tbody>
                 </table>
             </section>
-            <div id="dvAvisos" class="popup">
-                <div class="popup-content">
-                    <span id="closePopup" class="close">&times;</span>
-                    <h2 class="blueText">Avisos</h2>
-
-                </div>
-            </div>
 
         </div>
         <div class="buttons">

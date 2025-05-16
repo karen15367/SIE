@@ -251,6 +251,7 @@ def resultados(request):
 def modUser(request):
     if request.method == 'POST':
         tipo = request.POST.get('tipo')
+
         try:
             admin = Administrador.objects.filter(rfc=tipo).first()
             if admin:
@@ -272,26 +273,136 @@ def modUser(request):
 
 def modCampos(request):
     if request.method == 'POST':
-        if request.method == 'POST':
-            if Egresado.objects.filter(curp=curp).exists():
-                return render(request, "vistaSignUp.html", {
-                    "error": "Este CURP ya está registrado."
-                })
-            tipo = request.POST.get('tipo')
-            try:
-                admin = Administrador.objects.filter(rfc=tipo).first()
-                if admin:
-                    return render(request, 'modUser.html', {
-                        'admin': 'si',
-                        'usuario': admin,
-                    })
-                else:
-                    user = Egresado.objects.filter(curp=tipo).first()
-                    return render(request, 'modUser.html', {
-                        'admin': 'no',
-                        'usuario': user,
-                    })
+        tipo = request.POST.get('real')
+        try:
+            admin = Administrador.objects.filter(rfc=tipo).first()
+            if admin:
+                rfcTemp = request.POST.get('rfc')
+                nombreTemp = request.POST.get('nombre')
+                correoTemp = request.POST.get('correo')
+                carreraTemp = request.POST.get('carrera')
 
-            except:
-                pass
-    return render(request, 'modUser.html')
+                if rfcTemp != admin.rfc:
+                    if Administrador.objects.filter(rfc=rfcTemp).exists():
+                        return render(request, "modUser.html", {
+                            "error": "Este rfc ya está registrado.",
+                            'admin': 'si',
+                            'usuario': admin,
+                        })
+                    else:
+                        admin.rfc = rfcTemp
+                        admin.save(update_fields=['rfc'])
+                        admin = Administrador.objects.filter(
+                            rfc=rfcTemp).first()
+
+                if nombreTemp != admin.nombre:
+                    admin.nombre = nombreTemp
+                    admin.save(update_fields=['nombre'])
+
+                if correoTemp != admin.correo:
+                    admin.correo = correoTemp
+                    admin.save(update_fields=['correo'])
+
+                if carreraTemp != admin.carrera:
+                    admin.carrera = correoTemp
+                    admin.save(update_fields=['carrera'])
+
+                return render(request, 'modUser.html', {
+                    'admin': 'si',
+                    'usuario': admin,
+                })
+
+            else:
+
+                user = Egresado.objects.filter(curp=tipo).first()
+
+                if user.titulado:
+                    titulo = 'si'
+                else:
+                    titulo = 'no'
+
+                if user.sexo:
+                    sex = 'si'
+                else:
+                    sex = 'no'
+
+                curpTemp = request.POST.get('curp')
+                nombreTemp = request.POST.get('nombre')
+                correoTemp = request.POST.get('correo')
+                carreraTemp = request.POST.get('carrera')
+                nacioTemp = request.POST.get('fechaNacimiento')
+                tituloTemp = request.POST.get('titulado')
+                controlTemp = request.POST.get('control')
+                sexoTemp = request.POST.get('control')
+
+                if curpTemp:
+                    if Administrador.objects.filter(curp=curpTemp).exists():
+                        return render(request, "modUser.html", {
+                            "error": "Este CURP ya está registrado.",
+                            'admin': 'si',
+                            'usuario': admin,
+                        })
+                    else:
+                        admin.curp = curpTemp
+                        admin.save(update_fields=['curp'])
+                        admin = Administrador.objects.filter(
+                            rfc=curpTemp).first()
+
+                if nombreTemp != user.nombre:
+                    user.nombre = nombreTemp
+                    user.save(update_fields=['nombre'])
+
+                if correoTemp != user.correo:
+                    user.correo = correoTemp
+                    user.save(update_fields=['correo'])
+
+                if carreraTemp != user.carrera:
+                    user.carrera = correoTemp
+                    user.save(update_fields=['carrera'])
+
+                if nacioTemp != user.fechaNacimiento:
+                    user.fechaNacimiento = datetime.datetime.strptime(
+                        nacioTemp, '%Y-%m-%d').date()
+                    user.save(update_fields=['fechaNacimiento'])
+
+                if tituloTemp != titulo:
+                    if tituloTemp == 'si':
+                        user.titulado = True
+                    else:
+                        user.titulado = False
+                    user.save(update_fields=['titulado'])
+
+                if controlTemp != user.noControl:
+                    user.noControl = controlTemp
+                    user.save(update_fields=['noControl'])
+
+                if sexoTemp != sex:
+                    if sexoTemp == 'femenino':
+                        user.sexo = True
+                    else:
+                        user.sexo = False
+                    user.save(update_fields=['sexo'])
+
+                return render(request, 'modUser.html', {
+                    'admin': 'no',
+                    'usuario': user,
+                })
+
+        except ZeroDivisionError as e:
+            print(e)
+            # pass
+
+    return redirect('modUser')
+
+
+def newPwd(request):
+    if request.method == 'POST':
+        # Procesar el formulario de restablecimiento de contraseña
+        # Aquí implementarías la lógica para restablecer la contraseña
+        
+        # Si el restablecimiento fue exitoso:
+        return JsonResponse({
+            'success': True,
+            'message': 'Contraseña restablecida correctamente'
+        })
+    return render(request, 'vistaVerificacionPendiente.html')

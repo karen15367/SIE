@@ -63,7 +63,6 @@ def verify(request):
                 sesion=None
             )
             temp.save()
-            print('no')
 
             # Firmar el token
             signer = TimestampSigner()

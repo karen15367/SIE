@@ -9,6 +9,8 @@
     <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
     <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
     <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -27,7 +29,7 @@
             <div class="section-title">MODIFICAR USUARIO</div>
         </div>
 
-        <form action="/index/modCampos/" method="POST" id="mainForm">
+        <form action="/index/modCampos/" method="POST" id="mainForm" style="z-index: 800;">
             {% csrf_token %}
 
             {% if error %}
@@ -39,6 +41,7 @@
                 {% if admin == 'si' %}
                 <input type="hidden" name="real" value="{{ usuario.rfc}}">
                 <div class="form-row">
+
                     <div class="form-column">
                         <div class="form-group">
                             <label class="form-label">Nombre completo:</label>
@@ -55,23 +58,20 @@
                                 style="text-transform: uppercase;" value="{{ usuario.rfc }}" required>
                             </div>    
                         </div>
-                        
-                        <div class="form-group">
-                            <button type="button" style="width: 100%; background-color: red; color: white;">Restablecer contraseña</button>
-                        </div>
+                            
                     </div>
                     
                     <div class="form-column">
                         <div class="form-group">
                             <label class="form-label">Correo Electrónico:</label>
                             <div class="form-input">
-                                <input name="correo" type="email" class="line-input" value="{{ usuario.correo }}"
+                                <input name="correo" type="email" class="line-input" value="{{ usuario.correo }}" id="email"
                                 required>
                             </div>
                         </div>
                 
                         <div class="form-group">
-                            <label class="form-label" style="margin-top: 10px;">Carrera (opcional):</label>
+                            <label class="form-label" style="margin-top: 10px;">Carrera :</label>
                             <select id="carrera" name="carrera">
                                 <option value="General" {% if usuario.carrera == "General" %}selected{% endif %}>
                                     General
@@ -126,6 +126,7 @@
                 </div>{% else %}
                 <div class="form-row">
                     <div class="form-column">
+                        <input type="hidden" name="real" value="{{ usuario.curp}}">
                         <div class="form-group">
                             <label class="form-label">Nombre completo:</label>
                             <div class="form-input">
@@ -170,8 +171,8 @@
                         <div class="form-group">
                             <label class="form-label">No. Control:</label>
                             <div class="form-input">
-                                <input name="control" type="text" class="line-input" 
-                                value="{{ usuario.noControl }}" required>
+                                <input name="control" type="text" class="line-input" value="{{ usuario.noControl }}" required pattern="[0-9]{7-9}" minlength="9" maxlength="9" inputmode="numeric" title="Ingrese entre 7 y 9 dígitos numéricos" />
+
                             </div>
                         </div>
 
@@ -254,13 +255,13 @@
                 </div>
                 {% endif %}
             </div>
-
         </form>
+        
         <div class="buttons">
             <form action="/index/consulta/" method="get">
                 <button class="button">Regresar</button>
             </form>
-            <button class="button" type="submit" form="mainForm" id="continuar">Continuar</button>
+            <button class="button" type="submit" form="mainForm" id="continuar">Guardar</button>
         </div>
 
     </div>

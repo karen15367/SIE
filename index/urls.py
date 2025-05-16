@@ -7,9 +7,10 @@ urlpatterns = [
     path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
     path('crear-aviso/', views.crear_aviso, name='crear_aviso'),
     path('editar-aviso/<int:idNotificacion>/',
-        views.editar_aviso, name='editar_aviso'),
+         views.editar_aviso, name='editar_aviso'),
     path('vistaSignUpAdmin/', views.vistaSignUpAdmin, name='vistaSignUpAdmin'),
     path('consulta/', views.resultados, name='resultados'),
     path('modUser/', views.modUser, name='modUser'),
+    path('newPwd/', views.newPwd, name='newPwd'),
     path('modCampos/', views.modCampos, name='modCampos'),
 ]
