@@ -26,6 +26,8 @@
             <div class="section-subtitle">Indique a cual de los siguientes puntos indica su situación actual</div>
         </div>
 
+        <form action="{% url 'e8' %}" method="post" id="ubicacion">
+                {% csrf_token %}
         <div class="form-content">
             <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
@@ -39,16 +41,16 @@
                         <td style="width: 150px; font-weight: bold;">Sector primario:</td>
                         <td style="display: flex; flex-wrap: wrap; gap: 20px;">
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Agroindustria <input type="radio" name="sectorPrimario" value="Agroindustria">
+                                Agroindustria <input type="radio" name="sectorPrimario" value=1>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Pesquero <input type="radio" name="sectorPrimario" value="Pesquero">
+                                Pesquero <input type="radio" name="sectorPrimario" value=2>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Minero <input type="radio" name="sectorPrimario" value="Minero">
+                                Minero <input type="radio" name="sectorPrimario" value=3>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Otros <input type="radio" name="sectorPrimario" value="OtrosPrimario">
+                                Otros <input type="radio" name="sectorPrimario" value=4>
                             </label>
                         </td>
                     </tr>
@@ -56,16 +58,16 @@
                         <td style="font-weight: bold; margin-bottom: 20px;">Sector secundario:</td>
                         <td style="display: flex; flex-wrap: wrap; gap: 20px;">
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Industrial <input type="radio" name="sectorSecundario" value="Industrial">
+                                Industrial <input type="radio" name="sectorSecundario" value=1>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Construcción <input type="radio" name="sectorSecundario" value="Construccion">
+                                Construcción <input type="radio" name="sectorSecundario" value=2>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Petrolero <input type="radio" name="sectorSecundario" value="Petrolero">
+                                Petrolero <input type="radio" name="sectorSecundario" value=3>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Otros <input type="radio" name="sectorSecundario" value="OtrosSecundario">
+                                Otros <input type="radio" name="sectorSecundario" value=4>
                             </label>
                         </td>
                     </tr>
@@ -73,20 +75,20 @@
                         <td style="font-weight: bold;">Sector terciario:</td>
                         <td style="display: flex; flex-wrap: wrap; gap: 20px;">
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Educativo <input type="radio" name="sectorTerciario" value="Educativo">
+                                Educativo <input type="radio" name="sectorTerciario" value=1>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Turismo <input type="radio" name="sectorTerciario" value="Turismo">
+                                Turismo <input type="radio" name="sectorTerciario" value=2>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Comercio <input type="radio" name="sectorTerciario" value="Comercio">
+                                Comercio <input type="radio" name="sectorTerciario" value=3>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
                                 Servicios financieros <input type="radio" name="sectorTerciario"
-                                    value="ServiciosFinancieros">
+                                    value=4>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Otros <input type="radio" name="sectorTerciario" value="OtrosTerciario">
+                                Otros <input type="radio" name="sectorTerciario" value=5>
                             </label>
                         </td>
                     </tr>
@@ -98,22 +100,22 @@
 
                 <div style="display: flex; flex-wrap: wrap; gap: 30px; margin-left: 10px;">
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Microempresa (1-30) <input type="radio" name="tamanoEmpresa" value="Microempresa">
+                        Microempresa (1-30) <input type="radio" name="tamanoEmpresa" value=1>
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Pequeña (31-100) <input type="radio" name="tamanoEmpresa" value="Pequena">
+                        Pequeña (31-100) <input type="radio" name="tamanoEmpresa" value=2>
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Mediana (101-500) <input type="radio" name="tamanoEmpresa" value="Mediana">
+                        Mediana (101-500) <input type="radio" name="tamanoEmpresa" value=3>
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Grande (más de 500) <input type="radio" name="tamanoEmpresa" value="Grande">
+                        Grande (más de 500) <input type="radio" name="tamanoEmpresa" value=4>
                     </label>
                 </div>
 
             </div>
         </div>
-
+        </form>
         <div class="buttons"
             style="background-color: #2b5d8e; padding: 15px 0; display: flex; justify-content: center; gap: 90px; margin: 20px 20px 40px 20px; border-radius: 15px;">
             <button
@@ -121,6 +123,7 @@
                 Regresar
             </button>
             <button
+            type="submit" form="ubicacion"
                 style="background-color: #e6e6e6; color: #333; border: none; padding: 6px 15px; font-size: 14px; font-weight: bold; border-radius: 50px; cursor: pointer;">
                 Continuar
             </button>

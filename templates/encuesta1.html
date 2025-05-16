@@ -6,18 +6,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
-  <link rel="stylesheet" href="{% static '/styles/Anexo1.css' %}">
-  <link rel="stylesheet" href="{% static '/styles/encuesta1.css' %}">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+  <title>Perfil del Egresado</title>
+  <link rel="stylesheet" href="styles/encuesta1.css"> 
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+      <img src="img/logo-sep.png" alt="SEP">
       <div class="header-text">
         <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
         <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
@@ -53,11 +49,11 @@
               <label class="form-label">Sexo:</label>
               <div class="radio-group">
                 <span class="radio-option">
-                  <input type="radio" name="sexo" value="masculino" id="Femenino" required />
+                  <input type="radio" name="sexo" value=1 id="Femenino" required />
                   <label for="Femenino">Femenino</label>
                 </span>
                 <span class="radio-option">
-                  <input type="radio" name="sexo" value="Masculino" id="Masculino" required />
+                  <input type="radio" name="sexo" value=0 id="Masculino" required />
                   <label for="Masculino">Masculino</label>
                 </span>
               </div>
@@ -96,12 +92,12 @@
               <label class="form-label">Estado civil:</label>
               <div class="radio-group">
                 <span class="radio-option">
-                  <input type="radio" name="estado" value="soltero" id="soltero" required />
-                  <label for="soltero">Femenino</label>
+                  <input type="radio" name="estado" value=0 id="soltero" required />
+                  <label for="soltero">Soltero</label>
                 </span>
                 <span class="radio-option">
-                  <input type="radio" name="estado" value="casado" id="casado" required />
-                  <label for="casado">Masculino</label>
+                  <input type="radio" name="estado" value=2 id="casado" required />
+                  <label for="casado">Casado</label>
                 </span>
               </div>
             </div>

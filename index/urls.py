@@ -9,6 +9,7 @@ urlpatterns = [
     path('editar-aviso/<int:idNotificacion>/',
          views.editar_aviso, name='editar_aviso'),
     path('vistaSignUpAdmin/', views.vistaSignUpAdmin, name='vistaSignUpAdmin'),
+
     path('consulta/', views.resultados, name='resultados'),
     path('modUser/', views.modUser, name='modUser'),
     path('newPwd/', views.newPwd, name='newPwd'),
