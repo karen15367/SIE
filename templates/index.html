@@ -14,7 +14,7 @@
     <script src="{% static '/script/popup.js' %}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const menuButton = document.getElementById('menuButton');
@@ -55,20 +55,18 @@
                     {% if tipo == 'admin' %}
                     <form id="mi-form" method="get">
                         {% csrf_token %}
-                        <select name="opcion" onchange="
-            this.form.action = this.value;
-            this.form.submit();">
-                                <option>Selecciona una opción</option>
+                        <select name="opcion" 
+                        onchange="this.form.action = this.value; this.form.submit();">
+                            <option>Selecciona una opción</option>
                             <optgroup label="Resultados">
                                 <option value="#">ENCUESTAS</option>
-                                <option value="#">ANEXO</option>
+                                <option value="/anexoR/">ANEXO</option>
                             </optgroup>
                             <optgroup label="Usuarios">
                                 <option value="consulta/">CONSULTAR</option>
                             </optgroup>
                         </select>
                     </form>
-
 
                     {% else %}
                     <button class="btnBorder">ENCUESTAS</button>
@@ -90,16 +88,16 @@
             </div>
             <!-- Contenido específico según el tipo de usuario -->
             {% if tipo == 'egresado' %}
-                <!-- Contenido para Egresados -->
-                {% if carrera == 'Ing. Química' or  carrera == 'Ing. Bioquímica'%}
-                    <a href="{% url 'anexo1' %}">
-                        <button class="button-28" role="button">RESPONDER ENCUESTA</button>
-                    </a>
-                {% else %}
-                    <a href="{% url 'e1' %}">
-                        <button class="button-28" role="button">RESPONDER ENCUESTA</button>
-                    </a>
-                {% endif %}
+            <!-- Contenido para Egresados -->
+            {% if carrera == 'Ing. Química' or carrera == 'Ing. Bioquímica'%}
+            <a href="{% url 'anexo1' %}">
+                <button class="button-28" role="button">RESPONDER ENCUESTA</button>
+            </a>
+            {% else %}
+            <a href="{% url 'e1' %}">
+                <button class="button-28" role="button">RESPONDER ENCUESTA</button>
+            </a>
+            {% endif %}
             <!-- Contenido para Egresados -->
             {% if carrera == 'Ing. Química' or carrera == 'Ing. Bioquímica'%}
             <div id="dvEncuesta">
@@ -115,20 +113,20 @@
             </div>
             {% endif %}
             {% elif tipo == 'admin' %}
-                {% if carrera == 'general' %}
-                    <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
-                        <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
-                            <button class="button-28" role="button">CREAR AVISO</button>
-                        </a>
-                        <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
-                            <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
-                        </a>
-                    </div>
-                {% else %}
-                        <a href="{% url 'crear_aviso' %}">
-                            <button class="button-28" role="button">HACER AVISO</button>
-                        </a>
-                {% endif %}
+            {% if carrera == 'general' %}
+            <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
+                <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
+                    <button class="button-28" role="button">CREAR AVISO</button>
+                </a>
+                <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
+                    <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
+                </a>
+            </div>
+            {% else %}
+            <a href="{% url 'crear_aviso' %}">
+                <button class="button-28" role="button">HACER AVISO</button>
+            </a>
+            {% endif %}
             {% if carrera == 'General' %}
             <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
                 <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">

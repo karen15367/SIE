@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'index',
     'anexo',
     'signinAdmin',
+    'anexoR',
+    'encuestaR',
 ]
 
 MIDDLEWARE = [

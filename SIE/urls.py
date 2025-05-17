@@ -26,4 +26,6 @@ urlpatterns = [
     path('anexo/', include('anexo.urls') ),
     path('admin-signup/', include('signinAdmin.urls')),
     path('encuesta/', include('encuesta.urls') ),
+    path('anexoR/', include('anexoR.urls') ),
+    #path('encuestaR/', include('encuestaR.urls') ),
 ]

@@ -184,9 +184,11 @@
             </section>
 
         </div>
-        <div class="buttons">
-            <button class="button" onclick="window.location.href='{% url 'index' %}'">Regresar</button>
-        </div>
+        <form action="/index/" method="get">
+            <div class="buttons">
+                <button class="button" type="submit">Regresar</button>
+            </div>
+        </form>
     </div>
 </body>
 
