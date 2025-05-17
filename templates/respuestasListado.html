@@ -1,0 +1,100 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+</head>
+
+<body>
+    <div class="container" style="max-width:  10000px;">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" height="150" />
+            <div class="header-text">
+                <div class="title">
+                    LISTADO DE RESPUESTAS: {% if anexo %}ANEXO QUÍMICA Y B. QUÍMICA{% else %} ENCUESTA {% endif %}
+                </div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">SECCIONE EL PERIODO A VISUALIZAR</div>
+            <div class="section-subtitle"></div>
+        </div>
+
+        <div class="form-content" style=" overflow-y: auto;">
+            <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
+            <h2 style="text-align: center;">LISTADO</h2>
+            <hr>
+            {% if resultado %}
+            {% for contenido in listado %}
+            <div class="form-section">
+                {% if inicio %}
+                <div class="section-subtitle">
+                    {% if anexo %}<!--* si tiene resultado es inicio y es anexo-->
+                    TIPO: {{ contenido.folioAnexoS1 }}
+                    PERIODO: {{ contenido.folioEncuesta_id }}
+                    <form action="#" method="post" id="ver_{{ forloop.counter0 }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="folio" value="{{ contenido.folioEncuesta_id }}">
+                    </form>
+                    {% else %} <!--! si  es la pagina principal y no es anexo-->
+                    ENCUESTA
+                    <form action="#" method="post" id="ver_{{ forloop.counter0 }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="folio" value="contenido.">
+                    </form>
+                    {% endif %}
+                </div>
+                {% else %} <!--! si no es inicio-->
+                {% if anexo %}<!--* si no es inicio pero es anexo-->
+                Parte: {{ contenido.id }}
+                
+                <form action="/{{ contenido.direccion }}/" method="post" id="ver_{{ forloop.counter0 }}">
+                    {% csrf_token %}
+                    <input type="hidden" name="tipo" value="{{ contenido.folioEncuesta_id }}">
+                </form>
+                {% else %}<!--! no es inicio y no es anexo-->
+                contenido
+                {% endif %}
+                {% endif %}
+
+                <button type="submit" form="ver_{{ forloop.counter0 }}" class="button" style="width:30%;">
+                    Ver
+                </button>
+            </div>
+            <hr>
+            {% endfor %}
+            {% else %} <!--! si no hay resultado -->
+            <div class="form-section">
+                <div class="section-subtitle">NO SE ENCONTRARON ENCUESTAS</div>
+            </div>
+            {% endif %}
+
+
+        </div>
+
+        {% if anexo %}
+        <form action="/{% if inicio %}index{% else %}anexoR{% endif %}/" id="return" method="get">
+            {% csrf_token %}
+        </form>
+        {% else %}
+        <form action="/{% if inicio %}index{% else %}recuperacion{% endif %}/" id="return" method="get">
+            {% csrf_token %}
+        </form>
+        {% endif %}
+        <div class="buttons">
+            <button class="button" form="return" type="submit">Regresar</button>
+        </div>
+
+    </div>
+</body>
+
+</html>
