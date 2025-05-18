@@ -7,32 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
-
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales', 'Expenses'],
-                ['2013', 1000, 400],
-                ['2014', 1170, 460],
-                ['2015', 660, 1120],
-                ['2016', 1030, 540]
-            ]);
-
-            var options = {
-                title: 'Company Performance',
-                hAxis: { title: 'Year', titleTextStyle: { color: '#333' } },
-                vAxis: { minValue: 0 }
-            };
-
-            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-        }
-    </script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
 </head>
@@ -59,10 +34,8 @@
             <form action="#" method="post" id="ubicacion">
                 {% csrf_token %}
 
-                <div class="form-group"></div>
-                <div id="chart_div" style="width: 100%; height: 500px;"></div>
-                
-
+                {% block content %}
+                {% endblock %}
 
             </form>
         </div>

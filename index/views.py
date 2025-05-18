@@ -397,10 +397,6 @@ def modCampos(request):
 
 def newPwd(request):
     if request.method == 'POST':
-        # Procesar el formulario de restablecimiento de contraseña
-        # Aquí implementarías la lógica para restablecer la contraseña
-        
-        # Si el restablecimiento fue exitoso:
         return JsonResponse({
             'success': True,
             'message': 'Contraseña restablecida correctamente'

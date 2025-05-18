@@ -55,7 +55,7 @@
                 </div>
                 {% else %} <!--! si no es inicio-->
                 {% if anexo %}<!--* si no es inicio pero es anexo-->
-                Parte: {{ contenido.id }}
+                {{ contenido.id }}
                 
                 <form action="/{{ contenido.direccion }}/" method="post" id="ver_{{ forloop.counter0 }}">
                     {% csrf_token %}

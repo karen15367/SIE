@@ -55,8 +55,7 @@
                     {% if tipo == 'admin' %}
                     <form id="mi-form" method="get">
                         {% csrf_token %}
-                        <select name="opcion" 
-                        onchange="this.form.action = this.value; this.form.submit();">
+                        <select name="opcion" onchange="this.form.action = this.value; this.form.submit();">
                             <option>Selecciona una opción</option>
                             <optgroup label="Resultados">
                                 <option value="#">ENCUESTAS</option>
@@ -89,27 +88,19 @@
             <!-- Contenido específico según el tipo de usuario -->
             {% if tipo == 'egresado' %}
             <!-- Contenido para Egresados -->
-            {% if carrera == 'Ing. Química' or carrera == 'Ing. Bioquímica'%}
-            <a href="{% url 'anexo1' %}">
-                <button class="button-28" role="button">RESPONDER ENCUESTA</button>
-            </a>
-            {% else %}
-            <a href="{% url 'e1' %}">
-                <button class="button-28" role="button">RESPONDER ENCUESTA</button>
-            </a>
-            {% endif %}
+
             <!-- Contenido para Egresados -->
             {% if carrera == 'Ing. Química' or carrera == 'Ing. Bioquímica'%}
             <div id="dvEncuesta">
                 <a href="{% url 'anexo1' %}">
-                    <button class="button-28" role="button">RESPONDER ENCUESTA QUIMICA Y BIOQUIMICA</button>
+                    <button class="button-28" role="button">RESPONDER ENCUESTA QUÍMICA Y BIOQUÍMICA</button>
                 </a>
+                <button class="button-28" role="button">RESPONDER ENCUESTA</button>
             </div>
+            
             {% else %}
             <div id="dvEncuesta">
-
                 <button class="button-28" role="button">RESPONDER ENCUESTA</button>
-
             </div>
             {% endif %}
             {% elif tipo == 'admin' %}
