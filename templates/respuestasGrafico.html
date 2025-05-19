@@ -40,7 +40,7 @@
             </form>
         </div>
         <div class="buttons">
-            <form action="/{% if anexo %}anexoR{% else %} ENCUESTA {% endif %}/" method="post" id="return">
+            <form action="/{% if anexo %}anexoR{% else %}encuestaR{% endif %}/" method="post" id="return">
                 {% csrf_token %}
             </form>
             <button class="button" type="submit" form="return">Regresar</button>

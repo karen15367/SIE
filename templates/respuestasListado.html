@@ -90,7 +90,7 @@
             {% csrf_token %}
         </form>
         {% else %}
-        <form action="/{% if inicio %}index{% else %}recuperacion{% endif %}/" id="return" method="get">
+        <form action="/{% if inicio %}index{% else %}encuestaR{% endif %}/" id="return" method="get">
             {% csrf_token %}
         </form>
         {% endif %}
