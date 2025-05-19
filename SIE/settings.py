@@ -97,6 +97,7 @@ WSGI_APPLICATION = 'SIE.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+'''
 
 DATABASES = {
     'default': {
@@ -108,7 +109,10 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-
+'''
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+}
 
 
 # Database
