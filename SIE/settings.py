@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'SIE.urls'
@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'SIE.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -108,10 +108,8 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-'''
-DATABASES ={
-    'default': dj_database_url.config()
-}
+
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
