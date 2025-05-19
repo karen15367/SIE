@@ -351,10 +351,10 @@
         var data = google.visualization.arrayToDataTable([
         ['Organismo ', 'cantidad'],
 
-        ['Publico', {{ empresa.uno }}],
-        ['Privado', {{ empresa.dos }}],
-        [' Social', {{ empresa.tres }}],
-        [' Social', {{ empresa.cuatro }}],
+        ['Agroindustria', {{ sectorp.uno }}],
+        ['Pesquero', {{ sectorp.dos }}],
+        [' Minero', {{ sectorp.tres }}],
+        [' Otros', {{ sectorp.cuatro }}],
         ]);
 
     var options = {
@@ -362,7 +362,76 @@
         pieHole: 0.4,
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById('donutchartDatos'));
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSectorP'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Organismo ', 'cantidad'],
+
+        ['Industrial', {{ sectors.uno }}],
+        ['Construcción', {{ sectors.dos }}],
+        ['Petrolero', {{ sectors.tres }}],
+        ['Otros', {{ sectors.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'SECTOR SECUNDARIO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSectorS'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Organismo ', 'cantidad'],
+
+        ['Industrial', {{ sectors.uno }}],
+        ['Construcción', {{ sectors.dos }}],
+        ['Petrolero', {{ sectors.tres }}],
+        ['Otros', {{ sectors.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'SECTOR SECUNDARIO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSectorS'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Organismo ', 'cantidad'],
+
+        ['Educativo', {{ sectort.uno }}],
+        ['Turismo', {{ sectort.dos }}],
+        ['Servicios financieros', {{ sectort.tres }}],
+        ['Otros', {{ sectort.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'SECTOR TERCIARIO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSectorT'));
     chart.draw(data, options);
     }
 </script>
@@ -408,11 +477,12 @@
 <hr>
 <div class="question-group" style="margin-top: 25px;">
     <div id="donutchartDatos" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartSectorP" style="width: 100%; height: 500px;"></div>
 </div>
 <hr>
 <div class="question-group" style="margin-top: 25px;">
-    <div id="donutchartActividad" style="width: 100%; height: 500px;"></div>
-    <div id="donutchartEstudio" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartSectorS" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartSectorT" style="width: 90%; height: 500px;"></div>
 </div>
 <hr>
 <div class="form-section">
