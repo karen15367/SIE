@@ -1,0 +1,47 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+{% block content %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+google.charts.load("current", {packages:["corechart"]});
+google.charts.setOnLoadCallback(drawCharts);
+
+function drawCharts() {
+    drawChart('cursosActualizacion_chart', '¿Tomó cursos de actualización?', {{ cursosActualizacion|safe }});
+    drawChart('tomarPosgrado_chart', '¿Desea cursar posgrado?', {{ tomarPosgrado|safe }});
+    drawChart('orgSociales_chart', '¿Pertenece a organizaciones sociales?', {{ orgSociales|safe }});
+    drawChart('orgProfesionales_chart', '¿Pertenece a organismos profesionales?', {{ orgProfesionales|safe }});
+    drawChart('asociacionEgresados_chart', '¿Pertenece a asociación de egresados?', {{ asociacionEgresados|safe }});
+}
+
+function drawChart(divId, title, dataDict) {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Respuesta');
+    data.addColumn('number', 'Cantidad');
+    for (const [key, value] of Object.entries(dataDict)) {
+        data.addRow([key, value]);
+    }
+    var options = {
+        title: title,
+        pieHole: 0.4,
+        width: 600,
+        height: 400
+    };
+    var chart = new google.visualization.PieChart(document.getElementById(divId));
+    chart.draw(data, options);
+}
+</script>
+
+<h2>Encuesta - Participación y Actualización (E5)</h2>
+
+<div id="cursosActualizacion_chart"></div>
+<div id="tomarPosgrado_chart"></div>
+<div id="orgSociales_chart"></div>
+<div id="orgProfesionales_chart"></div>
+<div id="asociacionEgresados_chart"></div>
+
+<div style="text-align: center; margin-top: 10px;">
+    <a href="{% url 'exportarE5' %}" class="button">Descargar CSV</a>
+
+</div>
+{% endblock %}

@@ -13,7 +13,9 @@ from django.core.signing import Signer, BadSignature, SignatureExpired, Timestam
 
 # Create your views here.
 
-def login(request):
+def login_view(request):
+    
+    print("⚠️ Entrando a login_view")
     if request.method == 'POST':
         recaptcha_response = request.POST.get("g-recaptcha-response")
         data = {
@@ -23,7 +25,7 @@ def login(request):
         response = requests.post(
             "https://www.google.com/recaptcha/api/siteverify", data=data)
         result = response.json()
-
+        print("⚠️ Entrando a login_view")
         if not result["success"]:
             # messages.error(request, "¡Completa el reCAPTCHA!")
             return redirect("/")
