@@ -1,0 +1,261 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+
+{% block content %}
+<h2>Desempeño Profesional - Aspectos tomados en cuenta por la empresa</h2>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    
+    // Script para areaCampoEstudio
+    google.charts.setOnLoadCallback(drawAreaCampoEstudio);
+    function drawAreaCampoEstudio() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ areaCampoEstudio.1poco|default:0 }}],
+            ['2', {{ areaCampoEstudio.2|default:0 }}],
+            ['3', {{ areaCampoEstudio.3|default:0 }}],
+            ['4', {{ areaCampoEstudio.4|default:0 }}],
+            ['5(mucho)', {{ areaCampoEstudio.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Área o campo de estudio',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('areaCampoEstudio_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para titulacion
+    google.charts.setOnLoadCallback(drawTitulacion);
+    function drawTitulacion() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ titulacion.1poco|default:0 }}],
+            ['2', {{ titulacion.2|default:0 }}],
+            ['3', {{ titulacion.3|default:0 }}],
+            ['4', {{ titulacion.4|default:0 }}],
+            ['5(mucho)', {{ titulacion.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Titulación',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('titulacion_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para experienciaLaboral
+    google.charts.setOnLoadCallback(drawExperienciaLaboral);
+    function drawExperienciaLaboral() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ experienciaLaboral.1poco|default:0 }}],
+            ['2', {{ experienciaLaboral.2|default:0 }}],
+            ['3', {{ experienciaLaboral.3|default:0 }}],
+            ['4', {{ experienciaLaboral.4|default:0 }}],
+            ['5(mucho)', {{ experienciaLaboral.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Experiencia Laboral',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('experienciaLaboral_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para competenciaLaboral
+    google.charts.setOnLoadCallback(drawCompetenciaLaboral);
+    function drawCompetenciaLaboral() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ competenciaLaboral.1poco|default:0 }}],
+            ['2', {{ competenciaLaboral.2|default:0 }}],
+            ['3', {{ competenciaLaboral.3|default:0 }}],
+            ['4', {{ competenciaLaboral.4|default:0 }}],
+            ['5(mucho)', {{ competenciaLaboral.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Competencia Laboral',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('competenciaLaboral_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para posicionamientoInstitucion
+    google.charts.setOnLoadCallback(drawPosicionamientoInstitucion);
+    function drawPosicionamientoInstitucion() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ posicionamientoInstitucion.1poco|default:0 }}],
+            ['2', {{ posicionamientoInstitucion.2|default:0 }}],
+            ['3', {{ posicionamientoInstitucion.3|default:0 }}],
+            ['4', {{ posicionamientoInstitucion.4|default:0 }}],
+            ['5(mucho)', {{ posicionamientoInstitucion.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Posicionamiento de la Institución',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('posicionamientoInstitucion_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para conocimientoIdiomas
+    google.charts.setOnLoadCallback(drawConocimientoIdiomas);
+    function drawConocimientoIdiomas() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ conocimientoIdiomas.1poco|default:0 }}],
+            ['2', {{ conocimientoIdiomas.2|default:0 }}],
+            ['3', {{ conocimientoIdiomas.3|default:0 }}],
+            ['4', {{ conocimientoIdiomas.4|default:0 }}],
+            ['5(mucho)', {{ conocimientoIdiomas.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Conocimiento de Idiomas',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('conocimientoIdiomas_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para recomendacionesReferencias
+    google.charts.setOnLoadCallback(drawRecomendacionesReferencias);
+    function drawRecomendacionesReferencias() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ recomendacionesReferencias.1poco|default:0 }}],
+            ['2', {{ recomendacionesReferencias.2|default:0 }}],
+            ['3', {{ recomendacionesReferencias.3|default:0 }}],
+            ['4', {{ recomendacionesReferencias.4|default:0 }}],
+            ['5(mucho)', {{ recomendacionesReferencias.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Recomendaciones y Referencias',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('recomendacionesReferencias_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para personalidadActitudes
+    google.charts.setOnLoadCallback(drawPersonalidadActitudes);
+    function drawPersonalidadActitudes() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ personalidadActitudes.1poco|default:0 }}],
+            ['2', {{ personalidadActitudes.2|default:0 }}],
+            ['3', {{ personalidadActitudes.3|default:0 }}],
+            ['4', {{ personalidadActitudes.4|default:0 }}],
+            ['5(mucho)', {{ personalidadActitudes.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Personalidad y Actitudes',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('personalidadActitudes_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para capacidadLiderazgo
+    google.charts.setOnLoadCallback(drawCapacidadLiderazgo);
+    function drawCapacidadLiderazgo() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ capacidadLiderazgo.1poco|default:0 }}],
+            ['2', {{ capacidadLiderazgo.2|default:0 }}],
+            ['3', {{ capacidadLiderazgo.3|default:0 }}],
+            ['4', {{ capacidadLiderazgo.4|default:0 }}],
+            ['5(mucho)', {{ capacidadLiderazgo.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Capacidad de Liderazgo',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('capacidadLiderazgo_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    // Script para otrosAspectos
+    google.charts.setOnLoadCallback(drawOtrosAspectos);
+    function drawOtrosAspectos() {
+        var data = google.visualization.arrayToDataTable([
+            ['Valoración', 'Cantidad'],
+            ['1(poco)', {{ otrosAspectos.1poco|default:0 }}],
+            ['2', {{ otrosAspectos.2|default:0 }}],
+            ['3', {{ otrosAspectos.3|default:0 }}],
+            ['4', {{ otrosAspectos.4|default:0 }}],
+            ['5(mucho)', {{ otrosAspectos.5mucho|default:0 }}]
+        ]);
+        var options = {
+            title: 'Otros Aspectos',
+            hAxis: {title: 'Valoración'},
+            vAxis: {title: 'Cantidad'}
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('otrosAspectos_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+<!-- Contenedores para las gráficas organizados en grupos al igual que en los otros templates -->
+<div class="question-group" style="margin-top: 25px;">
+    <div id="areaCampoEstudio_chart" style="width: 100%; height: 400px;"></div>
+    <div id="titulacion_chart" style="width: 100%; height: 400px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="experienciaLaboral_chart" style="width: 100%; height: 400px;"></div>
+    <div id="competenciaLaboral_chart" style="width: 100%; height: 400px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="posicionamientoInstitucion_chart" style="width: 100%; height: 400px;"></div>
+    <div id="conocimientoIdiomas_chart" style="width: 100%; height: 400px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="recomendacionesReferencias_chart" style="width: 100%; height: 400px;"></div>
+    <div id="personalidadActitudes_chart" style="width: 100%; height: 400px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="capacidadLiderazgo_chart" style="width: 100%; height: 400px;"></div>
+    <div id="otrosAspectos_chart" style="width: 100%; height: 400px;"></div>
+</div>
+
+<!-- Añadir un enlace para descargar los datos si es necesario -->
+<div style="text-align: center; margin: 20px;">
+    <a href="{% url 'exportarE4' %}" class="button">Descargar CSV E4</a>
+
+</div>
+
+{% endblock %}

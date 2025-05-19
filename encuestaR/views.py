@@ -2,43 +2,28 @@ from django.shortcuts import render
 
 from core.models import EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS4, EncuestaS5, EncuestaS3Empresa
 from django.http import HttpResponse
+from django.db.models import Count
 import csv
 
 # Create your views here.
 
 
 def viewEncuesta(request):
-    if request.method == 'POST':
+    lista = [
+        {'id': 'PERFIL DEL EGRESADO', 'direccion': 'encuestaR/E1'},
+        {'id': 'PERTINENCIA Y DISPONIBILIDAD', 'direccion': 'encuestaR/E2'},
+        {'id': 'UBICACIÓN LABORAL', 'direccion': 'encuestaR/E3Empresa'},
+        {'id': 'DATOS DE LA EMPRESA/ORGANIZACIÓN', 'direccion': 'encuestaR/E3'},
+        {'id': 'DESEMPEÑO PROFESIONAL', 'direccion': 'encuestaR/E4'},
+        {'id': 'DESAROLLO PROFESIONAL Y SOCIAL', 'direccion': 'encuestaR/E5'},
+    ]
 
-        try:
-            lista = [
-                {'id': 'PERFIL DEL EGRESADO', 'direccion': 'encuestaR/E1'},
-                {'id': 'SITUACIÓN LABORAL', 'direccion': 'encuestaR/E2'},
-                {'id': 'PLAN DE ESTUDIOS / INSTITUCIÓN ', 'direccion': 'anexoR/A3'},
-                {'id': 'DESEMPEÑO LABORAL', 'direccion': 'anexoR/A4'},
-            ]
-        except:
-            pass
-
-        
-        return render(request, 'respuestasListado.html', {
-            'anexo': False,
-            'inicio': False,
-            'resultado': True,
-            'listado': lista,
-        })
-    else:
-        lista = EncuestaS1.objects.all()
-        resultado = False
-        if lista:
-            resultado = True
-
-        return render(request, 'respuestasListado.html', {
-            'anexo': False,
-            'inicio': 'si',
-            'resultado': resultado,
-            'listado': lista,
-        })
+    return render(request, 'respuestasListado.html', {
+        'anexo': False,
+        'inicio': False,
+        'resultado': True,
+        'listado': lista,
+    })
 
 
 def viewE1(request):
@@ -157,3 +142,117 @@ def exportarE2(request):
 
     return response
 
+
+def viewE4(request):
+
+    def contar(campo, choices):
+        resultados = EncuestaS4.objects.values(campo).annotate(total=Count(campo))
+        
+        # Crear un diccionario adaptado para las plantillas
+        conteo = {
+            '1poco': 0,
+            '2': 0,
+            '3': 0,
+            '4': 0,
+            '5mucho': 0
+        }
+        
+        # Llenar el diccionario con los valores obtenidos
+        for r in resultados:
+            valor = r[campo]
+            if valor == 1:
+                conteo['1poco'] = r['total']
+            elif valor == 2:
+                conteo['2'] = r['total']
+            elif valor == 3:
+                conteo['3'] = r['total']
+            elif valor == 4:
+                conteo['4'] = r['total']
+            elif valor == 5:
+                conteo['5mucho'] = r['total']
+        
+        return conteo
+
+    context = {
+        'areaCampoEstudio': contar('areaCampoEstudio', EncuestaS4.VALORACION_CHOICES),
+        'titulacion': contar('titulacion', EncuestaS4.VALORACION_CHOICES),
+        'experienciaLaboral': contar('experienciaLaboral', EncuestaS4.VALORACION_CHOICES),
+        'competenciaLaboral': contar('competenciaLaboral', EncuestaS4.VALORACION_CHOICES),
+        'posicionamientoInstitucion': contar('posicionamientoInstitucion', EncuestaS4.VALORACION_CHOICES),
+        'conocimientoIdiomas': contar('conocimientoIdiomas', EncuestaS4.VALORACION_CHOICES),
+        'recomendacionesReferencias': contar('recomendacionesReferencias', EncuestaS4.VALORACION_CHOICES),
+        'personalidadActitudes': contar('personalidadActitudes', EncuestaS4.VALORACION_CHOICES),
+        'capacidadLiderazgo': contar('capacidadLiderazgo', EncuestaS4.VALORACION_CHOICES),
+        'otrosAspectos': contar('otrosAspectos', EncuestaS4.VALORACION_CHOICES),
+    }
+
+    return render(request, 'layouts/E4.html', context)
+
+def exportarE4(request):
+    data = EncuestaS4.objects.select_related('folioEncuesta').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE4_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'Folio Encuesta',
+        'Área o campo de estudio',
+        'Titulación',
+        'Experiencia laboral',
+        'Competencia laboral',
+        'Posicionamiento institución',
+        'Conocimiento idiomas',
+        'Recomendaciones/referencias',
+        'Personalidad/actitudes',
+        'Capacidad liderazgo',
+        'Otros aspectos'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.folioEncuesta_id,
+            e.get_areaCampoEstudio_display() if e.areaCampoEstudio else '',
+            e.get_titulacion_display() if e.titulacion else '',
+            e.get_experienciaLaboral_display() if e.experienciaLaboral else '',
+            e.get_competenciaLaboral_display() if e.competenciaLaboral else '',
+            e.get_posicionamientoInstitucion_display() if e.posicionamientoInstitucion else '',
+            e.get_conocimientoIdiomas_display() if e.conocimientoIdiomas else '',
+            e.get_recomendacionesReferencias_display() if e.recomendacionesReferencias else '',
+            e.get_personalidadActitudes_display() if e.personalidadActitudes else '',
+            e.get_capacidadLiderazgo_display() if e.capacidadLiderazgo else '',
+            e.get_otrosAspectos_display() if e.otrosAspectos else '',
+        ])
+
+    return response
+
+
+def viewE5(request):
+    def contar(campo):
+        data = EncuestaS5.objects.values(campo).annotate(total=Count(campo))
+        return {'Sí': sum(d['total'] for d in data if d[campo] == 1), 'No': sum(d['total'] for d in data if d[campo] == 0)}
+
+    context = {
+        'cursosActualizacion': contar('cursosActualizacion'),
+        'tomarPosgrado': contar('tomarPosgrado'),
+        'orgSociales': contar('perteneceOrganizacionesSociales'),
+        'orgProfesionales': contar('perteneceOrganismosProfesionistas'),
+        'asociacionEgresados': contar('perteneceAsociacionEgresados'),
+    }
+    return render(request, 'layouts/E5.html', context)
+
+def exportarE5(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="E5.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Folio', 'Cursos Actualización', 'Desea Posgrado', 'Org. Sociales', 'Org. Profesionales', 'Asoc. Egresados'])
+    for e in EncuestaS5.objects.all():
+        writer.writerow([
+            e.folioEncuesta_id,
+            e.cursosActualizacion,
+            e.tomarPosgrado,
+            e.perteneceOrganizacionesSociales,
+            e.perteneceOrganismosProfesionistas,
+            e.perteneceAsociacionEgresados
+        ])
+    return response
