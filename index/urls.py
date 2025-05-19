@@ -1,6 +1,8 @@
+#index/urls.py
 from django.urls import path
 from . import views
 from django.urls import include
+from importador.views import procesar_excel_anexo, procesar_excel_encuesta
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -13,4 +15,7 @@ urlpatterns = [
     path('consulta/', views.resultados, name='resultados'),
     path('modUser/', views.modUser, name='modUser'),
     path('modCampos/', views.modCampos, name='modCampos'),
+    path('importar-anexo/', procesar_excel_anexo, name='importar_anexo'),
+    path('importar-encuesta/', procesar_excel_encuesta, name='importar_encuesta'),
+
 ]

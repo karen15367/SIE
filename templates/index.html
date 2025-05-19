@@ -60,18 +60,20 @@
             this.form.submit();">
                                 <option>Selecciona una opción</option>
                             <optgroup label="Resultados">
-                                <option value="#">ENCUESTAS</option>
-                                <option value="#">ANEXO</option>
+                                <option value="#">ENCUESTA EGRESADOS</option>
+                                <option value="#">ANEXO QUIMICA Y BIOQUIMICA</option>
                             </optgroup>
                             <optgroup label="Usuarios">
                                 <option value="consulta/">CONSULTAR</option>
                             </optgroup>
+                            <optgroup label="Importar Datos">
+                                <option value="importar-encuesta/">ENCUESTA EGRESADOS</option>
+                                <option value="importar-anexo/">ANEXO QUIMICA Y BIOQUIMICA</option>
+                            </optgroup>
                         </select>
                     </form>
-
-
                     {% else %}
-                    <button class="btnBorder">ENCUESTAS</button>
+                        <button class="btnBorder">ENCUESTAS</button>
                     {% endif %}
                     <form action="cerrar-sesion/ " method="get">
                         <button class="btnBorder" type="submit">SALIR</a></button>
@@ -100,55 +102,27 @@
                         <button class="button-28" role="button">RESPONDER ENCUESTA</button>
                     </a>
                 {% endif %}
-            <!-- Contenido para Egresados -->
-            {% if carrera == 'Ing. Química' or carrera == 'Ing. Bioquímica'%}
-            <div id="dvEncuesta">
-                <a href="{% url 'anexo1' %}">
-                    <button class="button-28" role="button">RESPONDER ENCUESTA QUIMICA Y BIOQUIMICA</button>
-                </a>
-            </div>
             {% else %}
-            <div id="dvEncuesta">
-
-                <button class="button-28" role="button">RESPONDER ENCUESTA</button>
-
-            </div>
-            {% endif %}
-            {% elif tipo == 'admin' %}
-                {% if carrera == 'general' %}
-                    <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
-                        <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
-                            <button class="button-28" role="button">CREAR AVISO</button>
-                        </a>
-                        <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
-                            <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
-                        </a>
-                    </div>
-                {% else %}
-                        <a href="{% url 'crear_aviso' %}">
-                            <button class="button-28" role="button">HACER AVISO</button>
-                        </a>
+                {% if tipo == 'admin' %}
+                    {% if carrera == 'general' %}
+                        <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
+                            <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
+                                <button class="button-28" role="button">CREAR AVISO</button>
+                            </a>
+                            <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
+                                <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
+                            </a>
+                        </div>
+                    {% else %}
+                            <a href="{% url 'crear_aviso' %}">
+                                <button class="button-28" role="button">HACER AVISO</button>
+                            </a>
+                    {% endif %}
                 {% endif %}
-            {% if carrera == 'General' %}
-            <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
-                <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
-                    <button class="button-28" role="button">CREAR AVISO</button>
-                </a>
-                <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
-                    <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
-                </a>
-            </div>
-            {% else %}
-            <div id="dvEncuesta">
-                <a href="{% url 'crear_aviso' %}">
-                    <button class="button-28" role="button">HACER AVISO</button>
-                </a>
-            </div>
-            {% endif %}
             {% endif %}
 
             <div class="welcome-info"
-                style="position: absolute; top: 140px; left: 50%; transform: translateX(-50%); z-index: 1;">
+                style="position: absolute; top: 70px; left: 50%; transform: translateX(-50%); z-index: 1;">
                 <div class="welcome-title">Bienvenido(a)</div>
                 <div class="user-name">
                     {% if nombre %}

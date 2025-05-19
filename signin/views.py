@@ -90,7 +90,7 @@ def verify(request):
 
             return render(request, "vistaVerificacionPendiente.html")
 
-        except Exception as e ZeroDivisionError as e:
+        except Exception:
             print(e)
             print(">>> ERROR durante verificación:", str(e))
 

@@ -17,15 +17,15 @@ from core.validators import (
 # ---------------------------
 class Egresado(models.Model):
     curp = models.CharField(max_length=18, primary_key=True, validators=[curp_validator])
-    nombre = models.CharField(max_length=50, validators=[solo_letras_espacios])
-    noControl = models.CharField(max_length=9, unique=True, validators=[numero_control_validator])
-    correo = models.EmailField(max_length=50, unique=True, validators=[EmailValidator(message='Ingrese un correo electrónico válido')])
-    sexo = models.BooleanField()  # 1=Femenino, 0=Masculino
-    fechaNacimiento = models.DateField()
+    nombre = models.CharField(max_length=50, validators=[solo_letras_espacios],null=True)
+    noControl = models.CharField(max_length=9, unique=True, validators=[numero_control_validator],null=True)
+    correo = models.EmailField(max_length=50, unique=True, validators=[EmailValidator(message='Ingrese un correo electrónico válido')],null=True)
+    sexo = models.BooleanField(null=True)  # 1=Femenino, 0=Masculino
+    fechaNacimiento = models.DateField(null=True)
     carrera = models.CharField(max_length=50, validators=[solo_letras_espacios])
-    titulado = models.BooleanField()
-    fechaEgreso = models.DateField()
-    contraseña = models.CharField(max_length=128)
+    titulado = models.BooleanField(null=True)
+    fechaEgreso = models.DateField(null=True)
+    contraseña = models.CharField(max_length=128,null=True)
     tempPwd = models.CharField(max_length=128, blank=True, null=True)
     sesion = models.CharField(max_length=255, blank=True, null=True)
 
@@ -359,7 +359,7 @@ class EncuestaS3Empresa(models.Model):
     
     # Opciones para el campo "sectorPrimario"
     SECTOR_PRIMARIO_CHOICES = [
-        (1, 'Agroindustria'),
+        (1, 'Agroindustrial'),
         (2, 'Pesquero'),
         (3, 'Minero'),
         (4, 'Otros')
@@ -427,27 +427,27 @@ class EncuestaS4(models.Model):
     ]
     
     FORMACION_CHOICES = [
-        (1, 'Educativo'),
-        (2, 'Turismo'),
-        (3, 'Comercio'),
-        (4, 'Servicios financieros'),
-        (5, 'Otros')
+        (1, 'Excelente'),
+        (2, 'Bueno'),
+        (3, 'Regular'),
+        (4, 'Malo'),
+        (5, 'Pésimo')
     ]
     
     UTILIDAD_CHOICES = [
-        (1, 'Educativo'),
-        (2, 'Turismo'),
-        (3, 'Comercio'),
-        (4, 'Servicios financieros'),
-        (5, 'Otros')
+        (1, 'Excelente'),
+        (2, 'Bueno'),
+        (3, 'Regular'),
+        (4, 'Malo'),
+        (5, 'Pésimo')
     ]
     
     VALORACION_CHOICES = [
-        (1, '1 (poco)'),
+        (1, '1(poco)'),
         (2, '2'),
         (3, '3'),
         (4, '4'),
-        (5, '5 (mucho)')
+        (5, '5(mucho)')
     ]
     
     folioEncuestaS4 = models.BigAutoField(primary_key=True)
@@ -606,9 +606,9 @@ class AnexoS1(models.Model):
     ]
     
     RAZON_NO_TITULO_CHOICES = [
-        (1, 'Compromiso Laboral'),
-        (2, 'Falta de Tiempo'),
-        (3, 'Falta de Apoyo Institucional'),
+        (1, 'Compromiso laboral'),
+        (2, 'Falta de tiempo'),
+        (3, 'Falta de apoyo institucional'),
         (4, 'Otras')
     ]
     
@@ -644,7 +644,7 @@ class AnexoS2(models.Model):
     
     # Opciones para el campo "razonNoTrabaja" (Anexo3)
     RAZON_NO_TRABAJA_CHOICES = [
-        (1, 'Estudio un posgrado'),
+        (1, 'Estudio un Posgrado'),
         (2, 'Por razones de salud'),
         (3, 'Ajustes propios de la empresa'),
         (4, 'No he encontrado un trabajo relacionado a lo que estudié'),
@@ -684,7 +684,7 @@ class AnexoS2(models.Model):
     
     # Opciones para el campo "rol" (Anexo5)
     ROL_CHOICES = [
-        (1, 'Dirección, gerencia'),
+        (1, 'Dirección/gerencia'),
         (2, 'Jefatura'),
         (3, 'Supervisión'),
         (4, 'Coordinador'),
@@ -709,7 +709,7 @@ class AnexoS2(models.Model):
         (1, 'Bolsa de trabajo del TecNM/ITVer'),
         (2, 'Anuncio en internet'),
         (3, 'Recomendación de colegas'),
-        (4, 'Residencias profesional'),
+        (4, 'Residencias profesionales'),
         (5, 'Otras')
     ]
     
@@ -793,10 +793,10 @@ class AnexoS3(models.Model):
     APORTE_CHOICES = [
         (1, 'Impartiendo un curso o conferencia'),
         (2, 'Apoyar para una visita industrial donde laboras'),
-        (3, 'Apoyar a jóvenes de la Institución para realización de Residencias Profesionales'),
-        (4, 'Apoyar a jóvenes para realizar investigaciones'),
-        (5, 'Apoyar a jóvenes para realizar Educación Dual'),
-        (6, 'Donativos en especie'),
+        (3, 'Apoyar para la realización de Residencias Profesionales'),
+        (4, 'Apoyar para realizar investigaciones'),
+        (5, 'Apoyar a jóvenes para la Educación Dual'),
+        (6, 'Donativos'),
         (7, 'Otras')
     ]
     
@@ -870,7 +870,7 @@ class AnexoS4(models.Model):
         (2, 'Frances'),
         (3, 'Alemán'),
         (4, 'Italiano'),
-        (5, 'Otro')
+        (5, 'Otras')
     ]
     
     # Opciones para el campo "publicacion" (Anexo11)
@@ -884,7 +884,7 @@ class AnexoS4(models.Model):
         (0, 'Manuales operativos'),
         (1, 'Procedimientos'),
         (2, 'Lineamientos'),
-        (3, 'Informes Técnicos'),
+        (3, 'Informes técnicos'),
         (4, 'Otro')
     ]
     
@@ -904,7 +904,7 @@ class AnexoS4(models.Model):
     
     # Opciones para el campo "etica" (Anexo12)
     ETICA_CHOICES = [
-        (1, 'Aplicar las Normas básicas de una empresa'),
+        (1, 'Aplicar las normas básicas de una empresa'),
         (2, 'Aplicar reglas de cortesía que demuestran respeto por los demás'),
         (3, 'Asumir un comportamiento adecuado para la buena convivencia'),
         (4, 'Establecer una serie de normas como guía de conducta'),
