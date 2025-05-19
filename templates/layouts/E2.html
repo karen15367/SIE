@@ -1,0 +1,187 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+
+{% block content %}
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Grado', 'cantidad'],
+            ['Muy buena ', {{ calidad.uno }}],
+            ['Buena', {{ calidad.dos }}],
+            ['Regular', {{ calidad.tres }}],
+            ['Mala', {{ calidad.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'CALIDAD DE LOS DOCENTES',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartCalidad'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Grado', 'cantidad'],
+            ['Muy buena ', {{ plan.uno }}],
+            ['Buena', {{ plan.dos }}],
+            ['Regular', {{ plan.tres }}],
+            ['Mala', {{ plan.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'CALIDAD DEL PLAN DE ESTUDIOS',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartPlan'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Grado', 'cantidad'],
+            ['Muy buena ', {{ oportunidad.uno }}],
+            ['Buena', {{ oportunidad.dos }}],
+            ['Regular', {{ oportunidad.tres }}],
+            ['Mala', {{ oportunidad.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'OPORTUNIDADES DEN PARTICIPAR EN PROYECTOS ',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartOportunidad'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Grado', 'cantidad'],
+            ['Muy buena ', {{ enfasis.uno }}],
+            ['Buena', {{ enfasis.dos }}],
+            ['Regular', {{ enfasis.tres }}],
+            ['Mala', {{ enfasis.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'ÉNFASIS QUE SE LE PRESTABA A LA INVESTIGACIÓN ',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartEnfasis'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Grado', 'cantidad'],
+            ['Muy buena ', {{ satisfaccion.uno }}],
+            ['Buena', {{ satisfaccion.dos }}],
+            ['Regular', {{ satisfaccion.tres }}],
+            ['Mala', {{ satisfaccion.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'SATISFACCIÓN CON LAS CONDICIONES DE ESTUDIO ',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSatisfaccion'));
+    chart.draw(data, options);
+    }
+
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Grado', 'cantidad'],
+            ['Muy buena ', {{ satisfaccion.uno }}],
+            ['Buena', {{ satisfaccion.dos }}],
+            ['Regular', {{ satisfaccion.tres }}],
+            ['Mala', {{ satisfaccion.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'SATISFACCIÓN CON LAS CONDICIONES DE ESTUDIO ',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSatisfaccion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Grado', 'cantidad'],
+            ['Muy buena ', {{ experiencia.uno }}],
+            ['Buena', {{ experiencia.dos }}],
+            ['Regular', {{ experiencia.tres }}],
+            ['Mala', {{ experiencia.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'EXPERIENCIA OBTENIDA A TRAVÉS DE AL RESIDENCIA PROFESIONAL',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartExperiencia'));
+    chart.draw(data, options);
+    }
+</script>
+
+<div class="question-group" style="margin-top: 25px;" >
+    <div id="donutchartCalidad" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartPlan" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;" >
+    <div id="donutchartOportunidad" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartEnfasis" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;" >
+    <div id="donutchartSatisfaccion" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartExperiencia" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="form-section">
+    <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+</div>
+
+{% endblock %}
