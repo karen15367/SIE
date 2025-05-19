@@ -219,6 +219,7 @@ def viewE3(request):
         'empresa': {'uno': u1, 'dos': u2, 'tres': u3, },
 
     })
+=======
 def exportarE2(request):
     data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
 
