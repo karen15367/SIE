@@ -58,7 +58,7 @@
                         <select name="opcion" onchange="this.form.action = this.value; this.form.submit();">
                             <option>Selecciona una opción</option>
                             <optgroup label="Resultados">
-                                <option value="#">ENCUESTAS</option>
+                                <option value="/encuestaR/">ENCUESTAS</option>
                                 <option value="/anexoR/">ANEXO</option>
                             </optgroup>
                             <optgroup label="Usuarios">
@@ -103,7 +103,7 @@
                 {% endif %}
             {% else %}
                 {% if tipo == 'admin' %}
-                    {% if carrera == 'general' %}
+                    {% if carrera == 'General' %}
                         <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
                             <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
                                 <button class="button-28" role="button">CREAR AVISO</button>
