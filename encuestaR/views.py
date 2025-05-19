@@ -1,13 +1,9 @@
 from django.shortcuts import render
 
-<<<<<<< HEAD
-from core.models import EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS3Empresa
-=======
 from core.models import EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS4, EncuestaS5, EncuestaS3Empresa
 from django.http import HttpResponse
 from django.db.models import Count
 import csv
->>>>>>> 3dae8e9cd7e04b34eaf39d95e62ccec5e546a7fd
 
 # Create your views here.
 
@@ -119,7 +115,6 @@ def viewE2(request):
 
     })
 
-<<<<<<< HEAD
 
 def viewE3(request):
 
@@ -224,7 +219,6 @@ def viewE3(request):
         'empresa': {'uno': u1, 'dos': u2, 'tres': u3, },
 
     })
-=======
 def exportarE2(request):
     data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
 
@@ -365,4 +359,3 @@ def exportarE5(request):
             e.perteneceAsociacionEgresados
         ])
     return response
->>>>>>> 3dae8e9cd7e04b34eaf39d95e62ccec5e546a7fd
