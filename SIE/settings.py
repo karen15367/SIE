@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'index',
     'anexo',
     'signinAdmin',
+    'importador',
     'anexoR',
     'encuestaR',
 ]

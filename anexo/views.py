@@ -24,14 +24,13 @@ def a1(request):
     carrera = request.session.get('usuario_carrera')
 
     if not curp or not carrera:
-        return redirect('index')  # No hay sesión
+        return redirect('index')
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     try:
         if request.method == 'POST':
-            print("SE ENVÍO POST DESDE ANEXO1")
             request.session['anexo_s1'] = {
                 'nombre_completo': request.POST.get('nombre_completo'),
                 'redes_sociales': request.POST.get('redes_sociales'),
@@ -41,19 +40,13 @@ def a1(request):
                 'fecha_egreso': request.POST.get('fecha_egreso'),
             }
 
-            print("CURP en sesión:", curp)
             egresado = Egresado.objects.filter(curp=curp).first()
-            print("Egresado encontrado:", egresado)
-            if egresado and not Encuesta.objects.filter(curp=egresado).exists():
-                print("Creando encuesta...")
-                Encuesta.objects.create(
+            if egresado:
+                Encuesta.objects.get_or_create(
                     curp=egresado,
-                    fechaInicio=date.today(),
-                    lapso=calcular_lapso()
-                    # fechaFin queda pendiente
+                    lapso=calcular_lapso(),
+                    defaults={'fechaInicio': date.today()}
                 )
-            else:
-                print("No se creó la encuesta (ya existe o no hay egresado)")
             return redirect('anexo2')
     except Exception as e:
         print("ERROR EN A1:", e)
@@ -66,63 +59,43 @@ def a2(request):
     carrera = request.session.get('usuario_carrera')
 
     if not curp or not carrera:
-        return redirect('index')  # No hay sesión
+        return redirect('index')
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     try:
         if request.method == 'POST':
-            titulado_raw = request.POST.get('titulado')
-            titulado = 0
-            if titulado_raw == '1':
-                titulado = 1
-            
-            razon_no_titulo = request.POST.get('razonNoTitulo')
-            if razon_no_titulo == 'compromiso':
-                razon_no_titulo = 1
-            elif razon_no_titulo == 'tiempo':
-                razon_no_titulo =  2
-            elif razon_no_titulo == 'apoyo':
-                razon_no_titulo =  3
-            elif razon_no_titulo == 'otro':
-                razon_no_titulo =  4
+            titulado = 1 if request.POST.get('titulado') == '1' else 0
+            razon = request.POST.get('razonNoTitulo')
+            razon_no_titulo = {'compromiso': 1, 'tiempo': 2, 'apoyo': 3, 'otro': 4}.get(razon, None)
 
-            datos_previos = request.session.get('anexo_s1', {})
-            datos_previos['titulado'] = titulado
-            datos_previos['razon_no_titulo'] = razon_no_titulo
-            # Verificar si seleccionó "Otro" y capturar el texto
-            if razon_no_titulo == 4:
-                datos_previos['razon_no_titulo_otra'] = request.POST.get(
-                    'razonNoTituloOtra', '')
+            datos = request.session.get('anexo_s1', {})
+            datos.update({
+                'titulado': titulado,
+                'razon_no_titulo': razon_no_titulo,
+                'razon_no_titulo_otra': request.POST.get('razonNoTituloOtra', '') if razon_no_titulo == 4 else ''
+            })
 
-            print("Datos recibidos:", request.POST)
-            print("TITULADO:", titulado)
-
-            # obtener la conexion con la encuesta correspondiente
-            encuesta = Encuesta.objects.filter(
-                curp=curp).order_by('-folioEncuesta').first()
+            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
 
             if encuesta:
-                # Crear el registro en la tabla AnexoS1
-                AnexoS1.objects.create(
+                AnexoS1.objects.update_or_create(
                     folioEncuesta=encuesta,
-                    nombreCompleto=datos_previos.get('nombre_completo'),
-                    redesSociales=datos_previos.get('redes_sociales'),
-                    fechaIngreso=datos_previos.get('fecha_ingreso'),
-                    telefono=datos_previos.get('telefono'),
-                    correo=datos_previos.get('correo'),
-                    fechaEgreso=datos_previos.get('fecha_egreso'),
-                    titulado=datos_previos.get('titulado'),
-                    razonNoTitulo=datos_previos.get('razon_no_titulo'),
-                    razonNoTituloOtra=datos_previos.get('razon_no_titulo_otra')
+                    defaults={
+                        'nombreCompleto': datos.get('nombre_completo'),
+                        'redesSociales': datos.get('redes_sociales'),
+                        'fechaIngreso': datos.get('fecha_ingreso'),
+                        'telefono': datos.get('telefono'),
+                        'correo': datos.get('correo'),
+                        'fechaEgreso': datos.get('fecha_egreso'),
+                        'titulado': datos.get('titulado'),
+                        'razonNoTitulo': datos.get('razon_no_titulo'),
+                        'razonNoTituloOtra': datos.get('razon_no_titulo_otra'),
+                    }
                 )
-                # Limpiar datos de sesión
-                request.session.pop('anexo_s1')
+                request.session.pop('anexo_s1', None)
                 return redirect('anexo3')
-            else:
-                # En caso de que no haya encuesta activa
-                return redirect('index')
     except Exception as e:
         print("ERROR EN A2:", e)
 
@@ -134,41 +107,39 @@ def a3(request):
     carrera = request.session.get('usuario_carrera')
 
     if not curp or not carrera:
-        return redirect('index')  # No hay sesión
+        return redirect('index')
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     try:
         if request.method == 'POST':
-            # Iniciar recopilación de datos para AnexoS2
-            request.session['anexo_s2'] = {
+            datos = {
                 'trabaja': request.POST.get('trabaja'),
                 'razon_no_trabaja': request.POST.get('razonNoTrabaja'),
                 'razon_no_trabaja_otra': request.POST.get('razonNoTrabajaOtra', '')
             }
 
-            trabaja = request.POST.get('trabaja')
-            encuesta = Encuesta.objects.filter(
-                curp=curp).order_by('-folioEncuesta').first()
-            datos_previos = request.session.get('anexo_s2', {})
+            request.session['anexo_s2'] = datos
 
-            if trabaja == '1':
+            if datos['trabaja'] == '1':
                 return redirect('anexo4')
-            else:
-                # Crear el registro en la tabla AnexoS2
-                AnexoS2.objects.create(
+
+            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
+
+            if encuesta:
+                AnexoS2.objects.update_or_create(
                     folioEncuesta=encuesta,
-                    trabaja=datos_previos.get('trabaja'),
-                    razonNoTrabaja=datos_previos.get('razon_no_trabaja'),
-                    razonNoTrabajaOtra=datos_previos.get(
-                        'razon_no_trabaja_otra')
+                    defaults={
+                        'trabaja': datos.get('trabaja'),
+                        'razonNoTrabaja': datos.get('razon_no_trabaja'),
+                        'razonNoTrabajaOtra': datos.get('razon_no_trabaja_otra')
+                    }
                 )
-                # Limpiar datos de sesión
                 request.session.pop('anexo_s2', None)
                 return redirect('anexo7')
     except Exception as e:
-        print("Error:", e)
+        print("ERROR EN A3:", e)
 
     return render(request, 'Anexo3.html')
 
@@ -257,64 +228,48 @@ def a6(request):
     carrera = request.session.get('usuario_carrera')
 
     if not curp or not carrera:
-        return redirect('index')  # No hay sesión
+        return redirect('index')
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     try:
         if request.method == 'POST':
-            # Recuperar datos previos
-            datos_previos = request.session.get('anexo_s2', {})
+            datos = request.session.get('anexo_s2', {})
+            datos.update({
+                'medio_trabajo': request.POST.get('medioTrabajo'),
+                'medio_trabajo_otro': request.POST.get('medioTrabajoOtro', '') if request.POST.get('medioTrabajo') == '5' else '',
+                'satisfaccion': request.POST.get('satisfaccion')
+            })
 
-            # Añadir nuevos datos
-            datos_previos['medio_trabajo'] = request.POST.get('medioTrabajo')
-            # Verificar si seleccionó "Otras" en medio_trabajo y capturar el texto
-            if request.POST.get('medioTrabajo') == '5':
-                datos_previos['medio_trabajo_otro'] = request.POST.get(
-                    'medioTrabajoOtro', '')
-
-            datos_previos['satisfaccion'] = request.POST.get('satisfaccion')
-
-            # Obtener la conexión con la encuesta correspondiente
-            encuesta = Encuesta.objects.filter(
-                curp=curp).order_by('-folioEncuesta').first()
+            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
 
             if encuesta:
-                # Crear el registro en la tabla AnexoS2
-                AnexoS2.objects.create(
+                AnexoS2.objects.update_or_create(
                     folioEncuesta=encuesta,
-                    trabaja=datos_previos.get('trabaja'),
-                    razonNoTrabaja=datos_previos.get('razon_no_trabaja'),
-                    razonNoTrabajaOtra=datos_previos.get(
-                        'razon_no_trabaja_otra'),
-                    relacionTrabajoCarrera=datos_previos.get(
-                        'relacion_trabajo_carrera'),
-                    antiguedad=datos_previos.get('antiguedad'),
-                    tiempoTrabajoRelacionado=datos_previos.get(
-                        'tiempo_trabajo_relacionado'),
-                    razonNoConseguirTrabajo=datos_previos.get(
-                        'razon_no_conseguir_trabajo'),
-                    sector=datos_previos.get('sector'),
-                    sectorOtro=datos_previos.get('sector_otro'),
-                    rol=datos_previos.get('rol'),
-                    rolOtro=datos_previos.get('rol_otro'),
-                    area=datos_previos.get('area'),
-                    areaOtra=datos_previos.get('area_otra'),
-                    medioTrabajo=datos_previos.get('medio_trabajo'),
-                    medioTrabajoOtro=datos_previos.get('medio_trabajo_otro'),
-                    satisfaccion=datos_previos.get('satisfaccion')
+                    defaults={
+                        'trabaja': datos.get('trabaja'),
+                        'razonNoTrabaja': datos.get('razon_no_trabaja'),
+                        'razonNoTrabajaOtra': datos.get('razon_no_trabaja_otra'),
+                        'relacionTrabajoCarrera': datos.get('relacion_trabajo_carrera'),
+                        'antiguedad': datos.get('antiguedad'),
+                        'tiempoTrabajoRelacionado': datos.get('tiempo_trabajo_relacionado'),
+                        'razonNoConseguirTrabajo': datos.get('razon_no_conseguir_trabajo'),
+                        'sector': datos.get('sector'),
+                        'sectorOtro': datos.get('sector_otro'),
+                        'rol': datos.get('rol'),
+                        'rolOtro': datos.get('rol_otro'),
+                        'area': datos.get('area'),
+                        'areaOtra': datos.get('area_otra'),
+                        'medioTrabajo': datos.get('medio_trabajo'),
+                        'medioTrabajoOtro': datos.get('medio_trabajo_otro'),
+                        'satisfaccion': datos.get('satisfaccion'),
+                    }
                 )
-
-                # Limpiar datos de sesión
                 request.session.pop('anexo_s2', None)
-
                 return redirect('anexo7')
-            else:
-                # En caso de que no haya encuesta activa
-                return redirect('index')
     except Exception as e:
-        print("Error:", e)
+        print("ERROR EN A6:", e)
 
     return render(request, 'Anexo6.html')
 
@@ -356,55 +311,41 @@ def a8(request):
     carrera = request.session.get('usuario_carrera')
 
     if not curp or not carrera:
-        return redirect('index')  # No hay sesión
+        return redirect('index')
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     try:
         if request.method == 'POST':
-            # Recuperar datos previos
-            datos_previos = request.session.get('anexo_s3', {})
+            datos = request.session.get('anexo_s3', {})
+            datos.update({
+                'contacto': request.POST.get('contacto'),
+                'participar': request.POST.get('participar'),
+                'aporte': request.POST.get('aporte'),
+                'aporte_otro': request.POST.get('aporteOtro', '') if request.POST.get('aporte') in ['4', '7'] else ''
+            })
 
-            # Añadir nuevos datos
-            datos_previos['contacto'] = request.POST.get('contacto')
-            datos_previos['participar'] = request.POST.get('participar')
-            datos_previos['aporte'] = request.POST.get('aporte')
-            datos_previos['aporte_otro'] = ''
-
-            # Verificar si seleccionó "Otras" y capturar el texto
-            # Parece haber un error en los IDs
-            if request.POST.get('aporte') == '4' or request.POST.get('aporte') == '7':
-                datos_previos['aporte_otro'] = request.POST.get(
-                    'aporteOtro', '')
-
-            # Obtener la conexión con la encuesta correspondiente
-            encuesta = Encuesta.objects.filter(
-                curp=curp).order_by('-folioEncuesta').first()
+            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
 
             if encuesta:
-                # Crear el registro en la tabla AnexoS3
-                AnexoS3.objects.create(
+                AnexoS3.objects.update_or_create(
                     folioEncuesta=encuesta,
-                    competencias=datos_previos.get('competencias'),
-                    satisfaccion=datos_previos.get('satisfaccion'),
-                    educativo=datos_previos.get('educativo'),
-                    educativoOtro=datos_previos.get('educativo_otro'),
-                    contacto=datos_previos.get('contacto'),
-                    participar=datos_previos.get('participar'),
-                    aporte=datos_previos.get('aporte'),
-                    aporteOtro=datos_previos.get('aporte_otro')
+                    defaults={
+                        'competencias': datos.get('competencias'),
+                        'satisfaccion': datos.get('satisfaccion'),
+                        'educativo': datos.get('educativo'),
+                        'educativoOtro': datos.get('educativo_otro'),
+                        'contacto': datos.get('contacto'),
+                        'participar': datos.get('participar'),
+                        'aporte': datos.get('aporte'),
+                        'aporteOtro': datos.get('aporte_otro'),
+                    }
                 )
-
-                # Limpiar datos de sesión
                 request.session.pop('anexo_s3', None)
-
                 return redirect('anexo9')
-            else:
-                # En caso de que no haya encuesta activa
-                return redirect('index')
     except Exception as e:
-        print("Error:", e)
+        print("ERROR EN A8:", e)
 
     return render(request, 'Anexo8.html')
 
@@ -543,72 +484,55 @@ def a12(request):
     carrera = request.session.get('usuario_carrera')
 
     if not curp or not carrera:
-        return redirect('index')  # No hay sesión
+        return redirect('index')
 
     if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     if request.method == 'POST':
-        # Recuperar datos previos
-        datos_previos = request.session.get('anexo_s4', {})
+        datos = request.session.get('anexo_s4', {})
+        datos.update({
+            'asociacion': request.POST.get('asociacion'),
+            'asociacion_especifique': request.POST.get('asociacionEspecifique', '') if request.POST.get('asociacion') == '1' else '',
+            'etica': request.POST.get('etica')
+        })
 
-        # Añadir nuevos datos
-        datos_previos['asociacion'] = request.POST.get('asociacion')
-        datos_previos['asociacion_especifique'] = ''
-
-        if request.POST.get('asociacion') == '1':
-            datos_previos['asociacion_especifique'] = request.POST.get(
-                'asociacionEspecifique', '')
-
-        datos_previos['etica'] = request.POST.get('etica')
-
-        encuesta = Encuesta.objects.filter(
-            curp=curp).order_by('-folioEncuesta').first()
+        encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
 
         if encuesta:
-            # Guardar datos del AnexoS4
-            AnexoS4.objects.create(
+            AnexoS4.objects.update_or_create(
                 folioEncuesta=encuesta,
-                herramientas=datos_previos.get('herramientas'),
-                herramientasOtra=datos_previos.get('herramientas_otra'),
-                colabora=datos_previos.get('colabora'),
-                tipoInvestigacion=datos_previos.get('tipo_investigacion'),
-                tipoInvestigacionOtra=datos_previos.get(
-                    'tipo_investigacion_otra'),
-                participaRedes=datos_previos.get('participa_redes'),
-                certificacion=datos_previos.get('certificacion'),
-                certificacionCuales=datos_previos.get('certificacion_cuales'),
-                servicios=datos_previos.get('servicios'),
-                serviciosOtro=datos_previos.get('servicios_otro'),
-                idiomas=datos_previos.get('idiomas'),
-                idiomasOtro=datos_previos.get('idiomas_otro'),
-                publicacion=datos_previos.get('publicacion'),
-                publicacionEspecifique=datos_previos.get(
-                    'publicacion_especifique'),
-                documentos=datos_previos.get('documentos'),
-                documentosOtro=datos_previos.get('documentos_otro'),
-                calidad=datos_previos.get('calidad'),
-                calidadOtra=datos_previos.get('calidad_otra'),
-                asociacion=datos_previos.get('asociacion'),
-                asociacionEspecifique=datos_previos.get(
-                    'asociacion_especifique'),
-                etica=datos_previos.get('etica')
+                defaults={
+                    'herramientas': datos.get('herramientas'),
+                    'herramientasOtra': datos.get('herramientas_otra'),
+                    'colabora': datos.get('colabora'),
+                    'tipoInvestigacion': datos.get('tipo_investigacion'),
+                    'tipoInvestigacionOtra': datos.get('tipo_investigacion_otra'),
+                    'participaRedes': datos.get('participa_redes'),
+                    'certificacion': datos.get('certificacion'),
+                    'certificacionCuales': datos.get('certificacion_cuales'),
+                    'servicios': datos.get('servicios'),
+                    'serviciosOtro': datos.get('servicios_otro'),
+                    'idiomas': datos.get('idiomas'),
+                    'idiomasOtro': datos.get('idiomas_otro'),
+                    'publicacion': datos.get('publicacion'),
+                    'publicacionEspecifique': datos.get('publicacion_especifique'),
+                    'documentos': datos.get('documentos'),
+                    'documentosOtro': datos.get('documentos_otro'),
+                    'calidad': datos.get('calidad'),
+                    'calidadOtra': datos.get('calidad_otra'),
+                    'asociacion': datos.get('asociacion'),
+                    'asociacionEspecifique': datos.get('asociacion_especifique'),
+                    'etica': datos.get('etica'),
+                }
             )
-
-            # ✅ Guardar fecha de finalización
             encuesta.fechaFin = date.today()
             encuesta.save()
-
-            # Limpiar datos de sesión
             request.session.pop('anexo_s4', None)
-
-            # Redirigir a vista de agradecimiento
             return redirect('encuesta_finalizada')
 
-        else:
-            return redirect('index')
-
     return render(request, 'Anexo12.html')
+
 
 
 def encuesta_finalizada(request):

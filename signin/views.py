@@ -39,21 +39,25 @@ def vistaLogin(request):
 def verify(request):
     print(">>> Entrando a verify")
     if request.method == "POST":
-
         try:
             print(">>> Método POST detectado")
 
-            curp = request.POST.get("curp")
-            if Egresado.objects.filter(curp=curp).exists():
-                print(">>> CURP ya registrado")
-                return render(request, "vistaSignUp.html", {
-                    "error": "Este CURP ya está registrado."
-                })
+            curp = request.POST.get("curp", "").strip().lower()
+
+            egresado_existente = Egresado.objects.filter(curp=curp).first()
+            if egresado_existente:
+                if egresado_existente.correo and egresado_existente.nombre != "Pendiente":
+                    return render(request, "vistaSignUp.html", {
+                        "error": "Este CURP ya está registrado por un egresado real."
+                    })
+                else:
+                    print(">>> CURP corresponde a un egresado fantasma; se actualizará.")
+
+            print(">>> CURP validado correctamente")
+
             fechaN = request.POST.get("fechaNacimiento")
             sexo = request.POST.get("sexo") != "masculino"
             titulado = request.POST.get("titulado") != "no"
-
-            print(">>> Creando objeto temporal")
 
             temp = EgresadoTemporal(
                 curp=curp,
@@ -65,13 +69,9 @@ def verify(request):
                 carrera=request.POST.get("carrera"),
                 titulado=titulado,
                 fecha_egreso=fechaN,
-                contraseña=make_password(request.POST.get("pwd1")),
-                # No se pasa fecha_creacion, se genera con default=now,
-                tempPwd=None,
-                sesion=None
+                contraseña=make_password(request.POST.get("pwd1"))
             )
             temp.save()
-            print('no')
 
             signer = TimestampSigner()
             signed_token = signer.sign(curp)
@@ -90,11 +90,12 @@ def verify(request):
 
             return render(request, "vistaVerificacionPendiente.html")
 
-        except:
-            print(">>> ERROR durante verificación:")
+        except Exception as e:
+            print(">>> ERROR durante verificación:", str(e))
 
     print(">>> Renderizando vistaSignUp.html final")
     return render(request, "vistaSignUp.html")
+
 
 def confirm_email(request, token):
     try:
@@ -103,6 +104,7 @@ def confirm_email(request, token):
         try:
             # Token válido por 30 minutos
             curp = signer.unsign(token, max_age=1800)
+            curp = curp.strip().lower()  # Normalizar la CURP
 
             # Buscar egresado temporal
             temp = EgresadoTemporal.objects.get(curp=curp)
@@ -116,18 +118,20 @@ def confirm_email(request, token):
             if any(valor is None for valor in campos_requeridos):
                 return HttpResponse("Faltan datos en el registro temporal.", status=400)
 
-            # Crear el egresado real
-            Egresado.objects.create(
+            # Crear o actualizar el egresado
+            Egresado.objects.update_or_create(
                 curp=curp,
-                nombre=temp.nombre,
-                noControl=temp.no_control,
-                correo=temp.correo,
-                sexo=temp.sexo,
-                fechaNacimiento=temp.fecha_nacimiento,
-                carrera=temp.carrera,
-                titulado=temp.titulado,
-                fechaEgreso=temp.fecha_egreso,
-                contraseña=temp.contraseña,  # Ya está hasheada
+                defaults={
+                    'nombre': temp.nombre,
+                    'noControl': temp.no_control,
+                    'correo': temp.correo,
+                    'sexo': temp.sexo,
+                    'fechaNacimiento': temp.fecha_nacimiento,
+                    'carrera': temp.carrera,
+                    'titulado': temp.titulado,
+                    'fechaEgreso': temp.fecha_egreso,
+                    'contraseña': temp.contraseña  # Ya está hasheada
+                }
             )
 
             # Eliminar el temporal

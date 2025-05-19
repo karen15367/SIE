@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar Encuesta Egresados</title>
+    <link rel="stylesheet" href="{% static '/styles/general.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        small.aviso {
+            color: #a94442;
+            font-size: 0.9em;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .descarga {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-content {
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" width="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Cargar Archivo Excel</div>
+            <div class="section-subtitle">Respuestas históricas</div>
+        </div>
+
+        <div class="form-content">
+            <img src="{% static '/img/itv.png' %}" alt="Logo ITV" class="logo-center">
+            
+            <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                {% csrf_token %}
+
+                <div class="descarga">
+                    <p>📎 Antes de importar, asegúrate de usar la <strong>plantilla oficial</strong>:</p>
+                    <a href="{% static 'plantillas/encuesta.xlsx' %}" download>
+                        <i class="fa-solid fa-file-excel"></i> Descargar plantilla de encuesta
+                    </a>
+                    <br>
+                    <small class="aviso">⚠️ No modifiques los nombres de las columnas. Llena solo las filas necesarias.</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Archivo Excel:</label>
+                    <input type="file" name="archivo_excel" accept=".xlsx, .xls" required>
+                </div>
+            </form>
+        </div>
+        
+        <div class="buttons">
+            <a href="/" class="button">Regresar</a>
+            <button type="submit" form="uploadForm" class="button">Importar</button>
+        </div>
+    </div>
+</body>
+</html>
