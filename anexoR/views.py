@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
 from django.db.models import Count, Q
-from core.models import AnexoS1, AnexoS2, AnexoS3, AnexoS4
-
+from core.models import AnexoS1, AnexoS2, AnexoS3, AnexoS4, Egresado, Encuesta
+from .forms import FiltroEncuestaForm
+from django.http import HttpResponse
+import csv
 # Create your views here.
 
 
@@ -43,7 +45,6 @@ def viewAnexos(request):
             'listado': lista,
         })
 
-
 def viewA1(request):
     answer = AnexoS1.objects.all()
     titulo = 0
@@ -60,6 +61,29 @@ def viewA1(request):
         'subtitle': 'INFORMACIÓN DEL EGRESADO',
         'titulo': {'si': titulo, 'no': sinTitulo},
     })
+
+def exportarA1(request):
+    data = AnexoS1.objects.select_related('folioEncuesta__curp').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="anexoA1_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['CURP', 'Nombre', 'Correo', 'Sexo', 'Carrera', 'Fecha Egreso', 'Titulado'])
+
+    for a in data:
+        egresado = a.folioEncuesta.curp
+        writer.writerow([
+            egresado.curp,
+            a.nombreCompleto or '',
+            a.correo or '',
+            'Femenino' if egresado.sexo == 1 else 'Masculino',
+            egresado.carrera or '',
+            a.fechaEgreso or '',
+            'Sí' if a.titulado == 1 else 'No'
+        ])
+
+    return response
 
 
 def viewA2(request):
@@ -175,6 +199,27 @@ def viewA2(request):
         'satisfaccion': {'uno': g1, 'dos': g2, 'tres': g3, 'cuatro': g4, },
     })
 
+def exportarA2(request):
+    data = AnexoS1.objects.select_related('folioEncuesta__curp').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="anexoA2_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['CURP', 'Titulado', 'Razón No Título', 'Otra Razón'])
+
+    for a in data:
+        egresado = a.folioEncuesta.curp
+        writer.writerow([
+            egresado.curp,
+            'Sí' if a.titulado == 1 else 'No',
+            a.get_razonNoTitulo_display() if a.razonNoTitulo else '',
+            a.razonNoTituloOtra or ''
+        ])
+
+    return response
+
+
 
 def viewA3(request):
     answer = AnexoS3.objects.all()
@@ -259,6 +304,26 @@ def viewA3(request):
 
     })
 
+def exportarA3(request):
+    data = AnexoS1.objects.select_related('folioEncuesta__curp').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="anexoA3_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['CURP', 'Nombre completo', 'Teléfono', 'Correo', 'Redes sociales'])
+
+    for a in data:
+        egresado = a.folioEncuesta.curp
+        writer.writerow([
+            egresado.curp,
+            a.nombreCompleto or '',
+            a.telefono or '',
+            a.correo or '',
+            a.redesSociales or ''
+        ])
+
+    return response
 
 def viewA4(request):
     answer = AnexoS4.objects.all()
