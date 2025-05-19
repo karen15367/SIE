@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render, redirect
 from datetime import date
 from django.contrib import messages
-from datetime import datetime
+import datetime
 from django.http import HttpResponse
 from . import acuse
 from core.models import (
@@ -10,11 +10,13 @@ from core.models import (
     EncuestaS4, EncuestaS5, Egresado
 )
 
+
 def calcular_lapso():
     hoy = date.today()
     año = hoy.year
     semestre = 1 if hoy.month <= 6 else 2
     return f"{año}-{semestre}"
+
 
 def e1(request):
     curp = request.session.get('usuario_id')
@@ -33,7 +35,8 @@ def e1(request):
         request.session['encuesta_s1'] = {
             'nombre': request.POST.get('nombre'),
             'noControl': request.POST.get('noControl'),
-            'fechaNacimiento': request.POST.get('fechaNacimiento'),
+            'fechaNacimiento': datetime.datetime.strptime(
+                request.POST.get('fechaNacimiento'), '%Y-%m-%d').date(),
             'curp': request.POST.get('curp'),
             'sexo': request.POST.get('sexo'),
             'estadoCivil': request.POST.get('estadoCivil'),
@@ -50,11 +53,15 @@ def e1(request):
 def e2(request):
     if request.method == 'POST':
         datos = request.session.get('encuesta_s1', {})
+        fi = request.POST.get('fechaingreso')
+        fe = request.POST.get('fechaEgreso')
         datos.update({
             'carrera': request.POST.get('carrera'),
             'especialidad': request.POST.get('Especialidad'),
-            'fechaIngreso': request.POST.get('fechaingreso'),
-            'fechaEgreso': request.POST.get('fechaEgreso'),
+            'fechaIngreso': datetime.datetime.strptime(
+                fi, '%Y-%m-%d').date(),
+            'fechaEgreso': datetime.datetime.strptime(
+                fe, '%Y-%m-%d').date(),
             'titulado': request.POST.get('titulo'),
             'dominioIngles': request.POST.get('dominio'),
             'otroIdioma': request.POST.get('idioma'),
@@ -124,16 +131,19 @@ def e5(request):
         hablarPorcentaje = request.POST.get('hablarPorcentaje')
         hablarPorcentaje = int(hablarPorcentaje) if hablarPorcentaje else 0
         escribirPorcentaje = request.POST.get('escribirPorcentaje')
-        escribirPorcentaje = int(escribirPorcentaje) if escribirPorcentaje else 0
+        escribirPorcentaje = int(
+            escribirPorcentaje) if escribirPorcentaje else 0
         leerPorcentaje = request.POST.get('leerPorcentaje')
         leerPorcentaje = int(leerPorcentaje) if leerPorcentaje else 0
         escucharPorcentaje = request.POST.get('escucharPorcentaje')
-        escucharPorcentaje = int(escucharPorcentaje) if escucharPorcentaje else 0
+        escucharPorcentaje = int(
+            escucharPorcentaje) if escucharPorcentaje else 0
         EncuestaS3.objects.filter(folioEncuesta=encuesta).update(
             medioEmpleo=request.POST.get('medioEmpleo'),
             medioEmpleoOtro=request.POST.get('medioEmpleoOtro'),
             requisitosContratacion=request.POST.get('requisitosContratacion'),
-            requisitosContratacionOtro=request.POST.get('requisitosContratacionOtro'),
+            requisitosContratacionOtro=request.POST.get(
+                'requisitosContratacionOtro'),
             idiomaUtiliza=request.POST.get('idiomaUtiliza'),
             idiomaUtilizaOtro=request.POST.get('idiomaUtilizaOtro'),
             hablarPorcentaje=hablarPorcentaje,
@@ -143,6 +153,7 @@ def e5(request):
         )
         return redirect('e6')
     return render(request, 'encuesta5.html')
+
 
 def e6(request):
     if request.method == 'POST':
@@ -159,6 +170,7 @@ def e6(request):
         )
         return redirect('e7')
     return render(request, 'encuesta6.html')
+
 
 def e7(request):
     if request.method == 'POST':
@@ -178,6 +190,7 @@ def e7(request):
         }
         return redirect('e8')
     return render(request, 'encuesta7.html')
+
 
 def e8(request):
     if request.method == 'POST':
@@ -237,6 +250,7 @@ def e10(request):
         return redirect('e11')
     return render(request, 'encuesta10.html')
 
+
 def e11(request):
     if request.method == 'POST':
         request.session['s5'] = {
@@ -253,12 +267,14 @@ def e11(request):
         return redirect('e12')
     return render(request, 'encuesta11.html')
 
+
 def e12(request):
     if request.method == 'POST':
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
         datos = request.session.get('s5', {})
-        datos['comentariosSugerencias'] = request.POST.get('comentariosSugerencias')
+        datos['comentariosSugerencias'] = request.POST.get(
+            'comentariosSugerencias')
 
         EncuestaS5.objects.update_or_create(
             folioEncuesta=encuesta,
@@ -278,13 +294,15 @@ def encuesta_finalizada(request):
         return redirect('index')
 
     egresado = Egresado.objects.filter(curp=curp).first()
-    encuesta = Encuesta.objects.filter(curp=egresado).order_by('-folioEncuesta').first()
+    encuesta = Encuesta.objects.filter(
+        curp=egresado).order_by('-folioEncuesta').first()
 
     if encuesta:
         encuesta.fechaFin = date.today()
         encuesta.save()
 
     return render(request, 'encuestaFinalizada.html')
+
 
 def generar_acuse_pdf(request):
     curp = request.session.get('usuario_id')
@@ -299,12 +317,14 @@ def generar_acuse_pdf(request):
         return redirect('index')
 
     nombre = egresado.nombre
-    fecha_final = encuesta.fechaFin.strftime('%d de %B de %Y') if encuesta.fechaFin else "pendiente"
-    hora = encuesta.fechaFin.strftime('%H:%M:%S') if encuesta.fechaFin else "pendiente"
+    fecha_final = encuesta.fechaFin.strftime(
+        '%d de %B de %Y') if encuesta.fechaFin else "pendiente"
+    hora = encuesta.fechaFin.strftime(
+        '%H:%M:%S') if encuesta.fechaFin else "pendiente"
     lapso = encuesta.lapso
     cadena = f"{curp}|{nombre}|{fecha_final}|{hora}"
 
-    IMAGES_DIR = "templates/static/img" 
+    IMAGES_DIR = "templates/static/img"
     vars = {
         'nombre': f'{nombre}',
         'dependencia': 'ANEXO Quím y bio Quím.',
@@ -331,7 +351,7 @@ def generar_acuse_pdf(request):
             print(f"Advertencia: no se encontró {vars[key]}")
 
     # Ejemplo de uso para guardar en un archivo
-    bytesMap= acuse.generate_document(return_bytes=True,variables= vars)
+    bytesMap = acuse.generate_document(return_bytes=True, variables=vars)
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="acuse.pdf"'
 

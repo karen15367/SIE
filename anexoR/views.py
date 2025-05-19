@@ -16,7 +16,7 @@ def viewAnexos(request):
                 {'id': 'DATOS GENERALES', 'direccion': 'anexoR/A1'},
                 {'id': 'SITUACIÓN LABORAL', 'direccion': 'anexoR/A2'},
                 {'id': 'PLAN DE ESTUDIOS / INSTITUCIÓN ', 'direccion': 'anexoR/A3'},
-                {'id': 4, 'direccion': 'index'},
+                {'id': 'DESEMPEÑO LABORAL', 'direccion': 'anexoR/A4'},
             ]
 
             return render(request, 'respuestasListado.html', {
@@ -236,7 +236,6 @@ def viewA3(request):
 
     p1 = p2 = p3 = p4 = p5 = p6 = p7 = 0
 
-
     for a in answer:
         if a.competencias == 1:
             c1 += 1
@@ -272,11 +271,11 @@ def viewA3(request):
             a1 += 1
         else:
             a2 += 1
-        
+
         if a.participar == 1:
             i1 += 1
-            if a.aporte ==1:
-                p1 +=1 
+            if a.aporte == 1:
+                p1 += 1
             elif a.aporte == 2:
                 p2 += 1
             elif a.aporte == 3:
@@ -289,7 +288,7 @@ def viewA3(request):
                 p6 += 1
             else:
                 p7 += 1
-            
+
         else:
             i2 += 1
 
@@ -325,3 +324,149 @@ def exportarA3(request):
         ])
 
     return response
+
+def viewA4(request):
+    answer = AnexoS4.objects.all()
+
+    h1 = h2 = h3 = h4 = h5 = 0
+
+    c1 = c2 = 0
+
+    d1 = d2 = d3 = d4 = d5 = 0
+
+    r1 = r2 = 0
+
+    z1 = z2 = 0
+
+    s1 = s2 = s3 = s4 = s5 = 0
+
+    i1 = i2 = i3 = i4 = i5 = 0
+
+    p1 = p2 = 0
+
+    w1 = w2 = w3 = w4 = w5 = 0
+
+    g1 = g2 = g3 = g4 = 0
+
+    a1 = a2 = 0
+
+    v1 = v2 = v3 = v4 = v5 = 0
+
+    for a in answer:
+
+        if a.herramientas == 1:
+            h1 += 1
+        elif a.herramientas == 2:
+            h2 += 1
+        elif a.herramientas == 3:
+            h3 += 1
+        elif a.herramientas == 4:
+            h4 += 1
+        else:
+            h5 += 1
+
+        if a.colabora == 1:
+            c1 += 1
+            if a.tipoInvestigacion == 1:
+                d1 += 1
+            elif a.tipoInvestigacion == 2:
+                d2 += 1
+            elif a.tipoInvestigacion == 3:
+                d3 += 1
+            elif a.tipoInvestigacion == 4:
+                d4 += 1
+            else:
+                d5 += 1
+        else:
+            c2 += 1
+
+        if a.participaRedes:
+            r1 += 1
+        else:
+            r2 += 1
+
+        if a.certificacion:
+            z1 += 1
+        else:
+            z2 += 1
+
+        if a.servicios == 1:
+            s1 += 1
+        elif a.servicios == 2:
+            s2 += 1
+        elif a.servicios == 3:
+            s3 += 1
+        elif a.servicios == 4:
+            s4 += 1
+        else:
+            s5 += 1
+
+        if a.idiomas == 1:
+            i1 += 1
+        elif a.idiomas == 2:
+            i2 += 1
+        elif a.idiomas == 3:
+            i3 += 1
+        elif a.idiomas == 4:
+            i4 += 1
+        else:
+            i5 += 1
+
+        if a.publicacion:
+            p1 += 1
+        else:
+            p2 += 1
+
+        if a.documentos == 1:
+            w1 += 1
+        elif a.documentos == 2:
+            w2 += 1
+        elif a.documentos == 3:
+            w3 += 1
+        elif a.documentos == 4:
+            w4 += 1
+        else:
+            w5 += 1
+
+        if a.calidad == 1:
+            g1 += 1
+        elif a.calidad == 2:
+            g2 += 1
+        elif a.calidad == 3:
+            g3 += 1
+        else:
+            g4 += 1
+
+        if a.asociacion:
+            a1 += 1
+        else:
+            a2 += 1
+
+        if a.etica == 1:
+            v1 += 1
+        elif a.etica == 2:
+            v2 += 1
+        elif a.etica == 3:
+            v3 += 1
+        elif a.etica == 4:
+            v4 += 1
+        else:
+            v5 += 1
+
+    return render(request, 'layouts/A4.html', {
+        'anexo': True,
+        'subtitle': 'DESEMPEÑO LABORAL',
+        'utiliza': {'uno': h1, 'dos': h2, 'tres': h3, 'cuatro': h4, 'cinco': h5},
+        'colabora': {'si': c1, 'no': c2},
+        'tipo': {'uno': d1, 'dos': d2, 'tres': d3, 'cuatro': d4, 'cinco': d5},
+        'redes': {'si': r1, 'no': r2},
+        'certificacion': {'si': z1, 'no': z2},
+        'servicio': {'uno': s1, 'dos': s2, 'tres': s3, 'cuatro': s4, 'cinco': s5},
+        'idiomas': {'uno': i1, 'dos': i2, 'tres': i3, 'cuatro': i4, 'cinco': i5},
+        'publicacion': {'si': p1, 'no': p2},
+        'documentos': {'uno': w1, 'dos': w2, 'tres': w3, 'cuatro': w4, 'cinco': w5},
+        'gestion': {'uno': g1, 'dos': g2, 'tres': g3, 'cuatro': g4},
+        'asociacion': {'si': a1, 'no': a2},
+        'etica': {'uno': v1, 'dos': v2, 'tres': v3, 'cuatro': v4, 'cinco': v5},
+
+    })

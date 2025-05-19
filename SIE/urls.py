@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-#SIE/urls.py
+# SIE/urls.py
 from django.contrib import admin
 from django.urls import path, include
 from signin import views as signin_views
@@ -23,11 +23,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('login.urls')),
     path('sign-in/', include('signin.urls')),
-    path('index/', include('index.urls') ),
-    path('anexo/', include('anexo.urls') ),
+    path('index/', include('index.urls')),
+    path('anexo/', include('anexo.urls')),
     path('admin-signup/', include('signinAdmin.urls')),
-    path('encuesta/', include('encuesta.urls') ),
+    path('encuesta/', include('encuesta.urls')),
     path('importador/', include('importador.urls')),
-    path('anexoR/', include('anexoR.urls') ),
-    #path('encuestaR/', include('encuestaR.urls') ),
+    path('anexoR/', include('anexoR.urls')),
+    path('encuestaR/', include('encuestaR.urls') ),
 ]

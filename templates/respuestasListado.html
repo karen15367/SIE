@@ -62,7 +62,11 @@
                     <input type="hidden" name="tipo" value="{{ contenido.folioEncuesta_id }}">
                 </form>
                 {% else %}<!--! no es inicio y no es anexo-->
-                contenido
+                {{ contenido.id }}
+                <form action="/{{ contenido.direccion }}/" method="post" id="ver_{{ forloop.counter0 }}">
+                    {% csrf_token %}
+                    <input type="hidden" name="tipo" value="{{ contenido.folioEncuesta_id }}">
+                </form>
                 {% endif %}
                 {% endif %}
 

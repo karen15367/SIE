@@ -178,3 +178,7 @@ os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
 os.environ['SSL_CERT_FILE'] = certifi.where()
 
 EMAIL_SSL_CERT_FILE = certifi.where()
+
+# settings.py
+DATE_INPUT_FORMATS = ['%Y-%m-%d']  # Prioridad al formato ISO
+USE_L10N = False  # Desactiva formatos locales para fechas
