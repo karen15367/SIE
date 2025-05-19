@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<a href="{% url 'anexoR:exportarA2' %}" class="button">Descargar CSV A2</a>
+
 
 <script type="text/javascript">
     google.charts.load("current", { packages: ["corechart"] });
@@ -300,7 +300,7 @@
 </div>
 <hr>
 <div class="form-section">
-    <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+    <a href="{% url 'anexoR:exportarA2' %}" class="button">Descargar CSV A2</a>
 </div>
 
 

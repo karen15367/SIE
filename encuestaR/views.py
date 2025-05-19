@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
-from core.models import EncuestaS1, EncuestaS2
+from core.models import EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS4, EncuestaS5, EncuestaS3Empresa
+from django.http import HttpResponse
+import csv
 
 # Create your views here.
 
@@ -61,6 +63,29 @@ def viewE1(request):
         'titulado': {'si': t1, 'no':t2},
         'paquetes': {'si': p1, 'no':p2},
     })
+    
+def exportarE1(request):
+    data = EncuestaS1.objects.all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE1_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'CURP', 'Sexo', 'Estado civil', 'Titulado', 'Manejo de paquetes'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.curp,
+            'Femenino' if e.sexo == 1 else 'Masculino',
+            'Soltero' if e.estadoCivil == 1 else 'Casado',
+            'Sí' if e.titulado == 1 else 'No',
+            'Sí' if e.manejoPaquetes == 1 else 'No'
+        ])
+
+    return response
+
 
 def viewE2(request):
     c1 =  EncuestaS2.objects.filter(calidadDocentes=1).count()
@@ -105,4 +130,30 @@ def viewE2(request):
         'experiencia': {'uno': x1, 'dos': x2, 'tres': x3, 'cuatro': x4},  
         
     })
+
+def exportarE2(request):
+    data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE2_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'CURP', 'Calidad docentes', 'Plan estudios',
+        'Oportunidad en proyectos', 'Énfasis en investigación',
+        'Satisfacción condiciones de estudio', 'Experiencia residencia'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.folioEncuesta.curp.curp,
+            e.get_calidadDocentes_display() if e.calidadDocentes else '',
+            e.get_planEstudios_display() if e.planEstudios else '',
+            e.get_oportunidadesProyectos_display() if e.oportunidadesProyectos else '',
+            e.get_enfasisInvestigacion_display() if e.enfasisInvestigacion else '',
+            e.get_satisfaccionCondiciones_display() if e.satisfaccionCondiciones else '',
+            e.get_experienciaResidencia_display() if e.experienciaResidencia else ''
+        ])
+
+    return response
 

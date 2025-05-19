@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block content %}
-<a href="{% url 'anexoR:exportarA4' %}" class="button">Descargar CSV A4</a>
 
 
 <script type="text/javascript">
@@ -396,7 +395,7 @@
 </div>
 <hr>
 <div class="form-section">
-    <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+    <a href="{% url 'anexoR:exportarA4' %}" class="button">Descargar CSV A4</a>
 </div>
 
 {% endblock %}
