@@ -71,7 +71,7 @@ def verify(request):
                 sesion=None
             )
             temp.save()
-            print(">>> Temporal guardado:", temp.curp)
+            print('no')
 
             signer = TimestampSigner()
             signed_token = signer.sign(curp)
@@ -90,9 +90,8 @@ def verify(request):
 
             return render(request, "vistaVerificacionPendiente.html")
 
-        except Exception:
-            print(e)
-            print(">>> ERROR durante verificación:", str(e))
+        except:
+            print(">>> ERROR durante verificación:")
 
     print(">>> Renderizando vistaSignUp.html final")
     return render(request, "vistaSignUp.html")

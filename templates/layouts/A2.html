@@ -1,0 +1,302 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+
+{% block content %}
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Trabaja', 'cantidad'],
+            ['Trabajan', {{ trabaja.si }}],
+    ['No trabajan', {{ trabaja.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS CON TRABAJO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartTrabaja'));
+    chart.draw(data, options);
+    }
+</script>
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Relacion', 'cantidad'],
+            ['Si', {{ relacion.si }}],
+    ['No ', {{ relacion.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'RELACION DEL TRABAJO Y SU CARRERA',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartRelacion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Antigüedad', 'cantidad'],
+            ["0-3 Meses", {{antiguedad.uno}}],
+            ["4-6 Meses", {{antiguedad.dos}}],
+            ["6 Meses", {{antiguedad.tres}}],
+            ["Más de 1 año", {{antiguedad.cuatro}}],
+        ]);
+
+        var options = {
+            title: 'Antigüedad en el trabajo',
+            width: 1111,
+            legend: { position: 'none' },
+            chart: {
+                title: 'ANTIGÜEDAD EN EL TRABAJO DE LOS EGRESADOS',
+                subtitle: 'Cuanto tiempo llevan trabajando'
+            },
+            bars: 'horizontal', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+        chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Trabaja', 'cantidad'],
+            ['Ya lo tenian', {{ trabajoT.uno }}],
+            ['Menos de 6 meses', {{ trabajoT.dos }}],
+            ['Más de 1 año', {{ trabajoT.tres }}],
+            
+        ]);
+
+    var options = {
+        title: 'TIEMPO EN EL QUE LOS EGRESADOS CONSIGUIERON TRABAJOS RELACIONADOS A SU CARRERA',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartTiempoRelacionado'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Sector', 'cantidad'],
+            ['Privado', {{ sector.uno }}],
+            ['Publico', {{ sector.dos }}],
+            ['Empresa propia', {{ sector.tres }}],
+            ['Otro', {{ sector.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'SECTOR EN EL QUE TRABAJAN LOS EGRESADOS',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartTiempoSector'));
+    chart.draw(data, options);
+    }
+</script>
+
+
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Rol', 'cantidad'],
+            ["Director", {{puesto.uno}}],
+            ["Jefe", {{puesto.dos}}],
+            ["Supervisor", {{puesto.tres}}],
+            ["Coordinador", {{puesto.cuatro}}],
+            ["Empleado", {{puesto.cinco}}],
+            ["Dueño", {{puesto.seis}}],
+            ["Otro", {{puesto.siete}}],
+        ]);
+
+        var options = {
+            title: 'Antigüedad en el trabajo',
+            width: 1111,
+            legend: { position: 'none' },
+            chart: {
+                title: 'ROL DE DESEMPEÑO DE LOS EGRESADO',
+                subtitle: ''
+            },
+            bars: 'horizontal', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barrasRol'));
+        chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Area', 'cantidad'],
+            ["Director", {{puesto.uno}}],
+            ["Jefe", {{puesto.dos}}],
+            ["Supervisor", {{puesto.tres}}],
+            ["Coordinador", {{puesto.cuatro}}],
+            ["Empleado", {{puesto.cinco}}],
+            ["Dueño", {{puesto.seis}}],
+            ["Otro", {{puesto.siete}}],
+        ]);
+
+        var options = {
+            title: 'AREA DE DESEMPEÑO DE LOS EGRESADO ',
+            width: 1111,
+            legend: { position: 'none' },
+            chart: {
+                title: 'AREA DE DESEMPEÑO DE LOS EGRESADO',
+                subtitle: ''
+            },
+            bars: 'horizontal', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barrasArea'));
+        chart.draw(data, options);
+    };
+</script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Medio', 'cantidad'],
+            ["Bolsa de trabajó del TecNM/ITVer ", {{medio.uno}}],
+            ["Anuncio en internet", {{medio.dos}}],
+            ["Recomendación de colegas", {{medio.tres}}],
+            ["Residencias profesional", {{medio.cuatro}}],
+            ["Otras", {{medio.cinco}}],
+            
+        ]);
+
+        var options = {
+            title: 'MEDIO DE POR EL CUAL EL EGRESADO ENCONTRÓ TRABAJO ',
+            width: 1111,
+            legend: { position: 'none' },
+            chart: {
+                title: 'MEDIO DE POR EL CUAL EL EGRESADO ENCONTRÓ TRABAJO ',
+                subtitle: ''
+            },
+            bars: 'horizontal', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barrasMedio'));
+        chart.draw(data, options);
+    };
+</script>
+
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Sector', 'cantidad'],
+            [' Muy satisfecho  ', {{ satisfaccion.uno }}],
+            ['Satisfecho', {{ satisfaccion.dos }}],
+            ['Poco satisfecho', {{ satisfaccion.tres }}],
+            ['Insatisfecho', {{ satisfaccion.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'SATISFACCION DE LOS EGRESADOS EN SU TRABAJO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSatisfaccion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<div class="question-group">
+    <div id="donutchartTrabaja" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartRelacion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="top_x_div" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartTiempoRelacionado" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartTiempoSector" style="width: 100%; height: 500px;"></div>
+    
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasRol" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasArea" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasMedio" style="width: 100%; height: 500px;"></div>
+</div>
+
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartSatisfaccion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="form-section">
+    <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+</div>
+
+
+{% endblock %}

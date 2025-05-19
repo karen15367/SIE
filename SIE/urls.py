@@ -28,4 +28,6 @@ urlpatterns = [
     path('admin-signup/', include('signinAdmin.urls')),
     path('encuesta/', include('encuesta.urls') ),
     path('importador/', include('importador.urls')),
+    path('anexoR/', include('anexoR.urls') ),
+    #path('encuestaR/', include('encuestaR.urls') ),
 ]

@@ -1,0 +1,39 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+
+{% block content %}
+
+<!--TODO poner filtros-->
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Tip', 'cantidad'],
+            ['Titulados', {{ titulo.si }}],
+    ['Sin titulo', {{ titulo.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'ALUMNOS TITULADOS',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+    chart.draw(data, options);
+    }
+</script>
+
+<div>
+    <div class="question-group">
+        <div id="donutchart" style="width: 100%; height: 500px;"></div>
+    </div>
+    <div class="form-section">
+        <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+    </div>
+</div>
+
+
+{% endblock %}

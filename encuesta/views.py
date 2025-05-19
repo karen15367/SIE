@@ -16,10 +16,6 @@ def calcular_lapso():
     semestre = 1 if hoy.month <= 6 else 2
     return f"{año}-{semestre}"
 
-def index(request):
-    return render(request, 'index.html')
-
-
 def e1(request):
     curp = request.session.get('usuario_id')
     if not curp:
