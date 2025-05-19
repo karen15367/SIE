@@ -29,10 +29,11 @@ def login(request):
             return redirect("/")
 
         identificador = request.POST.get('curp_rfc')
+        identificador = identificador.strip().lower()
         password = request.POST.get('password')
         if request.POST.get('tipo') == '0':
             try:
-                egresado = Egresado.objects.get(curp=identificador)
+                egresado = Egresado.objects.get(curp__iexact=identificador)
                 if check_password(password, egresado.contraseña):
                     request.session['usuario_tipo'] = 'egresado'
                     request.session['usuario_id'] = egresado.curp
@@ -47,7 +48,7 @@ def login(request):
             return redirect('/')
         else:
             try:
-                admin = Administrador.objects.get(rfc=identificador)
+                admin = Administrador.objects.get(rfc__iexact=identificador)
                 if check_password(password, admin.contraseña):
                     request.session['usuario_tipo'] = 'admin'
                     request.session['usuario_id'] = admin.rfc
