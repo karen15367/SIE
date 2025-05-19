@@ -39,3 +39,9 @@ tzdata==2025.2
 urllib3==2.4.0
 wrapt==1.17.2
 yarg==0.1.10
+
+
+
+# Example for requirements.txt
+package; sys_platform != 'darwin'
+package-macos; sys_platform == 'darwin'
