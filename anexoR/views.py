@@ -470,3 +470,44 @@ def viewA4(request):
         'etica': {'uno': v1, 'dos': v2, 'tres': v3, 'cuatro': v4, 'cinco': v5},
 
     })
+
+def exportarA4(request):
+    data = AnexoS4.objects.select_related('folioEncuesta__curp').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="anexoA4_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'CURP', 'Herramientas', 'Colabora en proyectos', 'Tipo de investigación',
+        'Participa en redes', 'Tiene certificación', 'Servicios', 'Idiomas',
+        'Publicación científica', 'Documentos', 'Gestión', 'Asociación profesional',
+        'Ética'
+    ])
+
+    for a in data:
+        egresado = a.folioEncuesta.curp
+
+        writer.writerow([
+            egresado.curp,
+            a.get_herramientas_display() if a.herramientas else '',
+            'Sí' if a.colabora == 1 else 'No',
+            a.get_tipoInvestigacion_display() if a.tipoInvestigacion else '',
+            'Sí' if a.participaRedes else 'No',
+            'Sí' if a.certificacion else 'No',
+            a.get_servicios_display() if a.servicios else '',
+            a.get_idiomas_display() if a.idiomas else '',
+            'Sí' if a.publicacion else 'No',
+            a.get_documentos_display() if a.documentos else '',
+            a.get_calidad_display() if a.calidad else '',
+            'Sí' if a.asociacion else 'No',
+            a.get_etica_display() if a.etica else ''
+        ])
+
+    return response
+
+def A4(request):
+    return render(request, 'layouts/A4.html', {
+        'anexo': True,
+        'subtitle': 'VALORES Y COMPETENCIAS'
+    })

@@ -12,5 +12,7 @@ urlpatterns = [
     path('exportarA1/', views.exportarA1, name='exportarA1'),
     path('exportarA2/', views.exportarA2, name='exportarA2'),
     path('exportarA3/', views.exportarA3, name='exportarA3'),
+    path('exportarA4/', views.exportarA4, name='exportarA4'),
+    path('A4/', views.A4, name='A4'),
 
 ]

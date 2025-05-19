@@ -1,6 +1,12 @@
 from django.shortcuts import render
 
+<<<<<<< HEAD
 from core.models import EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS3Empresa
+=======
+from core.models import EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS4, EncuestaS5, EncuestaS3Empresa
+from django.http import HttpResponse
+import csv
+>>>>>>> 3dae8e9cd7e04b34eaf39d95e62ccec5e546a7fd
 
 # Create your views here.
 
@@ -61,6 +67,29 @@ def viewE1(request):
         'titulado': {'si': t1, 'no': t2},
         'paquetes': {'si': p1, 'no': p2},
     })
+    
+def exportarE1(request):
+    data = EncuestaS1.objects.all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE1_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'CURP', 'Sexo', 'Estado civil', 'Titulado', 'Manejo de paquetes'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.curp,
+            'Femenino' if e.sexo == 1 else 'Masculino',
+            'Soltero' if e.estadoCivil == 1 else 'Casado',
+            'Sí' if e.titulado == 1 else 'No',
+            'Sí' if e.manejoPaquetes == 1 else 'No'
+        ])
+
+    return response
+
 
 
 def viewE2(request):
@@ -106,6 +135,7 @@ def viewE2(request):
 
     })
 
+<<<<<<< HEAD
 
 def viewE3(request):
 
@@ -210,3 +240,31 @@ def viewE3(request):
         'empresa': {'uno': u1, 'dos': u2, 'tres': u3, },
 
     })
+=======
+def exportarE2(request):
+    data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE2_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'CURP', 'Calidad docentes', 'Plan estudios',
+        'Oportunidad en proyectos', 'Énfasis en investigación',
+        'Satisfacción condiciones de estudio', 'Experiencia residencia'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.folioEncuesta.curp.curp,
+            e.get_calidadDocentes_display() if e.calidadDocentes else '',
+            e.get_planEstudios_display() if e.planEstudios else '',
+            e.get_oportunidadesProyectos_display() if e.oportunidadesProyectos else '',
+            e.get_enfasisInvestigacion_display() if e.enfasisInvestigacion else '',
+            e.get_satisfaccionCondiciones_display() if e.satisfaccionCondiciones else '',
+            e.get_experienciaResidencia_display() if e.experienciaResidencia else ''
+        ])
+
+    return response
+
+>>>>>>> 3dae8e9cd7e04b34eaf39d95e62ccec5e546a7fd
