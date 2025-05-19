@@ -305,8 +305,6 @@ def exportarE2(request):
         ])
 
     return response
-<<<<<<< HEAD
-=======
 
 
 def viewE4(request):
@@ -460,4 +458,3 @@ def exportarE3(request):
         ])
 
     return response
->>>>>>> c4930b62da4bb4f5c563ea0384178acaed24c1fe
