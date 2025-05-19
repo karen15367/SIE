@@ -115,6 +115,32 @@ def viewE2(request):
     })
 
 
+def exportarE2(request):
+    data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE2_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'CURP', 'Calidad docentes', 'Plan estudios',
+        'Oportunidad en proyectos', 'Énfasis en investigación',
+        'Satisfacción condiciones de estudio', 'Experiencia residencia'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.folioEncuesta.curp.curp,
+            e.get_calidadDocentes_display() if e.calidadDocentes else '',
+            e.get_planEstudios_display() if e.planEstudios else '',
+            e.get_oportunidadesProyectos_display() if e.oportunidadesProyectos else '',
+            e.get_enfasisInvestigacion_display() if e.enfasisInvestigacion else '',
+            e.get_satisfaccionCondiciones_display() if e.satisfaccionCondiciones else '',
+            e.get_experienciaResidencia_display() if e.experienciaResidencia else ''
+        ])
+
+    return response
+
 def viewE3(request):
 
     answers = EncuestaS3.objects.all()
@@ -279,34 +305,69 @@ def viewE3(request):
 
     })
 
-
-def exportarE2(request):
-    data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
+def exportarE3(request):
+    encuestas = EncuestaS3.objects.select_related('folioEncuesta').all()
+    empresas = EncuestaS3Empresa.objects.select_related('folioEncuesta').all()
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="encuestaE2_export.csv"'
-
+    response['Content-Disposition'] = 'attachment; filename="encuestaE3_export.csv"'
     writer = csv.writer(response)
+
+    # Tabla 1: EncuestaS3 (egresado)
+    writer.writerow(['SECCIÓN 1: DATOS DEL EGRESADO'])
     writer.writerow([
-        'CURP', 'Calidad docentes', 'Plan estudios',
-        'Oportunidad en proyectos', 'Énfasis en investigación',
-        'Satisfacción condiciones de estudio', 'Experiencia residencia'
+        'Folio Encuesta',
+        'Actividad actual',
+        'Tipo de estudio',
+        'Medio de empleo',
+        'Requisitos de contratación',
+        'Idioma que utiliza',
+        'Antigüedad en el empleo',
+        'Ingreso diario',
+        'Nivel jerárquico',
+        'Condición de trabajo',
+        'Relación con formación'
     ])
 
-    for e in data:
+    for e in encuestas:
         writer.writerow([
-            e.folioEncuesta.curp.curp,
-            e.get_calidadDocentes_display() if e.calidadDocentes else '',
-            e.get_planEstudios_display() if e.planEstudios else '',
-            e.get_oportunidadesProyectos_display() if e.oportunidadesProyectos else '',
-            e.get_enfasisInvestigacion_display() if e.enfasisInvestigacion else '',
-            e.get_satisfaccionCondiciones_display() if e.satisfaccionCondiciones else '',
-            e.get_experienciaResidencia_display() if e.experienciaResidencia else ''
+            e.folioEncuesta_id,
+            e.get_actividad_display() if e.actividad else '',
+            e.get_tipoEstudio_display() if e.tipoEstudio else '',
+            e.get_medioEmpleo_display() if e.medioEmpleo else '',
+            e.get_requisitosContratacion_display() if e.requisitosContratacion else '',
+            e.get_idiomaUtiliza_display() if e.idiomaUtiliza else '',
+            e.get_antiguedad_display() if e.antiguedad else '',
+            e.get_ingreso_display() if e.ingreso else '',
+            e.get_nivelJerarquico_display() if e.nivelJerarquico else '',
+            e.get_condicionTrabajo_display() if e.condicionTrabajo else '',
+            e.get_relacionTrabajo_display() if e.relacionTrabajo else ''
+        ])
+
+    writer.writerow([])  # línea en blanco
+
+    # Tabla 2: EncuestaS3Empresa
+    writer.writerow(['SECCIÓN 2: DATOS DE LA EMPRESA U ORGANIZACIÓN'])
+    writer.writerow([
+        'Folio Encuesta',
+        'Tipo de organismo',
+        'Tamaño de empresa',
+        'Sector primario',
+        'Sector secundario',
+        'Sector terciario'
+    ])
+
+    for e in empresas:
+        writer.writerow([
+            e.folioEncuesta_id,
+            e.get_tipoOrganismo_display() if e.tipoOrganismo else '',
+            e.get_tamanoEmpresa_display() if e.tamanoEmpresa else '',
+            e.get_sectorPrimario_display() if e.sectorPrimario else '',
+            e.get_sectorSecundario_display() if e.sectorSecundario else '',
+            e.get_sectorTerciario_display() if e.sectorTerciario else '',
         ])
 
     return response
-<<<<<<< HEAD
-=======
 
 
 def viewE4(request):
@@ -353,6 +414,7 @@ def viewE4(request):
     }
 
     return render(request, 'layouts/E4.html', context)
+
 
 def exportarE4(request):
     data = EncuestaS4.objects.select_related('folioEncuesta').all()
@@ -423,41 +485,3 @@ def exportarE5(request):
         ])
     return response
 
-def exportarE3(request):
-    data = EncuestaS3.objects.select_related('folioEncuesta').all()
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="encuestaE3_export.csv"'
-
-    writer = csv.writer(response)
-    writer.writerow([
-        'Folio Encuesta',
-        'Actividad actual',
-        'Tipo de estudio',
-        'Medio de empleo',
-        'Requisitos de contratación',
-        'Idioma que utiliza',
-        'Antigüedad en el empleo',
-        'Ingreso diario',
-        'Nivel jerárquico',
-        'Condición de trabajo',
-        'Relación con formación'
-    ])
-
-    for e in data:
-        writer.writerow([
-            e.folioEncuesta_id,
-            e.get_actividad_display() if e.actividad else '',
-            e.get_tipoEstudio_display() if e.tipoEstudio else '',
-            e.get_medioEmpleo_display() if e.medioEmpleo else '',
-            e.get_requisitosContratacion_display() if e.requisitosContratacion else '',
-            e.get_idiomaUtiliza_display() if e.idiomaUtiliza else '',
-            e.get_antiguedad_display() if e.antiguedad else '',
-            e.get_ingreso_display() if e.ingreso else '',
-            e.get_nivelJerarquico_display() if e.nivelJerarquico else '',
-            e.get_condicionTrabajo_display() if e.condicionTrabajo else '',
-            e.get_relacionTrabajo_display() if e.relacionTrabajo else ''
-        ])
-
-    return response
->>>>>>> c4930b62da4bb4f5c563ea0384178acaed24c1fe
