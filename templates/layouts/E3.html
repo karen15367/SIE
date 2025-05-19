@@ -1,0 +1,421 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+
+{% block content %}
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Actividad', 'cantidad'],
+            ['Trabaja', {{ actividad.uno }}],
+    ['Estudia', {{ actividad.dos }}],
+        ['Estudia y trabaja', {{ actividad.tres }}],
+        [' No Estudia ni trabaja ', {{ actividad.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'ACTIVIDAD A LA QUE SE DEDICA ACTUALMENTE EL EGRESADO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartActividad'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Estudio', 'cantidad'],
+            ['Especialidad', {{ estudio.uno }}],
+    ['Maestría', {{ estudio.dos }}],
+        ['Doctorado', {{ estudio.tres }}],
+        ['Idiomas ', {{ estudio.cuatro }}],
+        ['Otro ', {{ estudio.cinco }}],
+            
+        ]);
+
+    var options = {
+        title: 'ESTUDIO AL QUE SE DEDICA ACTUALMENTE EL EGRESADO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartEstudio'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Estudio', 'cantidad'],
+        ['Antes de Egresar', {{ trabajo.uno }}],
+        ['Menos de seis meses ', {{ trabajo.dos }}],
+        ['Entre seis meses y un año', {{ trabajo.tres }}],
+        ['Más de un año ', {{ trabajo.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'TIEMPO TRANSCURRIDO PARA OBTENER EL PRIMER EMPLEO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartEmpleo'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Medio ', 'cantidad'],
+
+        ['Bolsa de trabajo', {{ medio.uno }}],
+        [' Contactos personales ', {{ medio.dos }}],
+        [' Residencia Profesional ', {{ medio.tres }}],
+        ['Medios masivos de comunicación', {{ medio.cuatro }}],
+        ['Otros', {{ medio.cinco }}],
+        ]);
+
+    var options = {
+        title: 'MEDIO PARA OBTENER EMPLEO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartMedio'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Requisitos', 'cantidad'],
+            ["Competencias", {{requisitos.uno}}],
+            ["Titulo profesional", {{requisitos.dos}}],
+            ["Examen de selección", {{requisitos.tres}}],
+            [" Idioma extranjero", {{requisitos.cuatro}}],
+            ["Actitudes y habilidades", {{requisitos.cinco}}],
+            ["Ninguno", {{requisitos.seis}}],
+            ["Otros", {{requisitos.siete}}],
+            
+        ]);
+
+        var options = {
+            title: 'REQUISITOS DE CONTRATACIÓN ',
+            width: 1155,
+            legend: { position: 'none' },
+            chart: {
+                title: 'REQUISITOS DE CONTRATACIÓN',
+                subtitle: ''
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barrasMedio'));
+        chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Idiomas ', 'cantidad'],
+
+        ['Inglés', {{ idioma.uno }}],
+        [' Francés ', {{ idioma.dos }}],
+        [' Alemán ', {{ idioma.tres }}],
+        ['Japones', {{ idioma.cuatro }}],
+        ['Otros', {{ idioma.cinco }}],
+        ]);
+
+    var options = {
+        title: 'IDIOMA QUE UTILIZA EN SU TRABAJO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartIdioma'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Antigüedad', 'cantidad'],
+
+            ["Menos de un año", {{empleo.uno}}],
+            ["Un año", {{empleo.dos}}],
+            ["Dos años", {{empleo.tres}}],
+            ["Tres años", {{empleo.cuatro}}],
+            ["Más de tres años", {{empleo.cinco}}],
+            
+        ]);
+
+        var options = {
+            title: ' Antigüedad en el empleo',
+            width: 1155,
+            legend: { position: 'none' },
+            chart: {
+                title: 'TIEMPO EN EL EMPLEO',
+                subtitle: ''
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barrasEmpleo'));
+        chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Idiomas ', 'cantidad'],
+
+        ['Menos de cinco', {{ salario.uno }}],
+        ['  Entre cinco y siete  ', {{ salario.dos }}],
+        ['  Entre ocho y diez  ', {{ salario.tres }}],
+        ['Más de diez', {{ salario.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'INGRESO DIARIO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSalario'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Nivel', 'cantidad'],
+
+            ["Técnico", {{nivel.uno}}],
+            ["Supervisor", {{nivel.dos}}],
+            ["Jefe de área", {{nivel.tres}}],
+            ["Funcionario", {{nivel.cuatro}}],
+            ["Directivo", {{nivel.cinco}}],
+            ["Directivo", {{nivel.seis}}],
+            
+        ]);
+
+        var options = {
+            title: 'Nivel jerárquico en el trabajo',
+            width: 1155,
+            legend: { position: 'none' },
+            chart: {
+                title: 'NIVEL JERÁRQUICO EN EL TRABAJO',
+                subtitle: ''
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barrasNivel'));
+        chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Base ', 'cantidad'],
+
+        ['Base', {{ condicion.uno }}],
+        [' Eventual ', {{ condicion.dos }}],
+        [' Contrato  ', {{ condicion.tres }}],
+        ['Otros', {{ condicion.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'Condición de trabajo',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartCondicion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Relacion', 'cantidad'],
+
+            ["0%", {{relacion.uno}}],
+            [" 20%", {{relacion.dos}}],
+            ["40%", {{relacion.tres}}],
+            ["60%", {{relacion.cuatro}}],
+            ["80%", {{relacion.cinco}}],
+            ["100%", {{relacion.seis}}],
+            
+        ]);
+
+        var options = {
+            title: ' Relación del trabajo con su área de formación',
+            width: 1155,
+            legend: { position: 'none' },
+            chart: {
+                title: ' Relación del trabajo con su área de formación',
+                subtitle: ''
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            axes: {
+                x: {
+                    0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+                }
+            },
+            bar: { groupWidth: "100%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barrasRelacion'));
+        chart.draw(data, options);
+    };
+</script>
+
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Organismo ', 'cantidad'],
+
+        ['Publico', {{ empresa.uno }}],
+        ['Privado', {{ empresa.dos }}],
+        [' Social', {{ empresa.tres }}],
+        ]);
+
+    var options = {
+        title: 'Datos de la empresa u organismo',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartDatos'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Organismo ', 'cantidad'],
+
+        ['Publico', {{ empresa.uno }}],
+        ['Privado', {{ empresa.dos }}],
+        [' Social', {{ empresa.tres }}],
+        [' Social', {{ empresa.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'SECTOR PRIMARIO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartDatos'));
+    chart.draw(data, options);
+    }
+</script>
+
+
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartActividad" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartEstudio" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartEmpleo" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartMedio" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasMedio" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartIdioma" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasEmpleo" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartSalario" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasNivel" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartCondicion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasRelacion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartDatos" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartActividad" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartEstudio" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="form-section">
+    <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+</div>
+{% endblock %}
