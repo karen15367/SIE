@@ -1,0 +1,190 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+
+{% block content %}
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+            ['Contenido', 'cantidad'],
+            [" Manejo de softwares ", {{ reforzar.uno }}],
+    ["Manejo de Normas Nacionales e Internacionales", {{ reforzar.dos }}],
+        ["Evaluación de proyectos de inversión", {{ reforzar.tres }}],
+        ["Habilidades directivas", {{ reforzar.cuatro }}],
+        ["Otras", {{ reforzar.cinco }}],
+        ]);
+
+    var options = {
+        title: 'Antigüedad en el trabajo',
+        width: 1111,
+        legend: { position: 'none' },
+        chart: {
+            title: 'LOS EGRESADOS SUGIEREN REFORZAR ',
+            subtitle: 'Reforzar o actualizar contenidos del programa educativo'
+        },
+        bars: 'horizontal', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('top_x_div'));
+    chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Sector', 'cantidad'],
+            ['Totalmente', {{ competencias.uno }}],
+    ['Suficiente', {{ competencias.dos }}],
+        ['Poco', {{ competencias.tres }}],
+        ['Nada', {{ competencias.cuatro }}],
+            
+        ]);
+
+    var options = {
+        title: 'LO QUE LOS EGRESADOS CONSIDERAN SOBRE LA AYUDA DE LAS COMPETENCIAS ADQUIRIDAS EN LA INSTITUCIÓN FRENTE A SU TRABAJO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartCompetencia'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Sector', 'cantidad'],
+            [' Muy satisfecho  ', {{ satisfaccion.uno }}],
+    ['Satisfecho', {{ satisfaccion.dos }}],
+        ['Poco satisfecho', {{ satisfaccion.tres }}],
+        ['Insatisfecho', {{ satisfaccion.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'SATISFACCION DE LOS EGRESADOS EN SU TRABAJO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartSatisfaccion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Contacto', 'cantidad'],
+            ['Si', {{ contacto.si }}],
+    ['No ', {{ contacto.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS A LOS QUE LA INSTITUCIÓN A CONTACTADO',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartContacto'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Participación', 'cantidad'],
+            ['Si', {{ participar.si }}],
+    ['No ', {{ participar.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS INTERESADOS EN PARTICIPAR CON LA INSTITUCIÓN',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartParticipar'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Rol', 'cantidad'],
+        ["Curso o conferencia", {{ aporte.uno }}],
+        ["Visita industrial ", {{ aporte.dos }}],
+        ["Realización de Residencias", {{ aporte.tres }}],
+        ["Realizar investigaciones", {{ aporte.cuatro }}],
+        ["Educación Dual", {{ aporte.cinco }}],
+        ["Donativos en especie", {{ aporte.seis }}],
+        ["Otro", {{ aporte.siete }}],
+        ]);
+
+    var options = {
+        title: 'En que están dispuestos a participar',
+        width: 1111,
+        legend: { position: 'none' },
+        chart: {
+            title: 'EN QUE ESTÁN DISPUESTOS A PARTICIPAR',
+            subtitle: ''
+        },
+        bars: 'horizontal', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barrasParticipar'));
+    chart.draw(data, options);
+    };
+</script>
+
+
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartCompetencia" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartSatisfaccion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="top_x_div" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartContacto" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartParticipar" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasParticipar" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="form-section">
+    <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+</div>
+
+{% endblock %}

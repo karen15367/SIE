@@ -13,7 +13,7 @@ def viewAnexos(request):
             lista = [
                 {'id': 'DATOS GENERALES', 'direccion': 'anexoR/A1'},
                 {'id': 'SITUACIÓN LABORAL', 'direccion': 'anexoR/A2'},
-                {'id': 3, 'direccion': ''},
+                {'id': 'PLAN DE ESTUDIOS / INSTITUCIÓN ', 'direccion': 'anexoR/A3'},
                 {'id': 4, 'direccion': 'index'},
             ]
 
@@ -154,16 +154,12 @@ def viewA2(request):
                 g2 += 1
             elif a.satisfaccion == 3:
                 g3 += 1
-            elif a.satisfaccion == 3:
-                g4 += 1
             else:
-                g5 += 1
+                g4 += 1
 
         #! el egresado no trabaja
         else:
             noTrabaja += 1
-
-    print(f'a1:{p1} a2{p2} a3{p3} a4{a4} p6{p6}')
 
     return render(request, 'layouts/A2.html', {
         'anexo': True,
@@ -173,8 +169,93 @@ def viewA2(request):
         'antiguedad': {'uno': a1, 'dos': a2, 'tres': a3, 'cuatro': a4},  # *ya
         'trabajoT': {'uno': t1, 'dos': t2, 'tres': t3, },  # * al toke
         'sector': {'uno': s1, 'dos': s2, 'tres': s3, 'cuatro': s4},  # *yes u do
-        'puesto': {'uno': p1, 'dos': p2, 'tres': p3, 'cuatro': p4, 'cinco': p5, 'seis': p6, 'siete': p7},#* o
-        'area': {'uno': d1, 'dos': d2, 'tres': d3, 'cuatro': d4, 'cinco': d5, 'seis': d6, 'siete': d7},#* a
-        'medio': {'uno': m1, 'dos': m2, 'tres': m3, 'cuatro': m4, 'cinco': m5, },#* 
+        'puesto': {'uno': p1, 'dos': p2, 'tres': p3, 'cuatro': p4, 'cinco': p5, 'seis': p6, 'siete': p7},
+        'area': {'uno': d1, 'dos': d2, 'tres': d3, 'cuatro': d4, 'cinco': d5, 'seis': d6, 'siete': d7},
+        'medio': {'uno': m1, 'dos': m2, 'tres': m3, 'cuatro': m4, 'cinco': m5, },  # *
         'satisfaccion': {'uno': g1, 'dos': g2, 'tres': g3, 'cuatro': g4, },
+    })
+
+
+def viewA3(request):
+    answer = AnexoS3.objects.all()
+
+    c1 = c2 = c3 = c4 = 0
+
+    g1 = g2 = g3 = g4 = 0
+
+    r1 = r2 = r3 = r4 = r5 = 0
+
+    a1 = a2 = 0
+
+    i1 = i2 = 0
+
+    p1 = p2 = p3 = p4 = p5 = p6 = p7 = 0
+
+
+    for a in answer:
+        if a.competencias == 1:
+            c1 += 1
+        elif a.competencias == 2:
+            c2 += 1
+        elif a.competencias == 3:
+            c3 += 1
+        else:
+            c4 += 1
+
+        # * grado de satisfacción
+        if a.satisfaccion == 1:
+            g1 += 1
+        elif a.satisfaccion == 2:
+            g2 += 1
+        elif a.satisfaccion == 3:
+            g3 += 1
+        else:
+            g4 += 1
+
+        if a.educativo == 1:
+            r1 += 1
+        elif a.educativo == 2:
+            r2 += 1
+        elif a.educativo == 3:
+            r3 += 1
+        elif a.educativo == 4:
+            r4 += 1
+        else:
+            r5 += 1
+
+        if a.contacto == 1:
+            a1 += 1
+        else:
+            a2 += 1
+        
+        if a.participar == 1:
+            i1 += 1
+            if a.aporte ==1:
+                p1 +=1 
+            elif a.aporte == 2:
+                p2 += 1
+            elif a.aporte == 3:
+                p3 += 1
+            elif a.aporte == 4:
+                p4 += 1
+            elif a.aporte == 5:
+                p5 += 1
+            elif a.aporte == 6:
+                p6 += 1
+            else:
+                p7 += 1
+            
+        else:
+            i2 += 1
+
+    return render(request, 'layouts/A3.html', {
+        'anexo': True,
+        'subtitle': 'PLAN DE ESTUDIOS / INSTITUCIÓN',
+        'competencias': {'uno': c1, 'dos': c2, 'tres': c3, 'cuatro': c4},
+        'satisfaccion': {'uno': g1, 'dos': g2, 'tres': g3, 'cuatro': g4, },
+        'reforzar': {'uno': r1, 'dos': r2, 'tres': r3, 'cuatro': r4, 'cinco': r5},
+        'contacto': {'si': a1, 'no': a2},
+        'participar': {'si': i1, 'no': i2},
+        'aporte': {'uno': p1, 'dos': p2, 'tres': p3, 'cuatro': p4, 'cinco': p5, 'seis': p6, 'siete': p7},
+
     })
