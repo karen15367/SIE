@@ -3,16 +3,21 @@ bottle==0.13.3
 certifi==2025.4.26
 chardet==5.2.0
 charset-normalizer==3.4.2
+dj-database-url==2.3.0
 Django==5.2
 django-extensions==4.1
 django-recaptcha @ git+https://github.com/torchbox/django-recaptcha.git@c7de1d3f037200a36033c4f62ccb1f6b719ae91c
+docopt==0.6.2
 et_xmlfile==2.0.0
+gunicorn==23.0.0
 idna==3.10
 load-dotenv==0.1.0
 numpy==2.2.5
 openpyxl==3.1.5
+packaging==25.0
 pandas==2.2.3
 pillow==11.2.1
+pipreqs==0.4.13
 proxy_tools==0.1.0
 psycopg2-binary==2.9.10
 pyobjc-core==11.0
@@ -33,3 +38,4 @@ typing_extensions==4.13.2
 tzdata==2025.2
 urllib3==2.4.0
 wrapt==1.17.2
+yarg==0.1.10
