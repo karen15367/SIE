@@ -12,8 +12,7 @@ def viewEncuesta(request):
     lista = [
         {'id': 'PERFIL DEL EGRESADO', 'direccion': 'encuestaR/E1'},
         {'id': 'PERTINENCIA Y DISPONIBILIDAD', 'direccion': 'encuestaR/E2'},
-        {'id': 'UBICACIÓN LABORAL', 'direccion': 'encuestaR/E3Empresa'},
-        {'id': 'DATOS DE LA EMPRESA/ORGANIZACIÓN', 'direccion': 'encuestaR/E3'},
+        {'id': 'UBICACIÓN LABORAL', 'direccion': 'encuestaR/E3'},
         {'id': 'DESEMPEÑO PROFESIONAL', 'direccion': 'encuestaR/E4'},
         {'id': 'DESAROLLO PROFESIONAL Y SOCIAL', 'direccion': 'encuestaR/E5'},
     ]
@@ -219,7 +218,7 @@ def viewE3(request):
         'empresa': {'uno': u1, 'dos': u2, 'tres': u3, },
 
     })
-=======
+
 def exportarE2(request):
     data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
 
@@ -359,4 +358,42 @@ def exportarE5(request):
             e.perteneceOrganismosProfesionistas,
             e.perteneceAsociacionEgresados
         ])
+    return response
+
+def exportarE3(request):
+    data = EncuestaS3.objects.select_related('folioEncuesta').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE3_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'Folio Encuesta',
+        'Actividad actual',
+        'Tipo de estudio',
+        'Medio de empleo',
+        'Requisitos de contratación',
+        'Idioma que utiliza',
+        'Antigüedad en el empleo',
+        'Ingreso diario',
+        'Nivel jerárquico',
+        'Condición de trabajo',
+        'Relación con formación'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.folioEncuesta_id,
+            e.get_actividad_display() if e.actividad else '',
+            e.get_tipoEstudio_display() if e.tipoEstudio else '',
+            e.get_medioEmpleo_display() if e.medioEmpleo else '',
+            e.get_requisitosContratacion_display() if e.requisitosContratacion else '',
+            e.get_idiomaUtiliza_display() if e.idiomaUtiliza else '',
+            e.get_antiguedad_display() if e.antiguedad else '',
+            e.get_ingreso_display() if e.ingreso else '',
+            e.get_nivelJerarquico_display() if e.nivelJerarquico else '',
+            e.get_condicionTrabajo_display() if e.condicionTrabajo else '',
+            e.get_relacionTrabajo_display() if e.relacionTrabajo else ''
+        ])
+
     return response

@@ -14,6 +14,5 @@ urlpatterns = [
     path('E5/', views.viewE5, name='E5'),
     path('exportarE5/', views.exportarE5, name='exportarE5'),
     path('exportarE4/', views.exportarE4, name='exportarE4'),
-
-
+    path('exportarE3/', views.exportarE3, name='exportarE3'),
 ]
