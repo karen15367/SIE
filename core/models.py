@@ -632,6 +632,11 @@ class AnexoS1(models.Model):
     )
     razonNoTituloOtra = models.CharField(max_length=100, blank=True, null=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['folioEncuesta'], name='unique_folio_anexos1')
+        ]
+
     def __str__(self):
         return f"Anexo S1 - Encuesta {self.folioEncuesta}"
 
@@ -748,6 +753,12 @@ class AnexoS2(models.Model):
     medioTrabajoOtro = models.CharField(max_length=100, blank=True, null=True)
     satisfaccion = models.IntegerField(choices=SATISFACCION_CHOICES, blank=True, null=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['folioEncuesta'], name='unique_folio_anexos2')
+        ]
+
+
     def __str__(self):
         return f"Anexo S2 - Encuesta {self.folioEncuesta}"
 
@@ -814,6 +825,12 @@ class AnexoS3(models.Model):
     participar = models.IntegerField(choices=PARTICIPAR_CHOICES, null=True)
     aporte = models.IntegerField(choices=APORTE_CHOICES, blank=True, null=True)
     aporteOtro = models.CharField(max_length=100, blank=True, null=True)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['folioEncuesta'], name='unique_folio_anexos3')
+        ]
+
     
     def __str__(self):
         return f"Anexo S3 - Encuesta {self.folioEncuesta}"
@@ -942,6 +959,11 @@ class AnexoS4(models.Model):
     asociacion = models.IntegerField(choices=ASOCIACION_CHOICES, null=True)
     asociacionEspecifique = models.CharField(max_length=200, blank=True, null=True)
     etica = models.IntegerField(choices=ETICA_CHOICES, null=True)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['folioEncuesta'], name='unique_folio_anexos4')
+        ]
     
     def __str__(self):
         return f"Anexo S4 - Encuesta {self.folioEncuesta}"

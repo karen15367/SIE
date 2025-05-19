@@ -23,10 +23,10 @@ def e1(request):
 
     if request.method == 'POST':
         egresado = Egresado.objects.filter(curp=curp).first()
-        encuesta = Encuesta.objects.create(
+        encuesta, _ = Encuesta.objects.get_or_create(
             curp=egresado,
-            fechaInicio=date.today(),
-            lapso=calcular_lapso()
+            lapso=calcular_lapso(),
+            defaults={'fechaInicio': date.today()}
         )
         request.session['folio_encuesta'] = encuesta.folioEncuesta
 
@@ -46,10 +46,10 @@ def e1(request):
         return redirect('e2')
     return render(request, 'encuesta1.html')
 
+
 def e2(request):
     if request.method == 'POST':
         datos = request.session.get('encuesta_s1', {})
-        print("Datos recibidos:", request.POST)
         datos.update({
             'carrera': request.POST.get('carrera'),
             'especialidad': request.POST.get('Especialidad'),
@@ -61,30 +61,39 @@ def e2(request):
             'manejoPaquetes': request.POST.get('paquetes'),
             'especificarPaquetes': request.POST.get('paquetesE')
         })
-        print("Datos recibidos:", request.POST)
+
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        EncuestaS1.objects.create(folioEncuesta=encuesta, **datos)
+
+        EncuestaS1.objects.update_or_create(
+            folioEncuesta=encuesta,
+            defaults=datos
+        )
+
         request.session.pop('encuesta_s1', None)
         return redirect('e3')
     return render(request, 'encuesta2.html')
 
+
 def e3(request):
     if request.method == 'POST':
         folio = request.session['folio_encuesta']
-        print("Datos recibidos:", request.POST)
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        EncuestaS2.objects.create(
+
+        EncuestaS2.objects.update_or_create(
             folioEncuesta=encuesta,
-            calidadDocentes=request.POST.get('calidadDocentes'),
-            planEstudios=request.POST.get('planEstudios'),
-            oportunidadesProyectos=request.POST.get('oportunidadesProyectos'),
-            enfasisInvestigacion=request.POST.get('enfasisInvestigacion'),
-            satisfaccionCondiciones=request.POST.get('satisfaccionCondiciones'),
-            experienciaResidencia=request.POST.get('experienciaResidencia')
+            defaults={
+                'calidadDocentes': request.POST.get('calidadDocentes'),
+                'planEstudios': request.POST.get('planEstudios'),
+                'oportunidadesProyectos': request.POST.get('oportunidadesProyectos'),
+                'enfasisInvestigacion': request.POST.get('enfasisInvestigacion'),
+                'satisfaccionCondiciones': request.POST.get('satisfaccionCondiciones'),
+                'experienciaResidencia': request.POST.get('experienciaResidencia')
+            }
         )
         return redirect('e4')
     return render(request, 'encuesta3.html')
+
 
 def e4(request):
     if request.method == 'POST':
@@ -98,11 +107,15 @@ def e4(request):
         }
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        EncuestaS3.objects.create(folioEncuesta=encuesta, **datos)
-        if actividad in [2, 4]:
-            return redirect('e9')
-        return redirect('e5')
+
+        EncuestaS3.objects.update_or_create(
+            folioEncuesta=encuesta,
+            defaults=datos
+        )
+
+        return redirect('e9') if actividad in [2, 4] else redirect('e5')
     return render(request, 'encuesta4.html')
+
 
 def e5(request):
     if request.method == 'POST':
@@ -177,23 +190,33 @@ def e8(request):
         })
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        EncuestaS3Empresa.objects.create(folioEncuesta=encuesta, **datos)
+
+        EncuestaS3Empresa.objects.update_or_create(
+            folioEncuesta=encuesta,
+            defaults=datos
+        )
+
         request.session.pop('empresa', None)
         return redirect('e9')
     return render(request, 'encuesta8.html')
+
 
 def e9(request):
     if request.method == 'POST':
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        EncuestaS4.objects.create(
+
+        EncuestaS4.objects.update_or_create(
             folioEncuesta=encuesta,
-            eficiencia=request.POST.get('eficiencia'),
-            formacion=request.POST.get('formacion'),
-            utilidad=request.POST.get('utilidad')
+            defaults={
+                'eficiencia': request.POST.get('eficiencia'),
+                'formacion': request.POST.get('formacion'),
+                'utilidad': request.POST.get('utilidad')
+            }
         )
         return redirect('e10')
     return render(request, 'encuesta9.html')
+
 
 def e10(request):
     if request.method == 'POST':
@@ -236,12 +259,18 @@ def e12(request):
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
         datos = request.session.get('s5', {})
         datos['comentariosSugerencias'] = request.POST.get('comentariosSugerencias')
-        EncuestaS5.objects.create(folioEncuesta=encuesta, **datos)
+
+        EncuestaS5.objects.update_or_create(
+            folioEncuesta=encuesta,
+            defaults=datos
+        )
+
         encuesta.fechaFin = date.today()
         encuesta.save()
         request.session.pop('s5', None)
         return redirect('encuesta_finalizada')
     return render(request, 'encuesta12.html')
+
 
 def encuesta_finalizada(request):
     curp = request.session.get('usuario_id')
