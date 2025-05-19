@@ -1,0 +1,400 @@
+{% extends "respuestasGrafico.html" %}
+{% load static %}
+
+{% block content %}
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Herramientas', 'cantidad'],
+        ["Documentos" , {{ utiliza.uno }}],
+        ["Planos ", {{ utiliza.dos }}],
+        ["Softwares", {{ utiliza.tres }}],
+        ["Normas", {{ utiliza.cuatro }}],
+        ["Otro", {{ utiliza.cinco }}],
+        
+        ]);
+
+    var options = {
+        title: 'En que están dispuestos a participar',
+        width: 1155,
+        legend: { position: 'none' },
+        chart: {
+            title: 'EN QUE ESTÁN DISPUESTOS A PARTICIPAR',
+            subtitle: ''
+        },
+        bars: 'horizontal', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barrasDisposicion'));
+    chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Participación', 'cantidad'],
+            ['Si', {{ colabora.si }}],
+            ['No ', {{ colabora.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS QUE PARTICIPAN EN PROYECTOS O INVESTIGACIONES',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartParticipar'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Proyecto', 'cantidad'],
+        ["Aplicada" , {{ tipo.uno }}],
+        ["Experimental ", {{ tipo.dos }}],
+        ["Documental", {{ tipo.tres }}],
+        ["Descriptiva", {{ tipo.cuatro }}],
+        ["Otro", {{ tipo.cinco }}],
+        ]);
+
+    var options = {
+        title: 'proyectos en los que participan los egresados',
+        width: 1155,
+        legend: { position: 'none' },
+        chart: {
+            title: 'PROYECTOS E INVESTIGACIONES QUE COLABORAN LOS EGRESADOS',
+            subtitle: ''
+        },
+        bars: 'vertical', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barras'));
+    chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Redes', 'cantidad'],
+            ['Si', {{ redes.si }}],
+            ['No ', {{ redes.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS QUE PARTICIPAN EN PROYECTOS O INVESTIGACIONES',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartRedes'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Certificacion', 'cantidad'],
+            ['Si', {{ certificacion.si }}],
+            ['No ', {{ certificacion.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS QUE CUENTAN CON UNA CERTIFICACIÓN NACIONAL O INTERNACIONAL',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartCertificacion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Proyecto', 'cantidad'],
+        ["Asesoría" , {{ servicio.uno }}],
+        ["Peritaje ", {{ servicio.dos }}],
+        ["Certificación", {{ servicio.tres }}],
+        ["Ninguno", {{ servicio.cuatro }}],
+        ["Otro", {{ servicio.cinco }}],
+        ]);
+
+    var options = {
+        title: 'servicios que ofrecen los egresados',
+        width: 1155,
+        legend: { position: 'none' },
+        chart: {
+            title: 'SERVICIOS QUE OFRECEN LOS EGRESADOS',
+            subtitle: ''
+        },
+        bars: 'vertical', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barrasServicios'));
+    chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Idioma', 'cantidad'],
+        ["Inglés" , {{ idiomas.uno }}],
+        ["Francés ", {{ idiomas.dos }}],
+        ["Alemán", {{ idiomas.tres }}],
+        ["Italiano", {{ idiomas.cuatro }}],
+        ["Otro", {{ idiomas.cinco }}],
+        ]);
+
+    var options = {
+        title: 'idiomas que utiliza el egresado para trabajar ',
+        width: 1155,
+        legend: { position: 'none' },
+        chart: {
+            title: 'IDIOMAS QUE UTILIZAR EL EGRESADO PARA TRABAJAR',
+            subtitle: ''
+        },
+        bars: 'vertical', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barrasIdiomas'));
+    chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Publicacion', 'cantidad'],
+            ['Si', {{ publicacion.si }}],
+            ['No ', {{ publicacion.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS QUE HAN COLABORADO EN UN ARTICULO  CIENTÍFICO O DE DIVULGACIÓN',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartPublicacion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Documentos', 'cantidad'],
+        ["Manuales operativos " , {{ documentos.uno }}],
+        ["Procedimientos ", {{ documentos.dos }}],
+        ["Lineamientos", {{ documentos.tres }}],
+        [" Informes técnicos", {{ documentos.cuatro }}],
+        ["Otro", {{ documentos.cinco }}],
+        ]);
+
+    var options = {
+        title: 'idiomas que utiliza el egresado para trabajar ',
+        width: 1155,
+        legend: { position: 'none' },
+        chart: {
+            title: 'IDIOMAS QUE UTILIZAR EL EGRESADO PARA TRABAJAR',
+            subtitle: ''
+        },
+        bars: 'vertical', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barrasDocumentos'));
+    chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Documentos', 'cantidad'],
+        ["Calidad " , {{ gestion.uno }}],
+        ["Calidad ", {{ gestion.dos }}],
+        ["Seguridad", {{ gestion.tres }}],
+        ["Otro", {{ gestion.cuatro }}],
+        ]);
+
+    var options = {
+        title: 'Sistemas de gestion que usan los egresados',
+        width: 1155,
+        legend: { position: 'none' },
+        chart: {
+            title: 'SISTEMAS DE GESTIÓN QUE USAN LOS EGRESADOS EN SU TRABAJO',
+            subtitle: ''
+        },
+        bars: 'vertical', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barrasDocumentos'));
+    chart.draw(data, options);
+    };
+</script>
+
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Redes', 'cantidad'],
+            ['Si', {{ asociacion.si }}],
+            ['No ', {{ asociacion.no }}],
+            
+        ]);
+
+    var options = {
+        title: 'EGRESADOS QUE PERTENECEN A ALGUNA ASOCIACIÓN RELACIONADA A SU CARRERA',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('donutchartAsociacion'));
+    chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+        ['Documentos', 'cantidad'],
+        ["Nomas básicas " , {{ etica.uno }}],
+        ["Reglas de respeto ", {{ etica.dos }}],
+        ["Comportamiento adecuado ", {{ etica.tres }}],
+        ["Guía de conducta", {{ etica.cuatro }}],
+        ["Niguna de las ant.", {{ etica.cinco }}],
+        ]);
+
+    var options = {
+        title: 'Punto de vista del egresado con relacion a la etica',
+        width: 1155,
+        legend: { position: 'none' },
+        chart: {
+            title: 'PUNTO DE VISTA  DEL EGRESADO CON RELACIÓN A LA ÉTICA',
+            subtitle: ''
+        },
+        bars: 'vertical', // Required for Material Bar Charts.
+        axes: {
+            x: {
+                0: { side: 'top', label: 'Cantidad' } // Top x-axis.
+            }
+        },
+        bar: { groupWidth: "100%" }
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('barrasEtica'));
+    chart.draw(data, options);
+    };
+</script>
+
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasDisposicion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartParticipar" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barras" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartRedes" style="width: 100%; height: 500px;"></div>
+    <div id="donutchartCertificacion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasIdiomas" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasDocumentos" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="donutchartAsociacion" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="barrasEtica" style="width: 100%; height: 500px;"></div>
+</div>
+<hr>
+<div class="form-section">
+    <div class="section-subtitle">DESCARGAR LISTADO DE RAZONES</div>
+</div>
+
+{% endblock %}
