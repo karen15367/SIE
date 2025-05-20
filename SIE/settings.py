@@ -16,7 +16,7 @@ import certifi
 from dotenv import load_dotenv
 import requests
 
-import dj_database_url 
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,11 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'django-insecure-=5imgjx^7+cjy5oa2_z_stl4=mtnca^7n$5b*woyrx56rd8pws'
+# SECRET_KEY = 'django-insecure-=5imgjx^7+cjy5oa2_z_stl4=mtnca^7n$5b*woyrx56rd8pws'
 SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -72,7 +72,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    
+
 ]
 
 ROOT_URLCONF = 'SIE.urls'
@@ -121,8 +121,6 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -160,10 +158,10 @@ USE_TZ = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#* uso de producci�n 
+# * uso de producci�n
 STATIC_URL = '/static/'
-STATIC_ROOT =  os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
