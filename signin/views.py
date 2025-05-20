@@ -23,7 +23,6 @@ from datetime import timedelta
 # EgresadoTemporal.objects.filter(fecha_creacion__lt=now() - timedelta(hours=1)).delete()
 
 def signin(request):
-    print(">>> Estoy en signin")
     return render(request, "vistaSignUp.html")
 
 
