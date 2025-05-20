@@ -53,15 +53,9 @@ def e1(request):
 def e2(request):
     if request.method == 'POST':
         datos = request.session.get('encuesta_s1', {})
-        fi = request.POST.get('fechaingreso')
-        fe = request.POST.get('fechaEgreso')
         datos.update({
             'carrera': request.POST.get('carrera'),
             'especialidad': request.POST.get('Especialidad'),
-            'fechaIngreso': datetime.datetime.strptime(
-                fi, '%Y-%m-%d').date(),
-            'fechaEgreso': datetime.datetime.strptime(
-                fe, '%Y-%m-%d').date(),
             'titulado': request.POST.get('titulo'),
             'dominioIngles': request.POST.get('dominio'),
             'otroIdioma': request.POST.get('idioma'),
