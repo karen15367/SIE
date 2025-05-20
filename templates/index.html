@@ -103,7 +103,7 @@
                 {% endif %}
             {% else %}
                 {% if tipo == 'admin' %}
-                    {% if carrera == 'General' %}
+                    {% if carrera == 'general' %}
                         <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
                             <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
                                 <button class="button-28" role="button">CREAR AVISO</button>
@@ -140,26 +140,24 @@
             <div class="popup-content">
                 <span id="closePopup" class="close">&times;</span>
                 <h2 class="blueText">Avisos</h2>
-                <hr>
                 {% if avisos %}
-                {% for aviso in avisos %}
-                <h3>{{ aviso.titulo }}</h3>
-                <p>{{ aviso.descripcion }}</p>
-                <p><small>Vigencia: {{ aviso.fechaInicio|date:"d/m/Y" }} - {{ aviso.fechaFin|date:"d/m/Y" }}</small></p>
-                {% if tipo == 'admin' %}
-                {% for aviso in avisos %}
-                <h3>{{ aviso.titulo }}</h3>
-                <p>{{ aviso.descripcion }}</p>
-                <button type="button" onclick="window.location.href='{% url 'editar_aviso' aviso.idNotificacion %}'">
-                    Editar
-                </button>
-                <hr>
-                {% endfor %}
-                {% endif %}
-                <hr>
-                {% endfor %}
+                    {% if tipo == 'admin' %}
+                        {% for aviso in avisos %}
+                            <h3>{{ aviso.titulo }}</h3>
+                            <p>{{ aviso.descripcion }}</p>
+                            <button type="button" onclick="window.location.href='{% url 'editar_aviso' aviso.idNotificacion %}'">
+                                Editar
+                            </button>
+                        {% endfor %}
+                    {% else %}
+                        {% for aviso in avisos %}
+                            <h3>{{ aviso.titulo }}</h3>
+                            <p>{{ aviso.descripcion }}</p>
+                            <p><small>Vigencia: {{ aviso.fechaInicio|date:"d/m/Y" }} - {{ aviso.fechaFin|date:"d/m/Y" }}</small></p>
+                        {% endfor %}
+                    {% endif %}
                 {% else %}
-                <p>No hay avisos disponibles.</p>
+                    <p>No hay avisos disponibles.</p>
                 {% endif %}
             </div>
         </div>
