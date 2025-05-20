@@ -1,0 +1,25 @@
+#tabla-egresados table {
+    width: 100%;
+    /* Ocupa todo el ancho disponible */
+    table-layout: fixed;
+    /* Asigna anchos iguales a columnas */
+    border-collapse: collapse;
+    /* Une bordes para líneas continuas */
+}
+
+/* Define el estilo de las líneas de la tabla */
+#tabla-egresados th,
+#tabla-egresados td {
+    border: 1px solid #ccc;
+    /* Grosor y color de las líneas */
+    padding: 8px;
+    /* Espacio interno para legibilidad */
+    text-align: left;
+    /* Alineación de contenido */
+    overflow: hidden;
+    /* Evita que contenido muy largo rompa el diseño */
+    text-overflow: ellipsis;
+    /* Opcional: añade “…” si el texto desborda */
+    white-space: nowrap;
+    /* Evita saltos de línea dentro de celdas */
+}
