@@ -35,8 +35,7 @@ def e1(request):
         request.session['encuesta_s1'] = {
             'nombre': request.POST.get('nombre'),
             'noControl': request.POST.get('noControl'),
-            'fechaNacimiento': datetime.datetime.strptime(
-                request.POST.get('fechaNacimiento'), '%Y-%m-%d').date(),
+            'fechaNacimiento': request.POST.get('fechaNacimiento'),
             'curp': request.POST.get('curp'),
             'sexo': request.POST.get('sexo'),
             'estadoCivil': request.POST.get('estadoCivil'),
