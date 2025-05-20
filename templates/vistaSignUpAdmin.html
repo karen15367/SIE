@@ -27,7 +27,7 @@
             <div class="section-title">ALTA DEL ADMINISTRADOR</div>
         </div>
 
-        <form action="{% url 'signinAdmin:verify' %}" method="post" id="mainForm">
+        <form action="/verify/" method="post" id="mainForm">
             {% csrf_token %}
             {% if error %}
             <div style="color: red; margin-bottom: 15px;">
