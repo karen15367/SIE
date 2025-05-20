@@ -335,6 +335,7 @@ def modCampos(request):
                 controlTemp = request.POST.get('control')
                 sexoTemp = request.POST.get('control')
 
+                '''
                 if curpTemp:
                     if Administrador.objects.filter(curp=curpTemp).exists():
                         return render(request, "modUser.html", {
@@ -347,7 +348,7 @@ def modCampos(request):
                         admin.save(update_fields=['curp'])
                         admin = Administrador.objects.filter(
                             rfc=curpTemp).first()
-
+                '''
                 if nombreTemp != user.nombre:
                     user.nombre = nombreTemp
                     user.save(update_fields=['nombre'])
