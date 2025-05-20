@@ -197,3 +197,10 @@ EMAIL_SSL_CERT_FILE = certifi.where()
 # settings.py
 DATE_INPUT_FORMATS = ['%Y-%m-%d']  # Prioridad al formato ISO
 USE_L10N = False  # Desactiva formatos locales para fechas
+
+# settings.py
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://sie.onrender.com',
+    # Add any other trusted domains or subdomains here, if necessary
+]
