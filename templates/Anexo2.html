@@ -33,11 +33,11 @@
                 <div class="question">¿Estás titulado?:</div>
                 <div class="radio-group">
                     <span class="radio-option">
-                        <input type="radio" name="titulado" value="1" id="tituladoSi" />
-                        <label for="tituladoSi">Si</label>
+                        <input type="radio" name="titulado" value=1 id="tituladoSi" {% if titulado == 1 %}checked{% endif %}/>
+                        <label for="tituladoSi">Sí</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="titulado" value="0" id="tituladoNo" />
+                        <input type="radio" name="titulado" value=0 id="tituladoNo" {% if titulado == 0 %}checked{% endif %}/>
                         <label for="tituladoNo">No</label>
                     </span>
                 </div>
@@ -50,26 +50,26 @@
             <div class="options-group">
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTitulo" value="compromiso" id="razon1" />
+                        <input type="radio" name="razonNoTitulo" value="compromiso" id="razon1" {% if razon_no_titulo == 1 %}checked{% endif %}/>
                         <label for="razon1">Compromiso Laboral</label>
                     </span>
                     
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTitulo" value="tiempo" id="razon2" />
+                        <input type="radio" name="razonNoTitulo" value="tiempo" id="razon2" {% if razon_no_titulo == 2 %}checked{% endif %} />
                         <label for="razon2">Falta de Tiempo</label>
                     </span>
                     
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTitulo" value="apoyo" id="razon3" />
+                        <input type="radio" name="razonNoTitulo" value="apoyo" id="razon3" {% if razon_no_titulo == 3 %}checked{% endif %}/>
                         <label for="razon3">Falta de Apoyo Institucional</label>
                     </span>
                 </div>
                 
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTitulo" value="otra" id="razon4" />
+                        <input type="radio" name="razonNoTitulo" value="otra" id="razon4" {% if razon_no_titulo == 4 %}checked{% endif %}/>
                         <label for="razon4">Otras</label>
-                        <input type="text" class="line-input" name="razonNoTituloOtra">
+                        <input type="text" class="line-input" name="razonNoTituloOtra" value="{{ razon_no_titulo_otra }}">
                     </span>
                 </div>
             </div>

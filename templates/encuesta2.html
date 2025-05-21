@@ -33,106 +33,106 @@
     <div class="form-content">
       <img src="{% static 'img/itv.png' %}" alt="Logo Instituto" class="logo-center">
 
-      <form action="{% url 'e2' %}" method="post" id="Perfil">
-        {% csrf_token %}
-        <div class="form-row">
-          <div class="form-column">
+<form action="{% url 'e2' %}" method="post" id="Perfil">
+  {% csrf_token %}
+  <div class="form-row">
+    <div class="form-column">
 
-            <div class="form-group">
-              <label class="form-label">Carrera:</label>
-                  <select id="carrera" name="carrera" required>
-                      <option value="">Seleccione una opción</option>
-                      <option>Ing. Sistemas Computacionales</option>
-                      <option>Ing. Química</option>
-                      <option>Ing. Bioquímica</option>
-                      <option>Ing. Industrial</option>
-                      <option>Ing. Mecatrónica</option>
-                      <option>Ing. Eléctrica</option>
-                      <option>Ing. Electrónica</option>
-                      <option>Ing. Mecánica</option>
-                      <option>Ing. Renovables</option>
-                      <option>Ing. Gestión Empresarial</option>
-                      <option>Lic. Administración</option>
-                  </select>
-            </div>
+      <div class="form-group">
+        <label class="form-label">Carrera:</label>
+        <select id="carrera" name="carrera" required>
+          <option value="">Seleccione una opción</option>
+          <option {% if carrera == "Ing. Sistemas Computacionales" %}selected{% endif %}>Ing. Sistemas Computacionales</option>
+          <option {% if carrera == "Ing. Química" %}selected{% endif %}>Ing. Química</option>
+          <option {% if carrera == "Ing. Bioquímica" %}selected{% endif %}>Ing. Bioquímica</option>
+          <option {% if carrera == "Ing. Industrial" %}selected{% endif %}>Ing. Industrial</option>
+          <option {% if carrera == "Ing. Mecatrónica" %}selected{% endif %}>Ing. Mecatrónica</option>
+          <option {% if carrera == "Ing. Eléctrica" %}selected{% endif %}>Ing. Eléctrica</option>
+          <option {% if carrera == "Ing. Electrónica" %}selected{% endif %}>Ing. Electrónica</option>
+          <option {% if carrera == "Ing. Mecánica" %}selected{% endif %}>Ing. Mecánica</option>
+          <option {% if carrera == "Ing. Renovables" %}selected{% endif %}>Ing. Renovables</option>
+          <option {% if carrera == "Ing. Gestión Empresarial" %}selected{% endif %}>Ing. Gestión Empresarial</option>
+          <option {% if carrera == "Lic. Administración" %}selected{% endif %}>Lic. Administración</option>
+        </select>
+      </div>
 
-            <div class="form-group">
-              <label class="form-label">Fecha de ingreso :</label>
-              <input type="date" id="fechaingreso" name="fechaingreso" />
-            </div>
+      <div class="form-group">
+        <label class="form-label">Fecha de ingreso :</label>
+        <input type="date" id="fechaingreso" name="fechaingreso" value="{{ fechaIngreso|date:'Y-m-d' }}" />
+      </div>
 
-            <div class="form-group">
-              <label class="form-label">Titulado:</label>
-              <div class="radio-group">
-                <span class="radio-option">
-                  <input type="radio" name="titulo" value=1 id="tituloSi" required />
-                  <label for="Femenino">Si</label>
-                </span>
-                <span class="radio-option">
-                  <input type="radio" name="titulo" value=0 id="tituloNo" required />
-                  <label for="Masculino">No</label>
-                </span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Dominio del ingles %:</label>
-              <div class="form-input">
-                <input type="text" class="line-input" name="dominio" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Otro idioma:</label>
-              <div class="form-input">
-                <input name="idioma" type="text" class="line-input" >
-              </div>
-            </div>
-
-          </div>
-          <div class="form-column">
-            <div class="form-group">
-              <label class="form-label">Especialidad:</label>
-              <div class="form-input">
-                <input name="Especialidad" type="text" class="line-input" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Fecha de egreso :</label>
-              <input type="date" id="fechaEgreso" name="fechaEgreso" />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Manejo de Paquetes computacionales:</label>
-              <div class="radio-group">
-                <span class="radio-option">
-                  <input type="radio" name="paquetes" value=1 id="paqueteSi" required />
-                  <label for="paqueteSi">Si</label>
-                </span>
-                <span class="radio-option">
-                  <input type="radio" name="paquetes" value=0 id="paqueteNo" required />
-                  <label for="paqueteNo">No</label>
-                </span>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label class="form-label">Especificar Paquetes:</label>
-              <div class="form-input">
-                <input name="paquetesE" type="text" class="line-input" >
-              </div>
-            </div>
-
-          </div>
+      <div class="form-group">
+        <label class="form-label">Titulado:</label>
+        <div class="radio-group">
+          <span class="radio-option">
+            <input type="radio" name="titulo" value="1" id="tituloSi" required {% if titulado == "1" or titulado == 1 %}checked{% endif %} />
+            <label for="tituloSi">Sí</label>
+          </span>
+          <span class="radio-option">
+            <input type="radio" name="titulo" value="0" id="tituloNo" required {% if titulado == "0" or titulado == 0 %}checked{% endif %} />
+            <label for="tituloNo">No</label>
+          </span>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Dominio del inglés %:</label>
+        <div class="form-input">
+          <input type="text" class="line-input" name="dominio" required value="{{ dominio }}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Otro idioma:</label>
+        <div class="form-input">
+          <input name="idioma" type="text" class="line-input" value="{{ idioma }}">
+        </div>
+      </div>
+
     </div>
-    <div class="buttons">
-      <button class="button">Regresar</button>
-      <button class="button" type="submit" form="Perfil">Continuar</button>
+
+    <div class="form-column">
+      <div class="form-group">
+        <label class="form-label">Especialidad:</label>
+        <div class="form-input">
+          <input name="Especialidad" type="text" class="line-input" required value="{{ especialidad }}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Fecha de egreso :</label>
+        <input type="date" id="fechaEgreso" name="fechaEgreso" value="{{ fechaEgreso|date:'Y-m-d' }}" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Manejo de Paquetes computacionales:</label>
+        <div class="radio-group">
+          <span class="radio-option">
+            <input type="radio" name="paquetes" value="1" id="paqueteSi" required {% if paquetes == "1" or paquetes == 1 %}checked{% endif %} />
+            <label for="paqueteSi">Sí</label>
+          </span>
+          <span class="radio-option">
+            <input type="radio" name="paquetes" value="0" id="paqueteNo" required {% if paquetes == "0" or paquetes == 0 %}checked{% endif %} />
+            <label for="paqueteNo">No</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Especificar Paquetes:</label>
+        <div class="form-input">
+          <input name="paquetesE" type="text" class="line-input" value="{{ paquetesE }}">
+        </div>
+      </div>
     </div>
-    
-      </form>
+  </div>
+
+  <div class="buttons">
+    <button class="button" type="button" onclick="window.history.back()">Regresar</button>
+    <button class="button" type="submit" form="Perfil">Continuar</button>
+  </div>
+</form>
+
 </body>
 
 </html>

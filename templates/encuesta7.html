@@ -40,57 +40,57 @@
 
                     <div class="radio-group" style="align-self: center; margin-top: 10px; text-align: center;">
                         Organismo:
-                        <label><input type="radio" name="tipoOrganismo" value=1>Público</label>
-                        <label><input type="radio" name="tipoOrganismo" value=2>Privado</label>
-                        <label><input type="radio" name="tipoOrganismo" value=34>Social</label>
+                        <label><input type="radio" name="tipoOrganismo" value=1 {% if tipoOrganismo == "1" or tipoOrganismo == 1 %}checked{% endif %}>Público</label>
+                        <label><input type="radio" name="tipoOrganismo" value=2 {% if tipoOrganismo == "2" or tipoOrganismo == 2 %}checked{% endif %}>Privado</label>
+                        <label><input type="radio" name="tipoOrganismo" value=3 {% if tipoOrganismo == "3" or tipoOrganismo == 3 %}checked{% endif %}>Social</label>
                     </div>
                 </div>
 
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px;">
                     <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
                         <label style="font-size: 14px;">Giro o Actividad:
-                            <input type="text" name="giroActividad"
-                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
+                            <input type="text" name="giroActividad"  value="{{ giroActividad }}"
+                                style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;" >
                         </label>
                         <label style="font-size: 14px;">Razón social:
-                            <input type="text" name="razonSocial"
+                            <input type="text" name="razonSocial"  value="{{ razonSocial }}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
                         </label>
                     </div>
 
                     <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
                         <label style="font-size: 14px;">Domicilio:
-                            <input type="text" name="domicilio"
+                            <input type="text" name="domicilio" value="{{ domicilio}}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 180px; text-align: center;">
                         </label>
                         <label style="font-size: 14px;">Ciudad:
-                            <input type="text" name="ciudad"
+                            <input type="text" name="ciudad" value="{{ ciudad }}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 120px; text-align: center;">
                         </label>
                         <label style="font-size: 14px;">CP:
-                            <input type="text" name="cp"
+                            <input type="text" name="cp" value="{{ cp }}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 80px; text-align: center;">
                         </label>
                     </div>
 
                     <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
                         <label style="font-size: 14px;">Email:
-                            <input type="email" name="email"
+                            <input type="email" name="email" value="{{ email }}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 180px; text-align: center;">
                         </label>
                         <label style="font-size: 14px;">Teléfono:
-                            <input type="text" name="telefono"
+                            <input type="text" name="telefono" value="{{ telefono }}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 180px; text-align: center;">
                         </label>
                     </div>
 
                     <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
                         <label style="font-size: 14px;">Nombre del jefe inmediato:
-                            <input type="text" name="nombreJefeInmediato"
+                            <input type="text" name="nombreJefeInmediato" value="{{ nombreJefeInmediato }}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
                         </label>
                         <label style="font-size: 14px;">Puesto:
-                            <input type="text" name="puestoJefeInmediato"
+                            <input type="text" name="puestoJefeInmediato"  value="{{ puestoJefeInmediato }}"
                                 style="border: none; border-bottom: 1px solid #000; background: transparent; width: 200px; text-align: center;">
                         </label>
                     </div>

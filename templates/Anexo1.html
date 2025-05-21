@@ -35,20 +35,20 @@
                         <div class="form-group">
                             <label class="form-label">Nombre completo:</label>
                             <div class="form-input">
-                                <input type="text" name="nombre_completo" class="line-input">
+                                <input type="text" name="nombre_completo" class="line-input" value="{{ nombre_completo }}">
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Redes Sociales :</label>
                             <div class="form-input">
-                                <input type="text" name="redes_sociales" class="line-input">
+                                <input type="text" name="redes_sociales" class="line-input" value="{{ redes_sociales }}">
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Fecha ingreso :</label>
-                            <input type="date" name="fecha_ingreso" />
+                            <input type="date" name="fecha_ingreso" value="{{ fecha_ingreso|date:'Y-m-d' }}" />
                         </div>
                     </div>
                     
@@ -56,20 +56,20 @@
                         <div class="form-group">
                             <label class="form-label">Teléfono Celular:</label>
                             <div class="form-input">
-                                <input type="text" name="telefono" class="line-input">
+                                <input type="text" name="telefono" class="line-input" value="{{ telefono }}">
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Correo Electrónico:</label>
                             <div class="form-input">
-                                <input type="email" name="email" class="line-input">
+                                <input type="email" name="email" class="line-input" value="{{ correo }}">
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Fecha egreso:</label>
-                            <input type="date" id="fechaNacimiento" name="fechaNacimiento" />
+                            <input type="date" id="fechaEgreso" name="fechaEgreso" value="{{ fecha_egreso|date:'Y-m-d' }}"/>
                         </div>
                     </div>
                 </div>

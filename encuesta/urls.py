@@ -17,4 +17,6 @@ urlpatterns = [
     path('encuesta12/', views.e12, name='e12'),
     path('encuesta/finalizada/', views.encuesta_finalizada, name='encuesta_finalizada'),
     path('acuse/pdf/', views.generar_acuse_pdf, name='acuse_pdf'),
+    path('redirigir-encuesta/', views.redirigir_encuesta, name='redirigir_encuesta'),
+
 ]

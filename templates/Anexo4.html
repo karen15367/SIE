@@ -33,11 +33,11 @@
                 <div class="question">¿Tu trabajo actual tiene relación con la carrera qué estudiaste?</div>
                 <div class="radio-options">
                     <span class="radio-option">
-                        <input type="radio" name="trabaja" value="1" id="trabajaSi" />
-                        <label for="trabajaSi">Si</label>
+                        <input type="radio" name="relacionTrabajoCarrera" value=1 id="trabajaSi" {% if relacion_trabajo == 1 or relacion_trabajo == "1" %}checked{% endif %} />
+                        <label for="trabajaSi">Sí</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="trabaja" value="0" id="trabajaNo" />
+                        <input type="radio" name="relacionTrabajoCarrera" value=0 id="trabajaNo" {% if relacion_trabajo == 0 or relacion_trabajo == "0" %}checked{% endif %} />
                         <label for="trabajaNo">No</label>
                     </span>
                 </div>
@@ -47,23 +47,23 @@
                 <div class="question">¿Cuál es la antigüedad de tu empleo actual?</div>
                 <div class="options-group">
                     <span class="radio-option">
-                        <input type="radio" name="antiguedad" value="1" id="lapso1" />
+                        <input type="radio" name="antiguedad" value=1 id="lapso1" {% if antiguedad == 1 or antiguedad == "1" %}checked{% endif %}>
                         <label for="lapso1">0-3 Meses</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="antiguedad" value="2" id="lapso2" />
+                        <input type="radio" name="antiguedad" value=2 id="lapso2" {% if antiguedad == 2 or antiguedad == "2" %}checked{% endif %}>
                         <label for="lapso2">4-6 Meses</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="antiguedad" value="3" id="lapso3" />
+                        <input type="radio" name="antiguedad" value=3 id="lapso3" {% if antiguedad == 3 or antiguedad == "3" %}checked{% endif %}>
                         <label for="lapso3">6 Meses - 1 Año</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="antiguedad" value="4" id="lapso4" />
+                        <input type="radio" name="antiguedad" value=4 id="lapso4" {% if antiguedad == 4 or antiguedad == "4" %}checked{% endif %}>
                         <label for="lapso4">1-5 Años</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="antiguedad" value="5" id="lapso5" />
+                        <input type="radio" name="antiguedad" value=5 id="lapso5" {% if antiguedad == 5 or antiguedad == "5" %}checked{% endif %}>
                         <label for="lapso5">6 años o más</label>
                     </span>
                 </div>
@@ -73,21 +73,21 @@
                 <div class="question">¿Después de egresar, en cuánto tiempo conseguiste trabajo relacionado con tu carrera?</div>
                 <div class="options-group">
                     <span class="radio-option">
-                        <input type="radio" name="tiempoTrabajoRelacionado" value="1" id="tiempoTR1" />
+                        <input type="radio" name="tiempoTrabajoRelacionado" value=1 id="tiempoTR1" {% if tiempo_trabajo_rel == 1 or tiempo_trabajo_rel == "1" %}checked{% endif %}>
                         <label for="tiempoTR1">Al egresar ya contaba con un trabajo</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="tiempoTrabajoRelacionado" value="2" id="tiempoTR2" />
+                        <input type="radio" name="tiempoTrabajoRelacionado" value=2 id="tiempoTR2" {% if tiempo_trabajo_rel == 2 or tiempo_trabajo_rel == "2" %}checked{% endif %}>
                         <label for="tiempoTR2">Menos de 6 meses</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="tiempoTrabajoRelacionado" value="3" id="tiempoTR3" />
+                        <input type="radio" name="tiempoTrabajoRelacionado" value=3 id="tiempoTR3" {% if tiempo_trabajo_rel == 3 or tiempo_trabajo_rel == "3" %}checked{% endif %}>
                         <label for="tiempoTR3">Más de 1 año</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="tiempoTrabajoRelacionado" value="4" id="tiempoTR4" />
+                        <input type="radio" name="tiempoTrabajoRelacionado" value=4 id="tiempoTR4" {% if tiempo_trabajo_rel == 4 or tiempo_trabajo_rel == "4" %}checked{% endif %}>
                         <label for="tiempoTR4">Aún no lo consigo ¿por qué?:</label>
-                        <input type="text" class="line-input">
+                        <input type="text" class="line-input" name="razonNoConseguirTrabajo" value="{{ razon_no_trabajo_rel }}">
                     </span>
                 </div>
             </div>

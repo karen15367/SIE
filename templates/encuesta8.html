@@ -41,16 +41,16 @@
                         <td style="width: 150px; font-weight: bold;">Sector primario:</td>
                         <td style="display: flex; flex-wrap: wrap; gap: 20px;">
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Agroindustria <input type="radio" name="sectorPrimario" value=1>
+                                Agroindustria <input type="radio" name="sectorPrimario" value=1 {% if sectorPrimario == "1" or sectorPrimario == 1 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Pesquero <input type="radio" name="sectorPrimario" value=2>
+                                Pesquero <input type="radio" name="sectorPrimario" value=2 {% if sectorPrimario == "2" or sectorPrimario == 2 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Minero <input type="radio" name="sectorPrimario" value=3>
+                                Minero <input type="radio" name="sectorPrimario" value=3 {% if sectorPrimario == "3" or sectorPrimario == 3 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Otros <input type="radio" name="sectorPrimario" value=4>
+                                Otros <input type="radio" name="sectorPrimario" value=4 {% if sectorPrimario == "4" or sectorPrimario == 4 %}checked{% endif %}>
                             </label>
                         </td>
                     </tr>
@@ -58,16 +58,16 @@
                         <td style="font-weight: bold; margin-bottom: 20px;">Sector secundario:</td>
                         <td style="display: flex; flex-wrap: wrap; gap: 20px;">
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Industrial <input type="radio" name="sectorSecundario" value=1>
+                                Industrial <input type="radio" name="sectorSecundario" value=1 {% if sectorSecundario == "1" or sectorSecundario == 1 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Construcción <input type="radio" name="sectorSecundario" value=2>
+                                Construcción <input type="radio" name="sectorSecundario" value=2 {% if sectorSecundario == "2" or sectorSecundario == 2 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Petrolero <input type="radio" name="sectorSecundario" value=3>
+                                Petrolero <input type="radio" name="sectorSecundario" value=3 {% if sectorSecundario == "3" or sectorSecundario == 3 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Otros <input type="radio" name="sectorSecundario" value=4>
+                                Otros <input type="radio" name="sectorSecundario" value=4 {% if sectorSecundario == "4" or sectorSecundario == 4 %}checked{% endif %}>
                             </label>
                         </td>
                     </tr>
@@ -75,20 +75,20 @@
                         <td style="font-weight: bold;">Sector terciario:</td>
                         <td style="display: flex; flex-wrap: wrap; gap: 20px;">
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Educativo <input type="radio" name="sectorTerciario" value=1>
+                                Educativo <input type="radio" name="sectorTerciario" value=1 {% if sectorTerciario == "1" or sectorTerciario == 1 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Turismo <input type="radio" name="sectorTerciario" value=2>
+                                Turismo <input type="radio" name="sectorTerciario" value=2 {% if sectorTerciario == "2" or sectorTerciario == 2 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Comercio <input type="radio" name="sectorTerciario" value=3>
+                                Comercio <input type="radio" name="sectorTerciario" value=3 {% if sectorTerciario == "3" or sectorTerciario == 3 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
                                 Servicios financieros <input type="radio" name="sectorTerciario"
-                                    value=4>
+                                    value=4 {% if sectorTerciario == "4" or sectorTerciario == 4 %}checked{% endif %}>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px;">
-                                Otros <input type="radio" name="sectorTerciario" value=5>
+                                Otros <input type="radio" name="sectorTerciario" value=5 {% if sectorTerciario == "5" or sectorTerciario == 5 %}checked{% endif %}>
                             </label>
                         </td>
                     </tr>
@@ -100,16 +100,16 @@
 
                 <div style="display: flex; flex-wrap: wrap; gap: 30px; margin-left: 10px;">
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Microempresa (1-30) <input type="radio" name="tamanoEmpresa" value=1>
+                        Microempresa (1-30) <input type="radio" name="tamanoEmpresa" value=1 {% if tamanoEmpresa == "1" or tamanoEmpresa == 1 %}checked{% endif %}>
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Pequeña (31-100) <input type="radio" name="tamanoEmpresa" value=2>
+                        Pequeña (31-100) <input type="radio" name="tamanoEmpresa" value=2 {% if tamanoEmpresa == "2" or tamanoEmpresa == 2 %}checked{% endif %}>
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Mediana (101-500) <input type="radio" name="tamanoEmpresa" value=3>
+                        Mediana (101-500) <input type="radio" name="tamanoEmpresa" value=3 {% if tamanoEmpresa == "3" or tamanoEmpresa == 3 %}checked{% endif %}>
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px;">
-                        Grande (más de 500) <input type="radio" name="tamanoEmpresa" value=4>
+                        Grande (más de 500) <input type="radio" name="tamanoEmpresa" value=4 {% if tamanoEmpresa == "4" or tamanoEmpresa == 4 %}checked{% endif %}>
                     </label>
                 </div>
 
