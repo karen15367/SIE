@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from SIE import settings
 from core.models import Administrador, Egresado, Notificacion
 from django.utils import timezone
 import datetime
+
+import random
+import string
+
+from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
+
 from django.http import JsonResponse
 import json
 
@@ -378,9 +386,30 @@ def modCampos(request):
 
 
 def newPwd(request):
-    if request.method == 'POST':
-        return JsonResponse({
-            'success': True,
-            'message': 'Contraseña restablecida correctamente'
-        })
-    return render(request, 'vistaVerificacionPendiente.html')
+    if request.method == 'POST': 
+        tipo = request.POST.get('personal')
+        pwd = generarC()
+        try:
+            admin = Administrador.objects.filter(rfc=tipo).first()
+            admin.contraseña = make_password(pwd)
+
+            send_mail(
+                    subject="Esta es tu nueva contraseña",
+                    message=f"Hola tu nueva contraseña es:  {pwd} ",
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[admin.correo],
+                )
+            
+            admin.save(update_fields=['contraseña'])
+        except ZeroDivisionError as e:
+            print(e)
+    return render(request, 'vistaVerificacionPendiente.html', {
+        'admin': 'si'
+    })
+
+
+def generarC():
+    
+    caracteres = string.ascii_letters + string.digits  # Letras (mayúsculas y minúsculas) + dígitos
+    contraseña = ''.join(random.choice(caracteres) for _ in range(9))
+    return contraseña
