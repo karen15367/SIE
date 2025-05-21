@@ -42,16 +42,16 @@
             <div style="margin-bottom: 20px;">
                 <p style="font-size: 15px; margin-bottom: 20px;"><strong>Le gustaría tomar cursos de
                         actualización</strong>
-                    No <input type="radio" value=0 name="cursos" />
-                    Sí <input type="radio" value=1 name="cursos" />
-                    ¿Cuáles? <input type="text" name ="cursosCual"
+                    No <input type="radio" value=0 name="cursos" {% if cursos == "0" or cursos == 0 %}checked{% endif %}/>
+                    Sí <input type="radio" value=1 name="cursos" {% if cursos == "1" or cursos == 1 %}checked{% endif %}/>
+                    ¿Cuáles? <input type="text" name ="cursosCual" value="{{ cursosCual }}"
                         style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
                 </p>
 
                 <p style="font-size: 15px;"><strong>Le gustaría tomar algún Posgrado</strong>
-                    No <input type="radio" value=0 name="posgrado" />
-                    Sí <input type="radio" value=1 name="posgrado" />
-                    ¿Cuál? <input type="text" name ="posgradoCual"
+                    No <input type="radio" value=0 name="posgrado" {% if posgrado == "0" or posgrado == 0 %}checked{% endif %}/>
+                    Sí <input type="radio" value=1 name="posgrado" {% if posgrado == "1" or posgrado == 1 %}checked{% endif %}/>
+                    ¿Cuál? <input type="text" name ="posgradoCual" value="{{ posgradoCual }}"
                         style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
                 </p>
             </div>
@@ -59,23 +59,23 @@
             <div style="margin-top: 30px;">
                 <p style="font-size: 15px; margin-bottom: 20px;"><strong>VI.1 Pertenece a organizaciones
                         sociales:</strong>
-                    No <input type="radio" value=0 name="organizaciones" />
-                    Sí <input type="radio" value=1 name="organizaciones" />
-                    ¿Cuáles? <input type="text" name ="organizacionesCual"
+                    No <input type="radio" value=0 name="organizaciones" {% if organizaciones == "0" or organizaciones == 0 %}checked{% endif %}/>
+                    Sí <input type="radio" value=1 name="organizaciones" {% if organizaciones == "1" or organizaciones == 1 %}checked{% endif %}/>
+                    ¿Cuáles? <input type="text" name ="organizacionesCual" value="{{ organizacionesCual }}"
                         style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
                 </p>
 
                 <p style="font-size: 15px; margin-bottom: 20px;"><strong>VI.2 Pertenece a organismos de
                         profesionales:</strong>
-                    No <input type="radio" value=0 name="profesionistas" />
-                    Sí <input type="radio" value=1 name="profesionistas" />
-                    ¿Cuál? <input type="text" name="profesionistasCual"
+                    No <input type="radio" value=0 name="profesionistas" {% if profesionistas == "0" or profesionistas == 0 %}checked{% endif %}/>
+                    Sí <input type="radio" value=1 name="profesionistas" {% if profesionistas == "1" or profesionistas == 1 %}checked{% endif %}/>
+                    ¿Cuál? <input type="text" name="profesionistasCual" value="{{ profesionistasCual }}"
                         style="border: none; border-bottom: 1px solid black; background: transparent; outline: none; width: 200px;">
                 </p>
 
                 <p style="font-size: 15px;"><strong>VI.3 Pertenece a la asociación de egresados:</strong>
-                    No <input type="radio" value=0 name="egresados" />
-                    Sí <input type="radio" value=1 name="egresados" />
+                    No <input type="radio" value=0 name="egresados" {% if egresados == "0" or egresados == 0 %}checked{% endif %}/>
+                    Sí <input type="radio" value=1 name="egresados" {% if egresados == "1" or egresados == 1 %}checked{% endif %}/>
                 </p>
             </div>
         </div>

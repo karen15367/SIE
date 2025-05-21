@@ -39,19 +39,19 @@
             <div class="question-group">
                 <div class="radio-group">
                     <span class="radio-option">
-                        <input type="radio" name="competencias" value="1" id="Totalmente" />
+                        <input type="radio" name="competencias" value=1 id="Totalmente" {% if competencias == "1" or competencias == 1 %}checked{% endif %}/>
                         <label for="Totalmente">Totalmente</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="competencias" value="2" id="suficiente" />
+                        <input type="radio" name="competencias" value=2 id="suficiente" {% if competencias == "2" or competencias == 2 %}checked{% endif %}/>
                         <label for="suficiente">Suficiente</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="competencias" value="3" id="poco" />
+                        <input type="radio" name="competencias" value=3 id="poco" {% if competencias == "3" or competencias == 3 %}checked{% endif %}/>
                         <label for="poco">Poco</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="competencias" value="4" id="nada" />
+                        <input type="radio" name="competencias" value=4 id="nada" {% if competencias == "4" or competencias == 4 %}checked{% endif %}/>
                         <label for="nada">Nada</label>
                     </span>
                 </div>
@@ -65,25 +65,25 @@
             <div class="radio-group">
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="satisfaccion" value="1" id="razon1" />
+                        <input type="radio" name="satisfaccion" value=1 id="razon1" {% if satisfaccion == "1" or satisfaccion == 1 %}checked{% endif %}/>
                         <label for="razon1">Muy Satisfecho</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="satisfaccion" value="2" id="razon2" />
+                        <input type="radio" name="satisfaccion" value=2 id="razon2" {% if satisfaccion == "2" or satisfaccion == 2 %}checked{% endif %}/>
                         <label for="razon2">Satisfecho</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="satisfaccion" value="3" id="razon3" />
+                        <input type="radio" name="satisfaccion" value=3 id="razon3" {% if satisfaccion == "3" or satisfaccion == 3 %}checked{% endif %}/>
                         <label for="razon3">Poco Satisfecho</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="satisfaccion" value="4" id="razon4" />
+                        <input type="radio" name="satisfaccion" value=4 id="razon4" {% if satisfaccion == "4" or satisfaccion == 4 %}checked{% endif %}/>
                         <label for="razon4">Insatisfecho</label>
                     </span>
                 </div>
@@ -93,16 +93,16 @@
                     contenidos del programa educativo?:</div>
             </div>
 
-            <div class="radio-group" ">
-                <div class=" radio-row">
+            <div class="radio-group">
+                <div class="radio-row">
                 <span class="radio-option">
-                    <input type="radio" name="educativo" value="1" id="razon1" />
+                    <input type="radio" name="educativo" value=1 id="razon1" {% if educativo == "1" or educativo == 1 %}checked{% endif %}/>
                     <label for="razon1">Manejo de softwares</label>
                 </span>
             </div>
             <div class="radio-row">
                 <span class="radio-option">
-                    <input type="radio" name="educativo" value="2" id="razon2" />
+                    <input type="radio" name="educativo" value=2 id="razon2" {% if educativo == "2" or educativo == 2 %}checked{% endif %}/>
                     <label for="razon2">Manejo de normas nacionales e internacionales</label>
                 </span>
             </div>
@@ -111,25 +111,25 @@
             <div class=" radio-group" ">
             <div class=" radio-row">
             <span class="radio-option">
-                <input type="radio" name="educativo" value="3" id="razon3" />
+                <input type="radio" name="educativo" value=3 id="razon3" {% if educativo == "3" or educativo == 3 %}checked{% endif %}/>
                 <label for="razon3">Evaluación de proyectos de inversión</label>
             </span>
         </div>
         <div class="radio-row">
             <span class="radio-option">
-                <input type="radio" name="educativo" value="4" id="razon4" />
+                <input type="radio" name="educativo" value=4 id="razon4" {% if educativo == "4" or educativo == 4 %}checked{% endif %}/>
                 <label for="razon4">Habilidades directivas</label>
             </span>
         </div>
     </div>
     </div>
-    <div class="radio-group" ">
+    <div class="radio-group">
             <div class=" radio-group">
             <div class=" radio-row">
         <span class="radio-option">
-            <input type="radio" name="educativo" value="5" id="razon5" />
+            <input type="radio" name="educativo" value=5 id="razon5" {% if educativo == "5" or educativo == 5 %}checked{% endif %}/>
             <label for="razon5">Otras</label>
-            <input type="text" class="line-input">
+            <input type="text" class="line-input" name="educativoOtro" value="{{ educativo_otro }}">
         </span>
     </div>
     </div>

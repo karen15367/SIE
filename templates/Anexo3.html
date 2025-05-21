@@ -34,11 +34,11 @@
                 <div class="question">¿Trabajas actualmente?:</div>
                 <div class="radio-group">
                     <span class="radio-option">
-                        <input type="radio" name="trabaja" value="1" id="trabajaSi" />
+                        <input type="radio" name="trabaja" value=1 id="trabajaSi" {% if trabaja == "1" or trabaja == 1 %}checked{% endif %}/>
                         <label for="trabajaSi">Si</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="trabaja" value="0" id="trabajaNo" />
+                        <input type="radio" name="trabaja" value=0 id="trabajaNo" {% if trabaja == "0" or trabaja == 0 %}checked{% endif %}/>
                         <label for="trabajaNo">No</label>
                     </span>
                 </div>
@@ -51,33 +51,33 @@
             <div class="options-group">
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTrabaja" value="1" id="razon1" />
+                        <input type="radio" name="razonNoTrabaja" value=1 id="razon1" {% if razon_no_trabaja == "1" or razon_no_trabaja == 1 %}checked{% endif %}/>
                         <label for="razon1">Estudio un posgrado</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTrabaja" value="2" id="razon2" />
+                        <input type="radio" name="razonNoTrabaja" value=2 id="razon2" {% if razon_no_trabaja == "2" or razon_no_trabaja == 2 %}checked{% endif %}/>
                         <label for="razon2">Por razones de salud</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTrabaja" value="3" id="razon3" />
+                        <input type="radio" name="razonNoTrabaja" value=3 id="razon3" {% if razon_no_trabaja == "3" or razon_no_trabaja == 3 %}checked{% endif %}/>
                         <label for="razon3">Ajustes propios de la empresa</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTrabaja" value="4" id="razon4" />
+                        <input type="radio" name="razonNoTrabaja" value=4 id="razon4" {% if razon_no_trabaja == "4" or razon_no_trabaja == 4 %}checked{% endif %}/>
                         <label for="razon4">No he encontrado un trabajo relacionado a lo que estudié</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="razonNoTrabaja" value="5" id="razon5" />
+                        <input type="radio" name="razonNoTrabaja" value=5 id="razon5" {% if razon_no_trabaja == "5" or razon_no_trabaja == 5 %}checked{% endif %}/>
                         <label for="razon5">Otras</label>
-                        <input type="text" class="line-input">
+                        <input type="text" class="line-input" name="razonNoTrabajaOtra" value="{{ razon_no_trabaja_otra }}">
                     </span>
                 </div>
             </div>

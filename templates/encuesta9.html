@@ -7,8 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
-  <link rel="stylesheet" href="{% static '/styles/VistaEcuesta10.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/VistaEcuesta10.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
 </head>
@@ -39,13 +39,13 @@
                 </h3>
                 <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 10px;">
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="eficiencia" value=1> Muy eficiente</label>
+                            name="eficiencia" value=1 {% if eficiencia == "1" or eficiencia == 1 %}checked{% endif %}> Muy eficiente</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="eficiencia" value=2> Eficiente</label>
+                            name="eficiencia" value=2 {% if eficiencia == "2" or eficiencia == 2 %}checked{% endif %}> Eficiente</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="eficiencia" value=3> Poco eficiente</label>
+                            name="eficiencia" value=3 {% if eficiencia == "3" or eficiencia == 3 %}checked{% endif %}> Poco eficiente</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="eficiencia" value=4> Deficiente</label>
+                            name="eficiencia" value=4 {% if eficiencia == "4" or eficiencia == 4 %}checked{% endif %}> Deficiente</label>
                 </div>
             </div>
 
@@ -55,15 +55,15 @@
                 </h3>
                 <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 10px;">
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="formacion" value=1> Excelente</label>
+                            name="formacion" value=1 {% if formacion == "1" or formacion == 1 %}checked{% endif %}> Excelente</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="formacion" value=2> Bueno</label>
+                            name="formacion" value=2 {% if formacion == "2" or formacion == 2 %}checked{% endif %}> Bueno</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="formacion" value=3> Regular</label>
+                            name="formacion" value=3 {% if formacion == "3" or formacion == 3 %}checked{% endif %}> Regular</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="formacion" value=4> Malo</label>
+                            name="formacion" value=4 {% if formacion == "4" or formacion == 4 %}checked{% endif %}> Malo</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="formacion" value=5> Pésimo</label>
+                            name="formacion" value=5 {% if formacion == "5" or formacion == 5 %}checked{% endif %}> Pésimo</label>
                 </div>
             </div>
 
@@ -74,15 +74,15 @@
                 </h3>
                 <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 10px;">
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="residencias" value=1> Excelente</label>
+                            name="utilidad" value=1 {% if utilidad == "1" or utilidad == 1 %}checked{% endif %}> Excelente</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="residencias" value=2> Bueno</label>
+                            name="utilidad" value=2 {% if utilidad == "2" or utilidad == 2 %}checked{% endif %}> Bueno</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="residencias" value=3> Regular</label>
+                            name="utilidad" value=3 {% if utilidad == "3" or utilidad == 3 %}checked{% endif %}> Regular</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="residencias" value=4> Malo</label>
+                            name="utilidad" value=4 {% if utilidad == "4" or utilidad == 4 %}checked{% endif %}> Malo</label>
                     <label style="display: flex; align-items: center; gap: 5px; font-size: 16px;"><input type="radio"
-                            name="residencias" value=5> Pésimo</label>
+                            name="utilidad" value=5 {% if utilidad == "5" or utilidad == 5 %}checked{% endif %}> Pésimo</label>
                 </div>
             </div>
         </div>

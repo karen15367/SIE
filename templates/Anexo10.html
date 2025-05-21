@@ -38,11 +38,11 @@
                 </div>
                 <div class="radio-group">
                     <span class="radio-option">
-                        <input type="radio" name="trabaja" value="1" id="trabajaSi" />
-                        <label for="trabajaSi">Si</label>
+                        <input type="radio" name="participaRedes" value=1 id="trabajaSi" {% if participa_redes == "1" or participa_redes == 1 %}checked{% endif %} />
+                        <label for="trabajaSi">Sí</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="trabaja" value="0" id="trabajaNo" />
+                        <input type="radio" name="participaRedes" value=0 id="trabajaNo" {% if participa_redes == "0" or participa_redes == 0 %}checked{% endif %} />
                         <label for="trabajaNo">No</label>
                     </span>
                 </div>
@@ -55,12 +55,12 @@
             </div>
             <div class="radio-group" style="margin-top: 10px; width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="certificacion" value="0" id="certificaionNo" />
+                    <input type="radio" name="certificacion" value=0 id="certificaionNo" {% if certificacion == "0" or certificacion == 0 %}checked{% endif %} />
                     <label for="certificaionNo">No</label>
                     <span class="radio-option">
-                        <input type="radio" name="certificacion" value="1" id="certificaionSi" />
-                        <label for="certificaionSi">Si ¿Cuales?</label>
-                        <input type="text" class="line-input">
+                        <input type="radio" name="certificacion" value=1 id="certificaionSi" {% if certificacion == "1" or certificacion == 1 %}checked{% endif %} />
+                        <label for="certificaionSi">Sí ¿Cuáles?</label>
+                        <input type="text" class="line-input" value="{{ certificacion_cuales }}">
                     </span>
             </div>
 
@@ -70,27 +70,27 @@
 
             <div class="radio-group" style="width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="servicios" value="1" id="asesoria" />
+                    <input type="radio" name="servicios" value=1 id="asesoria" {% if servicios == "1" or servicios == 1 %}checked{% endif %}/>
                     <label for="asesoria">Asesoría o consultoría</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="servicios" value="2" id="peritaje" />
+                    <input type="radio" name="servicios" value=2 id="peritaje" {% if servicios == "2" or servicios == 2 %}checked{% endif %}/>
                     <label for="peritaje">Peritaje</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="servicios" value="3" id="certificacion" />
+                    <input type="radio" name="servicios" value=3 id="certificacion" {% if servicios == "3" or servicios == 3 %}checked{% endif %}/>
                     <label for="certificacion">Certificación</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="servicios" value="4" id="ninguno" />
+                    <input type="radio" name="servicios" value=4 id="ninguno" {% if servicios == "4" or servicios == 4 %}checked{% endif %}/>
                     <label for="ninguno">Ninguno</label>
                 </span>
             </div>
             <div class="radio-group" style="margin-top: 10px; width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="servicios" value="5" id="otras" />
+                    <input type="radio" name="servicios" value=5 id="otras" {% if servicios == "4" or servicios == 4 %}checked{% endif %}/>
                     <label for="otras">Otras</label>
-                    <input type="text" class="line-input">
+                    <input type="text" class="line-input" name="serviciosOtro" value="{{ servicios_otro }}">
                 </span>
             </div>
 
@@ -99,28 +99,28 @@
             </div>
             <div class="radio-group" style="width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="idiomas" value="1" id="ingles" />
+                    <input type="radio" name="idiomas" value=1 id="ingles" {% if idiomas == "1" or idiomas == 1 %}checked{% endif %} />
                     <label for="ingles">Inglés</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="idiomas" value="2" id="frances" />
-                    <label for="frances">Frances</label>
+                    <input type="radio" name="idiomas" value=2 id="frances" {% if idiomas == "2" or idiomas == 2 %}checked{% endif %} />
+                    <label for="frances">Francés</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="idiomas" value="3" id="aleman" />
+                    <input type="radio" name="idiomas" value=3 id="aleman" {% if idiomas == "3" or idiomas == 3 %}checked{% endif %} />
                     <label for="aleman">Alemán</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="idiomas" value="4" id="ninguno" />
-                    <label for="ninguno">Italiano</label>
+                    <input type="radio" name="idiomas" value=4 id="italiano" {% if idiomas == "4" or idiomas == 4 %}checked{% endif %} />
+                    <label for="italiano">Italiano</label>
                 </span>
             </div>
 
             <div class="radio-group" style="margin-top: 10px; width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="idiomas" value="5" id="otro" />
+                    <input type="radio" name="idiomas" value=5 id="otro" {% if idiomas == "5" or idiomas == 5 %}checked{% endif %} />
                     <label for="otro">Otro</label>
-                    <input type="text" class="line-input">
+                    <input type="text" class="line-input" name="idiomasOtro" value="{{ idiomas_otro }}">
                 </span>
             </div>
 

@@ -17,6 +17,23 @@ def calcular_lapso():
     semestre = 1 if hoy.month <= 6 else 2
     return f"{año}-{semestre}"
 
+def redirigir_encuesta(request):
+    curp = request.session.get('usuario_id')
+    if not curp:
+        return redirect('index')
+
+    egresado = Egresado.objects.filter(curp=curp).first()
+    if not egresado:
+        return redirect('index')
+
+    lapso_actual = calcular_lapso()
+    encuesta = Encuesta.objects.filter(curp=egresado, lapso=lapso_actual, fechaFin__isnull=False).first()
+
+    if encuesta:
+        return redirect('encuesta_finalizada')  # Ya la respondió
+    else:
+        return redirect('e1')  # Comienza desde la encuesta1
+
 
 def e1(request):
     curp = request.session.get('usuario_id')
@@ -35,8 +52,7 @@ def e1(request):
         request.session['encuesta_s1'] = {
             'nombre': request.POST.get('nombre'),
             'noControl': request.POST.get('noControl'),
-            'fechaNacimiento': datetime.datetime.strptime(
-                request.POST.get('fechaNacimiento'), '%Y-%m-%d').date(),
+            'fechaNacimiento': request.POST.get('fechaNacimiento'),
             'curp': request.POST.get('curp'),
             'sexo': request.POST.get('sexo'),
             'estadoCivil': request.POST.get('estadoCivil'),
@@ -47,6 +63,37 @@ def e1(request):
             'telefono': request.POST.get('telefono'),
         }
         return redirect('e2')
+
+    # Precarga desde encuesta anterior
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        encuesta_s1 = EncuestaS1.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s1:
+            context = {
+                'nombre': encuesta_s1.nombre,
+                'noControl': encuesta_s1.noControl,
+                'fechaNacimiento': encuesta_s1.fechaNacimiento,
+                'curp': encuesta_s1.curp,
+                'sexo': encuesta_s1.sexo,
+                'estadoCivil': encuesta_s1.estadoCivil,
+                'domicilio': encuesta_s1.domicilio,
+                'ciudad': encuesta_s1.ciudad,
+                'cp': encuesta_s1.cp,
+                'email': encuesta_s1.email,
+                'telefono': encuesta_s1.telefono,
+            }
+
+        return render(request, 'encuesta1.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E1:", e)
+
     return render(request, 'encuesta1.html')
 
 
@@ -82,6 +129,35 @@ def e2(request):
 
         request.session.pop('encuesta_s1', None)
         return redirect('e3')
+        # Precarga para GET
+    try:
+        folio = request.session.get('folio_encuesta')
+        encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp, lapso__lt=encuesta.lapso, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        encuesta_s1 = EncuestaS1.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s1:
+            context = {
+                'carrera': encuesta_s1.carrera,
+                'especialidad': encuesta_s1.especialidad,
+                'fechaIngreso': encuesta_s1.fechaIngreso,
+                'fechaEgreso': encuesta_s1.fechaEgreso,
+                'titulado': encuesta_s1.titulado,
+                'dominio': encuesta_s1.dominioIngles,
+                'idioma': encuesta_s1.otroIdioma,
+                'paquetes': encuesta_s1.manejoPaquetes,
+                'paquetesE': encuesta_s1.especificarPaquetes,
+            }
+
+        return render(request, 'encuesta2.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E2:", e)
+
     return render(request, 'encuesta2.html')
 
 
@@ -102,83 +178,209 @@ def e3(request):
             }
         )
         return redirect('e4')
+
+    # Precarga desde versiones anteriores
+    try:
+        folio = request.session.get('folio_encuesta')
+        encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp,
+            lapso__lt=encuesta.lapso,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        encuesta_s2 = EncuestaS2.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s2:
+            context = {
+                'calidadDocentes': encuesta_s2.calidadDocentes,
+                'planEstudios': encuesta_s2.planEstudios,
+                'oportunidadesProyectos': encuesta_s2.oportunidadesProyectos,
+                'enfasisInvestigacion': encuesta_s2.enfasisInvestigacion,
+                'satisfaccionCondiciones': encuesta_s2.satisfaccionCondiciones,
+                'experienciaResidencia': encuesta_s2.experienciaResidencia,
+            }
+
+        return render(request, 'encuesta3.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E3:", e)
+
     return render(request, 'encuesta3.html')
 
 
 def e4(request):
     if request.method == 'POST':
-        actividad = int(request.POST.get('actividad'))
-        datos = {
-            'actividad': actividad,
-            'tipoEstudio': request.POST.get('tipoEstudio'),
-            'tipoEstudioOtro': request.POST.get('tipoEstudioOtro'),
-            'especialidadInstitucion': request.POST.get('especialidadInstitucion'),
-            'tiempoObtenerEmpleo': request.POST.get('tiempoObtenerEmpleo')
-        }
-        folio = request.session['folio_encuesta']
+        try:
+            actividad = int(request.POST.get('actividad'))
+            datos = {
+                'actividad': actividad,
+                'tipoEstudio': request.POST.get('tipoEstudio'),
+                'tipoEstudioOtro': request.POST.get('tipoEstudioOtro'),
+                'especialidadInstitucion': request.POST.get('especialidadInstitucion'),
+                'tiempoObtenerEmpleo': request.POST.get('tiempoObtenerEmpleo')
+            }
+
+            folio = request.session['folio_encuesta']
+            encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+            EncuestaS3.objects.update_or_create(
+                folioEncuesta=encuesta,
+                defaults=datos
+            )
+
+            return redirect('e9') if actividad in [2, 4] else redirect('e5')
+        except Exception as e:
+            print("ERROR EN E4 (POST):", e)
+
+    # Precarga desde versiones anteriores
+    try:
+        folio = request.session.get('folio_encuesta')
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
 
-        EncuestaS3.objects.update_or_create(
-            folioEncuesta=encuesta,
-            defaults=datos
-        )
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp,
+            lapso__lt=encuesta.lapso,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
 
-        return redirect('e9') if actividad in [2, 4] else redirect('e5')
+        encuesta_s3 = EncuestaS3.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s3:
+            context = {
+                'actividad': encuesta_s3.actividad,
+                'tipoEstudio': encuesta_s3.tipoEstudio,
+                'tipoEstudioOtro': encuesta_s3.tipoEstudioOtro,
+                'especialidadInstitucion': encuesta_s3.especialidadInstitucion,
+                'tiempoObtenerEmpleo': encuesta_s3.tiempoObtenerEmpleo,
+            }
+
+        return render(request, 'encuesta4.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E4:", e)
+
     return render(request, 'encuesta4.html')
+
 
 
 def e5(request):
     if request.method == 'POST':
-        folio = request.session['folio_encuesta']
+        try:
+            datos = {
+                'medioEmpleo': request.POST.get('medioEmpleo'),
+                'medioEmpleoOtro': request.POST.get('medioEmpleoOtro', '') if request.POST.get('medioEmpleo') == '5' else '',
+                'requisitosContratacion': request.POST.get('requisitosContratacion'),
+                'requisitosContratacionOtro': request.POST.get('requisitosContratacionOtro', '') if request.POST.get('requisitosContratacion') == '7' else '',
+                'idiomaUtiliza': request.POST.get('idiomaUtiliza'),
+                'idiomaUtilizaOtro': request.POST.get('idiomaUtilizaOtro', '') if request.POST.get('idiomaUtiliza') == '5' else '',
+                'hablarPorcentaje': request.POST.get('hablarPorcentaje'),
+                'escribirPorcentaje': request.POST.get('escribirPorcentaje'),
+                'leerPorcentaje': request.POST.get('leerPorcentaje'),
+                'escucharPorcentaje': request.POST.get('escucharPorcentaje'),
+            }
+
+            folio = request.session['folio_encuesta']
+            encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+            EncuestaS3.objects.update_or_create(
+                folioEncuesta=encuesta,
+                defaults=datos
+            )
+            return redirect('e6')
+        except Exception as e:
+            print("ERROR EN E5 (POST):", e)
+
+    # Precarga desde versiones anteriores
+    try:
+        folio = request.session.get('folio_encuesta')
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        hablarPorcentaje = request.POST.get('hablarPorcentaje')
-        hablarPorcentaje = int(hablarPorcentaje) if hablarPorcentaje else 0
-        escribirPorcentaje = request.POST.get('escribirPorcentaje')
-        escribirPorcentaje = int(
-            escribirPorcentaje) if escribirPorcentaje else 0
-        leerPorcentaje = request.POST.get('leerPorcentaje')
-        leerPorcentaje = int(leerPorcentaje) if leerPorcentaje else 0
-        escucharPorcentaje = request.POST.get('escucharPorcentaje')
-        escucharPorcentaje = int(
-            escucharPorcentaje) if escucharPorcentaje else 0
-        EncuestaS3.objects.filter(folioEncuesta=encuesta).update(
-            medioEmpleo=request.POST.get('medioEmpleo'),
-            medioEmpleoOtro=request.POST.get('medioEmpleoOtro'),
-            requisitosContratacion=request.POST.get('requisitosContratacion'),
-            requisitosContratacionOtro=request.POST.get(
-                'requisitosContratacionOtro'),
-            idiomaUtiliza=request.POST.get('idiomaUtiliza'),
-            idiomaUtilizaOtro=request.POST.get('idiomaUtilizaOtro'),
-            hablarPorcentaje=hablarPorcentaje,
-            escribirPorcentaje=escribirPorcentaje,
-            leerPorcentaje=leerPorcentaje,
-            escucharPorcentaje=escucharPorcentaje
-        )
-        return redirect('e6')
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp,
+            lapso__lt=encuesta.lapso,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        encuesta_s3 = EncuestaS3.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s3:
+            context = {
+                'medioEmpleo': encuesta_s3.medioEmpleo,
+                'medioEmpleoOtro': encuesta_s3.medioEmpleoOtro,
+                'requisitosContratacion': encuesta_s3.requisitosContratacion,
+                'requisitosContratacionOtro': encuesta_s3.requisitosContratacionOtro,
+                'idiomaUtiliza': encuesta_s3.idiomaUtiliza,
+                'idiomaUtilizaOtro': encuesta_s3.idiomaUtilizaOtro,
+                'hablarPorcentaje': encuesta_s3.hablarPorcentaje,
+                'escribirPorcentaje': encuesta_s3.escribirPorcentaje,
+                'leerPorcentaje': encuesta_s3.leerPorcentaje,
+                'escucharPorcentaje': encuesta_s3.escucharPorcentaje,
+            }
+
+        return render(request, 'encuesta5.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E5:", e)
+
     return render(request, 'encuesta5.html')
+
 
 
 def e6(request):
     if request.method == 'POST':
+        try:
+            folio = request.session['folio_encuesta']
+            encuesta = Encuesta.objects.get(folioEncuesta=folio)
+            EncuestaS3.objects.filter(folioEncuesta=encuesta).update(
+                antiguedad=request.POST.get('antiguedad'),
+                anioIngreso=request.POST.get('anioIngreso'),
+                ingreso=request.POST.get('ingreso'),
+                nivelJerarquico=request.POST.get('nivelJerarquico'),
+                condicionTrabajo=request.POST.get('condicionTrabajo'),
+                condicionTrabajoOtro=request.POST.get('condicionTrabajoOtro'),
+                relacionTrabajo=request.POST.get('relacionTrabajo')
+            )
+            return redirect('e7')
+        except Exception as e:
+            print("ERROR EN E6 (POST):", e)
+
+    # Precarga desde encuesta anterior
+    try:
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        EncuestaS3.objects.filter(folioEncuesta=encuesta).update(
-            antiguedad=request.POST.get('antiguedad'),
-            anioIngreso=request.POST.get('anioIngreso'),
-            ingreso=request.POST.get('ingreso'),
-            nivelJerarquico=request.POST.get('nivelJerarquico'),
-            condicionTrabajo=request.POST.get('condicionTrabajo'),
-            condicionTrabajoOtro=request.POST.get('condicionTrabajoOtro'),
-            relacionTrabajo=request.POST.get('relacionTrabajo')
-        )
-        return redirect('e7')
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp,
+            lapso__lt=encuesta.lapso,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        encuesta_s3 = EncuestaS3.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s3:
+            context = {
+                'antiguedad': encuesta_s3.antiguedad,
+                'anioIngreso': encuesta_s3.anioIngreso,
+                'ingreso': encuesta_s3.ingreso,
+                'nivelJerarquico': encuesta_s3.nivelJerarquico,
+                'condicionTrabajo': encuesta_s3.condicionTrabajo,
+                'condicionTrabajoOtro': encuesta_s3.condicionTrabajoOtro,
+                'relacionTrabajo': encuesta_s3.relacionTrabajo,
+            }
+
+        return render(request, 'encuesta6.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E6:", e)
+
     return render(request, 'encuesta6.html')
+
 
 
 def e7(request):
     if request.method == 'POST':
-        folio = request.session['folio_encuesta']
-        encuesta = Encuesta.objects.get(folioEncuesta=folio)
         request.session['empresa'] = {
             'tipoOrganismo': request.POST.get('tipoOrganismo'),
             'giroActividad': request.POST.get('giroActividad'),
@@ -192,7 +394,41 @@ def e7(request):
             'puestoJefeInmediato': request.POST.get('puestoJefeInmediato')
         }
         return redirect('e8')
+
+    # Precargar desde versión anterior
+    try:
+        folio = request.session.get('folio_encuesta')
+        encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp,
+            lapso__lt=encuesta.lapso,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        empresa_ant = EncuestaS3Empresa.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if empresa_ant:
+            context = {
+                'tipoOrganismo': empresa_ant.tipoOrganismo,
+                'giroActividad': empresa_ant.giroActividad,
+                'razonSocial': empresa_ant.razonSocial,
+                'domicilio': empresa_ant.domicilio,
+                'ciudad': empresa_ant.ciudad,
+                'cp': empresa_ant.cp,
+                'email': empresa_ant.email,
+                'telefono': empresa_ant.telefono,
+                'nombreJefeInmediato': empresa_ant.nombreJefeInmediato,
+                'puestoJefeInmediato': empresa_ant.puestoJefeInmediato,
+            }
+
+        return render(request, 'encuesta7.html', context)
+    except Exception as e:
+        print("ERROR EN PRECARGA E7:", e)
+
     return render(request, 'encuesta7.html')
+
 
 
 def e8(request):
@@ -214,7 +450,35 @@ def e8(request):
 
         request.session.pop('empresa', None)
         return redirect('e9')
+
+    # Precarga desde versión anterior
+    try:
+        folio = request.session.get('folio_encuesta')
+        encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp,
+            lapso__lt=encuesta.lapso,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        empresa_ant = EncuestaS3Empresa.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if empresa_ant:
+            context = {
+                'sectorPrimario': empresa_ant.sectorPrimario,
+                'sectorSecundario': empresa_ant.sectorSecundario,
+                'sectorTerciario': empresa_ant.sectorTerciario,
+                'tamanoEmpresa': empresa_ant.tamanoEmpresa,
+            }
+
+        return render(request, 'encuesta8.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E8:", e)
+
     return render(request, 'encuesta8.html')
+
 
 
 def e9(request):
@@ -227,31 +491,88 @@ def e9(request):
             defaults={
                 'eficiencia': request.POST.get('eficiencia'),
                 'formacion': request.POST.get('formacion'),
-                'utilidad': request.POST.get('utilidad')
+                'utilidad': request.POST.get('utilidad'),
             }
         )
         return redirect('e10')
+
+    try:
+        folio = request.session['folio_encuesta']
+        encuesta = Encuesta.objects.get(folioEncuesta=folio)
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp, lapso__lt=encuesta.lapso, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+        encuesta_s4 = EncuestaS4.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s4:
+            context = {
+                'eficiencia': encuesta_s4.eficiencia,
+                'formacion': encuesta_s4.formacion,
+                'utilidad': encuesta_s4.utilidad,
+            }
+
+        return render(request, 'encuesta9.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E9:", e)
+
     return render(request, 'encuesta9.html')
+
 
 
 def e10(request):
     if request.method == 'POST':
+        try:
+            folio = request.session['folio_encuesta']
+            encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+            EncuestaS4.objects.filter(folioEncuesta=encuesta).update(
+                areaCampoEstudio=request.POST.get('aspecto1'),
+                titulacion=request.POST.get('aspecto2'),
+                experienciaLaboral=request.POST.get('aspecto3'),
+                competenciaLaboral=request.POST.get('aspecto4'),
+                posicionamientoInstitucion=request.POST.get('aspecto5'),
+                conocimientoIdiomas=request.POST.get('aspecto6'),
+                recomendacionesReferencias=request.POST.get('aspecto7'),
+                personalidadActitudes=request.POST.get('aspecto8'),
+                capacidadLiderazgo=request.POST.get('aspecto9'),
+                otrosAspectos=request.POST.get('aspecto10')
+            )
+            return redirect('e11')
+        except Exception as e:
+            print("ERROR EN E10 (POST):", e)
+
+    # Precarga desde encuesta anterior
+    try:
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
-        EncuestaS4.objects.filter(folioEncuesta=encuesta).update(
-            areaCampoEstudio=request.POST.get('aspecto1'),
-            titulacion=request.POST.get('aspecto2'),
-            experienciaLaboral=request.POST.get('aspecto3'),
-            competenciaLaboral=request.POST.get('aspecto4'),
-            posicionamientoInstitucion=request.POST.get('aspecto5'),
-            conocimientoIdiomas=request.POST.get('aspecto6'),
-            recomendacionesReferencias=request.POST.get('aspecto7'),
-            personalidadActitudes=request.POST.get('aspecto8'),
-            capacidadLiderazgo=request.POST.get('aspecto9'),
-            otrosAspectos=request.POST.get('aspecto10')
-        )
-        return redirect('e11')
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp, lapso__lt=encuesta.lapso, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+        encuesta_s4 = EncuestaS4.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s4:
+            context = {
+                'aspecto1': encuesta_s4.areaCampoEstudio,
+                'aspecto2': encuesta_s4.titulacion,
+                'aspecto3': encuesta_s4.experienciaLaboral,
+                'aspecto4': encuesta_s4.competenciaLaboral,
+                'aspecto5': encuesta_s4.posicionamientoInstitucion,
+                'aspecto6': encuesta_s4.conocimientoIdiomas,
+                'aspecto7': encuesta_s4.recomendacionesReferencias,
+                'aspecto8': encuesta_s4.personalidadActitudes,
+                'aspecto9': encuesta_s4.capacidadLiderazgo,
+                'aspecto10': encuesta_s4.otrosAspectos,
+            }
+
+        return render(request, 'encuesta10.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E10:", e)
+
     return render(request, 'encuesta10.html')
+
+
 
 
 def e11(request):
@@ -268,7 +589,38 @@ def e11(request):
             'perteneceAsociacionEgresados': request.POST.get('egresados')
         }
         return redirect('e12')
+
+    # Precarga desde versión anterior
+    try:
+        folio = request.session.get('folio_encuesta')
+        encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp, lapso__lt=encuesta.lapso, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        encuesta_s5 = EncuestaS5.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s5:
+            context = {
+                'cursos': encuesta_s5.cursosActualizacion,
+                'cursosCual': encuesta_s5.cursosActualizacionCuales,
+                'posgrado': encuesta_s5.tomarPosgrado,
+                'posgradoCual': encuesta_s5.tomarPosgradoCual,
+                'organizaciones': encuesta_s5.perteneceOrganizacionesSociales,
+                'organizacionesCual': encuesta_s5.organizacionesSocialesCuales,
+                'profesionistas': encuesta_s5.perteneceOrganismosProfesionistas,
+                'profesionistasCual': encuesta_s5.organismosProfesionistasCuales,
+                'egresados': encuesta_s5.perteneceAsociacionEgresados,
+            }
+
+        return render(request, 'encuesta11.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E11:", e)
+
     return render(request, 'encuesta11.html')
+
 
 
 def e12(request):
@@ -276,8 +628,8 @@ def e12(request):
         folio = request.session['folio_encuesta']
         encuesta = Encuesta.objects.get(folioEncuesta=folio)
         datos = request.session.get('s5', {})
-        datos['comentariosSugerencias'] = request.POST.get(
-            'comentariosSugerencias')
+
+        datos['comentariosSugerencias'] = request.POST.get('comentariosSugerencias')
 
         EncuestaS5.objects.update_or_create(
             folioEncuesta=encuesta,
@@ -288,8 +640,27 @@ def e12(request):
         encuesta.save()
         request.session.pop('s5', None)
         return redirect('encuesta_finalizada')
-    return render(request, 'encuesta12.html')
 
+    # Precarga desde versión anterior
+    try:
+        folio = request.session['folio_encuesta']
+        encuesta = Encuesta.objects.get(folioEncuesta=folio)
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=encuesta.curp, lapso__lt=encuesta.lapso, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        encuesta_s5 = EncuestaS5.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if encuesta_s5:
+            context['comentariosSugerencias'] = encuesta_s5.comentariosSugerencias
+
+        return render(request, 'encuesta12.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR E12:", e)
+
+    return render(request, 'encuesta12.html')
 
 def encuesta_finalizada(request):
     curp = request.session.get('usuario_id')
@@ -303,8 +674,13 @@ def encuesta_finalizada(request):
     if encuesta:
         encuesta.fechaFin = date.today()
         encuesta.save()
+        lapso = encuesta.lapso
+    else:
+        lapso = calcular_lapso()
 
-    return render(request, 'encuestaFinalizada.html')
+    return render(request, 'encuestaFinalizada.html', {
+        'lapso': lapso
+    })
 
 
 def generar_acuse_pdf(request):

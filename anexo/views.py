@@ -18,6 +18,32 @@ def calcular_lapso():
     semestre = 1 if hoy.month <= 6 else 2
     return f"{año}-{semestre}"
 
+def redirigir_anexo(request):
+    curp = request.session.get('usuario_id')
+    carrera = request.session.get('usuario_carrera')
+
+    if not curp or not carrera:
+        return redirect('index')
+
+    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
+        return redirect('index')
+
+    egresado = Egresado.objects.filter(curp=curp).first()
+    if not egresado:
+        return redirect('index')
+
+    lapso_actual = calcular_lapso()
+    encuesta = Encuesta.objects.filter(
+        curp=egresado,
+        lapso=lapso_actual,
+        fechaFin__isnull=False
+    ).first()
+
+    if encuesta:
+        return redirect('encuesta_finalizada')
+    else:
+        return redirect('anexo1')
+
 
 def a1(request):
     curp = request.session.get('usuario_id')
@@ -36,8 +62,8 @@ def a1(request):
                 'redes_sociales': request.POST.get('redes_sociales'),
                 'fecha_ingreso': request.POST.get('fecha_ingreso'),
                 'telefono': request.POST.get('telefono'),
-                'correo': request.POST.get('correo'),
-                'fecha_egreso': request.POST.get('fecha_egreso'),
+                'correo': request.POST.get('email'),
+                'fecha_egreso': request.POST.get('fechaEgreso'),
             }
 
             egresado = Egresado.objects.filter(curp=curp).first()
@@ -48,24 +74,49 @@ def a1(request):
                     defaults={'fechaInicio': date.today()}
                 )
             return redirect('anexo2')
+
+        # Si es GET → precargar datos si ya hay versión anterior
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+
+        # Encuesta actual
+        encuesta_actual = Encuesta.objects.filter(curp=egresado, lapso=lapso_actual).first()
+
+        # Encuesta anterior (con fechaFin ya respondida)
+        encuesta_anterior = Encuesta.objects.filter(curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False).order_by('-lapso').first()
+
+        if encuesta_anterior:
+            anexo_anterior = AnexoS1.objects.filter(folioEncuesta=encuesta_anterior).first()
+        else:
+            anexo_anterior = None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'nombre_completo': anexo_anterior.nombreCompleto,
+                'redes_sociales': anexo_anterior.redesSociales,
+                'fecha_ingreso': anexo_anterior.fechaIngreso,
+                'telefono': anexo_anterior.telefono,
+                'correo': anexo_anterior.correo,
+                'fecha_egreso': anexo_anterior.fechaEgreso,
+            }
+
+        return render(request, 'Anexo1.html', context)
+
     except Exception as e:
         print("ERROR EN A1:", e)
-
-    return render(request, 'Anexo1.html')
+        return redirect('index')
 
 
 def a2(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
-        return redirect('index')
-
-    try:
-        if request.method == 'POST':
+    if request.method == 'POST':
+        try:
             titulado = 1 if request.POST.get('titulado') == '1' else 0
             razon = request.POST.get('razonNoTitulo')
             razon_no_titulo = {'compromiso': 1, 'tiempo': 2, 'apoyo': 3, 'otro': 4}.get(razon, None)
@@ -78,7 +129,6 @@ def a2(request):
             })
 
             encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
-
             if encuesta:
                 AnexoS1.objects.update_or_create(
                     folioEncuesta=encuesta,
@@ -96,10 +146,30 @@ def a2(request):
                 )
                 request.session.pop('anexo_s1', None)
                 return redirect('anexo3')
+        except Exception as e:
+            print("ERROR EN A2 (POST):", e)
+
+    # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+        encuesta_anterior = Encuesta.objects.filter(curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False).order_by('-lapso').first()
+        anexo_anterior = AnexoS1.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'titulado': anexo_anterior.titulado,
+                'razon_no_titulo': anexo_anterior.razonNoTitulo,
+                'razon_no_titulo_otra': anexo_anterior.razonNoTituloOtra
+            }
+
+        return render(request, 'Anexo2.html', context)
     except Exception as e:
-        print("ERROR EN A2:", e)
+        print("ERROR AL PRECARGAR A2:", e)
 
     return render(request, 'Anexo2.html')
+
 
 
 def a3(request):
@@ -138,45 +208,79 @@ def a3(request):
                 )
                 request.session.pop('anexo_s2', None)
                 return redirect('anexo7')
+
+        # ⬇️ Este bloque es para GET (precarga)
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=egresado,
+            lapso__lt=lapso_actual,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        if encuesta_anterior:
+            anexo_anterior = AnexoS2.objects.filter(folioEncuesta=encuesta_anterior).first()
+        else:
+            anexo_anterior = None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'trabaja': anexo_anterior.trabaja,
+                'razon_no_trabaja': anexo_anterior.razonNoTrabaja,
+                'razon_no_trabaja_otra': anexo_anterior.razonNoTrabajaOtra,
+            }
+
+        return render(request, 'Anexo3.html', context)
+
     except Exception as e:
         print("ERROR EN A3:", e)
-
-    return render(request, 'Anexo3.html')
+        return render(request, 'Anexo3.html')
 
 
 def a4(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
-        return redirect('index')  # No hay sesión
-
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
-    try:
-        if request.method == 'POST':
-            # Recuperar datos previos
+    if request.method == 'POST':
+        try:
             datos_previos = request.session.get('anexo_s2', {})
 
-            # Añadir nuevos datos
-            datos_previos['relacion_trabajo_carrera'] = request.POST.get(
-                'trabaja')  # Nota: mismo nombre en el HTML
+            datos_previos['relacion_trabajo_carrera'] = request.POST.get('relacionTrabajoCarrera')
             datos_previos['antiguedad'] = request.POST.get('antiguedad')
-            datos_previos['tiempo_trabajo_relacionado'] = request.POST.get(
-                'tiempoTrabajoRelacionado')
+            datos_previos['tiempo_trabajo_relacionado'] = request.POST.get('tiempoTrabajoRelacionado')
 
-            # Verificar si seleccionó "Aún no lo consigo" y capturar el motivo
             if request.POST.get('tiempoTrabajoRelacionado') == '4':
-                datos_previos['razon_no_conseguir_trabajo'] = request.POST.get(
-                    'razonNoConseguirTrabajo', '')
+                datos_previos['razon_no_conseguir_trabajo'] = request.POST.get('razonNoConseguirTrabajo', '')
 
-            # Actualizar sesión
             request.session['anexo_s2'] = datos_previos
-
             return redirect('anexo5')
+        except Exception as e:
+            print("ERROR EN A4 (POST):", e)
+
+    # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+        encuesta_anterior = Encuesta.objects.filter(curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False).order_by('-lapso').first()
+        anexo_anterior = AnexoS2.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'relacion_trabajo': anexo_anterior.relacionTrabajoCarrera,
+                'antiguedad': anexo_anterior.antiguedad,
+                'tiempo_trabajo_rel': anexo_anterior.tiempoTrabajoRelacionado,
+                'razon_no_trabajo_rel': anexo_anterior.razonNoConseguirTrabajo,
+            }
+
+        return render(request, 'Anexo4.html', context)
     except Exception as e:
-        print("Error:", e)
+        print("ERROR AL PRECARGAR A4:", e)
 
     return render(request, 'Anexo4.html')
 
@@ -185,40 +289,50 @@ def a5(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
-        return redirect('index')  # No hay sesión
-
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
-    try:
-        if request.method == 'POST':
-            # Recuperar datos previos
+    if request.method == 'POST':
+        try:
             datos_previos = request.session.get('anexo_s2', {})
-
-            # Añadir nuevos datos
             datos_previos['sector'] = request.POST.get('sector')
-            # Verificar si seleccionó "Otro" sector y capturar el texto
             if request.POST.get('sector') == '4':
-                datos_previos['sector_otro'] = request.POST.get(
-                    'sectorOtro', '')
+                datos_previos['sector_otro'] = request.POST.get('sectorOtro', '')
 
             datos_previos['rol'] = request.POST.get('rol')
-            # Verificar si seleccionó "Otras" en rol y capturar el texto
             if request.POST.get('rol') == '7':
                 datos_previos['rol_otro'] = request.POST.get('rolOtro', '')
 
             datos_previos['area'] = request.POST.get('area')
-            # Verificar si seleccionó "Otras" en área y capturar el texto
             if request.POST.get('area') == '7':
                 datos_previos['area_otra'] = request.POST.get('areaOtra', '')
 
-            # Actualizar sesión
             request.session['anexo_s2'] = datos_previos
-
             return redirect('anexo6')
+        except Exception as e:
+            print("ERROR EN A5 (POST):", e)
+
+    # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+        encuesta_anterior = Encuesta.objects.filter(curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False).order_by('-lapso').first()
+        anexo_anterior = AnexoS2.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'sector': anexo_anterior.tipoSector,
+                'sector_otro': anexo_anterior.tipoSectorOtro,
+                'rol': anexo_anterior.rolTrabajo,
+                'rol_otro': anexo_anterior.rolTrabajoOtro,
+                'area': anexo_anterior.areaTrabajo,
+                'area_otro': anexo_anterior.areaTrabajoOtra,
+            }
+
+        return render(request, 'Anexo5.html', context)
     except Exception as e:
-        print("Error:", e)
+        print("ERROR AL PRECARGAR A5:", e)
 
     return render(request, 'Anexo5.html')
 
@@ -270,6 +384,30 @@ def a6(request):
                 return redirect('anexo7')
     except Exception as e:
         print("ERROR EN A6:", e)
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=egresado,
+            lapso__lt=lapso_actual,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        anexo_anterior = AnexoS2.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'medio_trabajo': anexo_anterior.medioTrabajo,
+                'medio_trabajo_otro': anexo_anterior.medioTrabajoOtro,
+                'satisfaccion': anexo_anterior.satisfaccion,
+            }
+
+        return render(request, 'Anexo6.html', context)
+
+    except Exception as e:
+        print("ERROR AL PRECARGAR A6:", e)
 
     return render(request, 'Anexo6.html')
 
@@ -278,15 +416,11 @@ def a7(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
-        return redirect('index')  # No hay sesión
-
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
-    try:
-        if request.method == 'POST':
-            # Iniciar recopilación de datos para AnexoS3
+    if request.method == 'POST':
+        try:
             request.session['anexo_s3'] = {
                 'competencias': request.POST.get('competencias'),
                 'satisfaccion': request.POST.get('satisfaccion'),
@@ -294,14 +428,32 @@ def a7(request):
                 'educativo_otro': ''
             }
 
-            # Verificar si seleccionó "Otras" y capturar el texto
             if request.POST.get('educativo') == '5':
-                request.session['anexo_s3']['educativo_otro'] = request.POST.get(
-                    'educativoOtro', '')
+                request.session['anexo_s3']['educativo_otro'] = request.POST.get('educativoOtro', '')
 
             return redirect('anexo8')
+        except Exception as e:
+            print("ERROR EN A7 (POST):", e)
+
+    # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+        encuesta_anterior = Encuesta.objects.filter(curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False).order_by('-lapso').first()
+        anexo_anterior = AnexoS3.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'competencias': anexo_anterior.competencias,
+                'satisfaccion': anexo_anterior.satisfaccion,
+                'educativo': anexo_anterior.educativo,
+                'educativo_otro': anexo_anterior.educativoOtro,
+            }
+
+        return render(request, 'Anexo7.html', context)
     except Exception as e:
-        print("Error:", e)
+        print("ERROR AL PRECARGAR A7:", e)
 
     return render(request, 'Anexo7.html')
 
@@ -310,14 +462,11 @@ def a8(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
-        return redirect('index')
-
-    try:
-        if request.method == 'POST':
+    if request.method == 'POST':
+        try:
             datos = request.session.get('anexo_s3', {})
             datos.update({
                 'contacto': request.POST.get('contacto'),
@@ -344,10 +493,31 @@ def a8(request):
                 )
                 request.session.pop('anexo_s3', None)
                 return redirect('anexo9')
+        except Exception as e:
+            print("ERROR EN A8:", e)
+
+    # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+        encuesta_anterior = Encuesta.objects.filter(curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False).order_by('-lapso').first()
+        anexo_anterior = AnexoS3.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'contacto': anexo_anterior.contacto,
+                'participar': anexo_anterior.participar,
+                'aporte': anexo_anterior.aporte,
+                'aporte_otro': anexo_anterior.aporteOtro,
+            }
+
+        return render(request, 'Anexo8.html', context)
     except Exception as e:
-        print("ERROR EN A8:", e)
+        print("ERROR AL PRECARGAR A8:", e)
 
     return render(request, 'Anexo8.html')
+
 
 
 def a9(request):
@@ -381,155 +551,235 @@ def a9(request):
                 'tipoInvestigacionOtra', '')
 
         return redirect('anexo10')
+        # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        anexo_anterior = AnexoS4.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'herramientas': anexo_anterior.herramientas,
+                'herramientas_otra': anexo_anterior.herramientasOtra,
+                'colabora': anexo_anterior.colabora,
+                'tipo_investigacion': anexo_anterior.tipoInvestigacion,
+                'tipo_investigacion_otra': anexo_anterior.tipoInvestigacionOtra,
+            }
+
+        return render(request, 'Anexo9.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR A9:", e)
 
     return render(request, 'Anexo9.html')
+
 
 
 def a10(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
-        return redirect('index')  # No hay sesión
-
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     if request.method == 'POST':
-        # Recuperar datos previos
-        datos_previos = request.session.get('anexo_s4', {})
+        try:
+            datos_previos = request.session.get('anexo_s4', {})
 
-        # Añadir nuevos datos
-        datos_previos['participa_redes'] = request.POST.get(
-            'trabaja')  # Parece haber un error en el nombre del campo
-        datos_previos['certificacion'] = request.POST.get('certificacion')
-        datos_previos['certificacion_cuales'] = ''
+            datos_previos['participa_redes'] = request.POST.get('participaRedes')
 
-        # Verificar si seleccionó "Si" en certificacion y capturar el texto
-        if request.POST.get('certificacion') == '1':
-            datos_previos['certificacion_cuales'] = request.POST.get(
-                'certificacionCuales', '')
+            datos_previos['certificacion'] = request.POST.get('certificacion')
+            datos_previos['certificacion_cuales'] = ''
+            if request.POST.get('certificacion') == '1':
+                datos_previos['certificacion_cuales'] = request.POST.get('certificacionCuales', '')
 
-        datos_previos['servicios'] = request.POST.get('servicios')
-        datos_previos['servicios_otro'] = ''
+            datos_previos['servicios'] = request.POST.get('servicios')
+            datos_previos['servicios_otro'] = ''
+            if request.POST.get('servicios') == '5':
+                datos_previos['servicios_otro'] = request.POST.get('serviciosOtro', '')
 
-        # Verificar si seleccionó "Otras" en servicios y capturar el texto
-        if request.POST.get('servicios') == '5':
-            datos_previos['servicios_otro'] = request.POST.get(
-                'serviciosOtro', '')
+            datos_previos['idiomas'] = request.POST.get('idiomas')
+            datos_previos['idiomas_otro'] = ''
+            if request.POST.get('idiomas') == '5':
+                datos_previos['idiomas_otro'] = request.POST.get('idiomasOtro', '')
 
-        datos_previos['idiomas'] = request.POST.get('idiomas')
-        datos_previos['idiomas_otro'] = ''
+            request.session['anexo_s4'] = datos_previos
+            return redirect('anexo11')
+        except Exception as e:
+            print("ERROR EN A10 (POST):", e)
 
-        # Verificar si seleccionó "Otro" en idiomas y capturar el texto
-        if request.POST.get('idiomas') == '5':
-            datos_previos['idiomas_otro'] = request.POST.get('idiomasOtro', '')
+    # Precarga desde versiones anteriores (GET)
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
 
-        # Actualizar sesión
-        request.session['anexo_s4'] = datos_previos
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=egresado,
+            lapso__lt=lapso_actual,
+            fechaFin__isnull=False
+        ).order_by('-lapso').first()
 
-        return redirect('anexo11')
+        anexo_anterior = AnexoS4.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'participa_redes': anexo_anterior.participaRedes,
+                'certificacion': anexo_anterior.certificacion,
+                'certificacion_cuales': anexo_anterior.certificacionCuales,
+                'servicios': anexo_anterior.servicios,
+                'servicios_otro': anexo_anterior.serviciosOtro,
+                'idiomas': anexo_anterior.idiomas,
+                'idiomas_otro': anexo_anterior.idiomasOtro,
+            }
+
+        return render(request, 'Anexo10.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR A10:", e)
 
     return render(request, 'Anexo10.html')
+
 
 
 def a11(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
-        return redirect('index')  # No hay sesión
-
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     if request.method == 'POST':
-        # Recuperar datos previos
-        datos_previos = request.session.get('anexo_s4', {})
+        try:
+            datos_previos = request.session.get('anexo_s4', {})
 
-        # Añadir nuevos datos
-        datos_previos['publicacion'] = request.POST.get('publicacion')
-        datos_previos['publicacion_especifique'] = ''
+            datos_previos['publicacion'] = request.POST.get('publicacion')
+            datos_previos['publicacion_especifique'] = ''
+            if request.POST.get('publicacion') == '1':
+                datos_previos['publicacion_especifique'] = request.POST.get('publicacionEspecifique', '')
 
-        # Verificar si seleccionó "Si" en publicacion y capturar el texto
-        if request.POST.get('publicacion') == '1':
-            datos_previos['publicacion_especifique'] = request.POST.get(
-                'publicacionEspecifique', '')
+            datos_previos['documentos'] = request.POST.get('documentos')
+            datos_previos['documentos_otro'] = ''
+            if request.POST.get('documentos') == '4':
+                datos_previos['documentos_otro'] = request.POST.get('documentosOtro', '')
 
-        datos_previos['documentos'] = request.POST.get('documentos')
-        datos_previos['documentos_otro'] = ''
+            datos_previos['calidad'] = request.POST.get('calidad')
+            datos_previos['calidad_otra'] = ''
+            if request.POST.get('calidad') == '3':
+                datos_previos['calidad_otra'] = request.POST.get('calidadOtra', '')
 
-        # Verificar si seleccionó "Otro" en documentos y capturar el texto
-        if request.POST.get('documentos') == '4':
-            datos_previos['documentos_otro'] = request.POST.get(
-                'documentosOtro', '')
+            request.session['anexo_s4'] = datos_previos
+            return redirect('anexo12')
+        except Exception as e:
+            print("ERROR EN A11 (POST):", e)
 
-        datos_previos['calidad'] = request.POST.get('calidad')
-        datos_previos['calidad_otra'] = ''
+    # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
 
-        # Verificar si seleccionó "Otras" en calidad y capturar el texto
-        if request.POST.get('calidad') == '3':
-            datos_previos['calidad_otra'] = request.POST.get('calidadOtra', '')
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False
+        ).order_by('-lapso').first()
 
-        # Actualizar sesión
-        request.session['anexo_s4'] = datos_previos
+        anexo_anterior = AnexoS4.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
 
-        return redirect('anexo12')
+        context = {}
+        if anexo_anterior:
+            context = {
+                'publicacion': anexo_anterior.publicacion,
+                'publicacion_especifique': anexo_anterior.publicacionEspecifique,
+                'documentos': anexo_anterior.documentos,
+                'documentos_otro': anexo_anterior.documentosOtro,
+                'calidad': anexo_anterior.calidad,
+                'calidad_otra': anexo_anterior.calidadOtra,
+            }
+
+        return render(request, 'Anexo11.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR A11:", e)
 
     return render(request, 'Anexo11.html')
+
 
 
 def a12(request):
     curp = request.session.get('usuario_id')
     carrera = request.session.get('usuario_carrera')
 
-    if not curp or not carrera:
-        return redirect('index')
-
-    if not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
+    if not curp or not carrera or not any(carrera.lower().replace('í', 'i') in s for s in ['ing. quimica', 'ing. bioquimica']):
         return redirect('index')
 
     if request.method == 'POST':
-        datos = request.session.get('anexo_s4', {})
-        datos.update({
-            'asociacion': request.POST.get('asociacion'),
-            'asociacion_especifique': request.POST.get('asociacionEspecifique', '') if request.POST.get('asociacion') == '1' else '',
-            'etica': request.POST.get('etica')
-        })
+        try:
+            datos = request.session.get('anexo_s4', {})
+            datos.update({
+                'asociacion': request.POST.get('asociacion'),
+                'asociacion_especifique': request.POST.get('asociacionEspecifique', '') if request.POST.get('asociacion') == '1' else '',
+                'etica': request.POST.get('etica')
+            })
 
-        encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
+            encuesta = Encuesta.objects.filter(curp=curp).order_by('-folioEncuesta').first()
 
-        if encuesta:
-            AnexoS4.objects.update_or_create(
-                folioEncuesta=encuesta,
-                defaults={
-                    'herramientas': datos.get('herramientas'),
-                    'herramientasOtra': datos.get('herramientas_otra'),
-                    'colabora': datos.get('colabora'),
-                    'tipoInvestigacion': datos.get('tipo_investigacion'),
-                    'tipoInvestigacionOtra': datos.get('tipo_investigacion_otra'),
-                    'participaRedes': datos.get('participa_redes'),
-                    'certificacion': datos.get('certificacion'),
-                    'certificacionCuales': datos.get('certificacion_cuales'),
-                    'servicios': datos.get('servicios'),
-                    'serviciosOtro': datos.get('servicios_otro'),
-                    'idiomas': datos.get('idiomas'),
-                    'idiomasOtro': datos.get('idiomas_otro'),
-                    'publicacion': datos.get('publicacion'),
-                    'publicacionEspecifique': datos.get('publicacion_especifique'),
-                    'documentos': datos.get('documentos'),
-                    'documentosOtro': datos.get('documentos_otro'),
-                    'calidad': datos.get('calidad'),
-                    'calidadOtra': datos.get('calidad_otra'),
-                    'asociacion': datos.get('asociacion'),
-                    'asociacionEspecifique': datos.get('asociacion_especifique'),
-                    'etica': datos.get('etica'),
-                }
-            )
-            encuesta.fechaFin = date.today()
-            encuesta.save()
-            request.session.pop('anexo_s4', None)
-            return redirect('encuesta_finalizada')
+            if encuesta:
+                AnexoS4.objects.update_or_create(
+                    folioEncuesta=encuesta,
+                    defaults={
+                        'herramientas': datos.get('herramientas'),
+                        'herramientasOtra': datos.get('herramientas_otra'),
+                        'colabora': datos.get('colabora'),
+                        'tipoInvestigacion': datos.get('tipo_investigacion'),
+                        'tipoInvestigacionOtra': datos.get('tipo_investigacion_otra'),
+                        'participaRedes': datos.get('participa_redes'),
+                        'certificacion': datos.get('certificacion'),
+                        'certificacionCuales': datos.get('certificacion_cuales'),
+                        'servicios': datos.get('servicios'),
+                        'serviciosOtro': datos.get('servicios_otro'),
+                        'idiomas': datos.get('idiomas'),
+                        'idiomasOtro': datos.get('idiomas_otro'),
+                        'publicacion': datos.get('publicacion'),
+                        'publicacionEspecifique': datos.get('publicacion_especifique'),
+                        'documentos': datos.get('documentos'),
+                        'documentosOtro': datos.get('documentos_otro'),
+                        'calidad': datos.get('calidad'),
+                        'calidadOtra': datos.get('calidad_otra'),
+                        'asociacion': datos.get('asociacion'),
+                        'asociacionEspecifique': datos.get('asociacion_especifique'),
+                        'etica': datos.get('etica'),
+                    }
+                )
+                encuesta.fechaFin = date.today()
+                encuesta.save()
+                request.session.pop('anexo_s4', None)
+                return redirect('encuesta_finalizada')
+        except Exception as e:
+            print("ERROR EN A12 (POST):", e)
+
+    # Precarga para GET
+    try:
+        egresado = Egresado.objects.filter(curp=curp).first()
+        lapso_actual = calcular_lapso()
+
+        encuesta_anterior = Encuesta.objects.filter(
+            curp=egresado, lapso__lt=lapso_actual, fechaFin__isnull=False
+        ).order_by('-lapso').first()
+
+        anexo_anterior = AnexoS4.objects.filter(folioEncuesta=encuesta_anterior).first() if encuesta_anterior else None
+
+        context = {}
+        if anexo_anterior:
+            context = {
+                'asociacion': anexo_anterior.asociacion,
+                'asociacion_especifique': anexo_anterior.asociacionEspecifique,
+                'etica': anexo_anterior.etica,
+            }
+
+        return render(request, 'Anexo12.html', context)
+    except Exception as e:
+        print("ERROR AL PRECARGAR A12:", e)
 
     return render(request, 'Anexo12.html')
 
@@ -548,8 +798,13 @@ def encuesta_finalizada(request):
     if encuesta:
         encuesta.fechaFin = date.today()
         encuesta.save()
+        lapso = encuesta.lapso
+    else:
+        lapso = calcular_lapso()
 
-    return render(request, 'encuestaFinalizada.html')
+    return render(request, 'encuestaFinalizada.html', {
+        'lapso': lapso
+    })
 
 def generar_acuse_pdf(request):
     curp = request.session.get('usuario_id')

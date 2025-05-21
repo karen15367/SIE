@@ -39,12 +39,12 @@
             </div>
             <div class="radio-group" style="width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="publicacion" value="0" id="publicacionNo" />
+                    <input type="radio" name="publicacion" value=0 id="publicacionNo" {% if publicacion == "0" or publicacion == 0 %}checked{% endif %}/>
                     <label for="publicacionNo">No</label>
                     <span class="radio-option">
-                        <input type="radio" name="publicacion" value="1" id="publicacionSi" />
+                        <input type="radio" name="publicacion" value=1 id="publicacionSi" {% if publicacion == "1" or publicacion == 1 %}checked{% endif %}/>
                         <label for="publicacionSi">Si especifique</label>
-                        <input type="text" class="line-input">
+                        <input type="text" class="line-input" name="publicacionEspecifique" value="{{ publicacion_especifique }}">
                     </span>
             </div>
 
@@ -55,27 +55,27 @@
 
             <div class="radio-group" style="width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="documentos" value="0" id="manuales" />
+                    <input type="radio" name="documentos" value=0 id="manuales" {% if documentos == "0" or documentos == 0 %}checked{% endif %}/>
                     <label for="manuales">Manuales operativos</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="documentos" value="1" id="procedimientos" />
+                    <input type="radio" name="documentos" value=1 id="procedimientos" {% if documentos == "1" or documentos == 1 %}checked{% endif %}/>
                     <label for="procedimientos">Procedimientos</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="documentos" value="2" id="lineamientos" />
+                    <input type="radio" name="documentos" value=2 id="lineamientos" {% if documentos == "2" or documentos == 2 %}checked{% endif %}/>
                     <label for="lineamientos">Lineamientos</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="documentos" value="3" id="informes" />
+                    <input type="radio" name="documentos" value=3 id="informes" {% if documentos == "3" or documentos == 3 %}checked{% endif %}/>
                     <label for="informes">Informes Técnicos</label>
                 </span>
             </div>
             <div class="radio-group" style="margin-top: 10px; width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="documentos" value="4" id="otras" />
+                    <input type="radio" name="documentos" value=4 id="otras" {% if documentos == "4" or documentos == 4 %}checked{% endif %}/>
                     <label for="otro">Otro</label>
-                    <input type="text" class="line-input">
+                    <input type="text" class="line-input"name="documentosOtro" value="{{ documentos_otro }}">
                 </span>
             </div>
 
@@ -85,22 +85,22 @@
             </div>
             <div class="radio-group" style="width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="calidad" value="0" id="ingles" />
-                    <label for="ingles">Calidad</label>
+                    <input type="radio" name="calidad" value=0 id="calidad0" {% if calidad == "0" or calidad == 0 %}checked{% endif %} />
+                    <label for="calidad0">Calidad</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="calidad" value="1" id="frances" />
-                    <label for="frances">Ambiental</label>
+                    <input type="radio" name="calidad" value=1 id="calidad1" {% if calidad == "1" or calidad == 1 %}checked{% endif %} />
+                    <label for="calidad1">Ambiental</label>
                 </span>
                 <span class="radio-option">
-                    <input type="radio" name="calidad" value="2" id="aleman" />
-                    <label for="aleman">Seguridad</label>
+                    <input type="radio" name="calidad" value=2 id="calidad2" {% if calidad == "2" or calidad == 2 %}checked{% endif %} />
+                    <label for="calidad2">Seguridad</label>
                 </span>
 
                 <span class="radio-option">
-                    <input type="radio" name="calidad" value="3" id="otro" />
+                    <input type="radio" name="calidad" value=3 id="otro" {% if calidad == "3" or calidad == 3 %}checked{% endif %} />
                     <label for="otras">Otras</label>
-                    <input type="text" class="line-input">
+                    <input type="text" class="line-input" value="{{ calidad_otra }}">
                 </span>
             </div>
 

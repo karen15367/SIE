@@ -31,21 +31,21 @@
                 <div class="question">Tipo de sector donde laboras:</div>
                 <div class="options-group">
                     <span class="radio-option">
-                        <input type="radio" name="sector" value="1" id="sector1" />
+                        <input type="radio" name="sector" value=1 id="sector1" {% if sector == "1" or sector == 1 %}checked{% endif %}/>
                         <label for="sector1">Sector privado</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="sector" value="2" id="sector2" />
+                        <input type="radio" name="sector" value=2 id="sector2" {% if sector == "2" or sector == 2 %}checked{% endif %}/>
                         <label for="sector2">Sector público</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="sector" value="3" id="sector3" />
+                        <input type="radio" name="sector" value=3 id="sector3" {% if sector == "3" or sector == 3 %}checked{% endif %}/>
                         <label for="sector3">En empresa propia</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="sector" value="4" id="sector4" />
+                        <input type="radio" name="sector" value=4 id="sector4" {% if sector == "4" or sector == 4 %}checked{% endif %}/>
                         <label for="sector4">Otro</label>
-                        <input type="text" class="line-input">
+                        <input type="text" class="line-input" name="sectorOtro" value="{{ sector_otro }}">
                     </span>
                 </div>
             </div>
@@ -54,33 +54,33 @@
                 <div class="question">¿Cuál es el rol que desempeñas en tu trabajo actual?</div>
                 <div class="options-group">
                     <span class="radio-option">
-                        <input type="radio" name="rol" value="1" id="rol1" />
+                        <input type="radio" name="rol" value=1 id="rol1" {% if rol == "1" or rol == 1 %}checked{% endif %}/>
                         <label for="rol1">Dirección, gerencia</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="rol" value="2" id="rol2" />
+                        <input type="radio" name="rol" value=2 id="rol2" {% if rol == "2" or rol == 2 %}checked{% endif %}/>
                         <label for="rol2">Jefatura</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="rol" value="3" id="rol3" />
+                        <input type="radio" name="rol" value=3 id="rol3" {% if rol == "3" or rol == 3 %}checked{% endif %}/>
                         <label for="rol3">Supervisión</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="rol" value="4" id="rol4" />
+                        <input type="radio" name="rol" value=4 id="rol4" {% if rol == "4" or rol == 4 %}checked{% endif %}/>
                         <label for="rol4">Coordinador</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="rol" value="5" id="rol5" />
+                        <input type="radio" name="rol" value=5 id="rol5" {% if rol == "5" or rol == 5 %}checked{% endif %}/>
                         <label for="rol5">Empleado</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="rol" value="6" id="rol6" />
+                        <input type="radio" name="rol" value=6 id="rol6" {% if rol == "6" or rol == 6 %}checked{% endif %}/>
                         <label for="rol6">Dueño de empresa</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="rol" value="7" id="rol7" />
+                        <input type="radio" name="rol" value=7 id="rol7" {% if rol == "7" or rol == 7 %}checked{% endif %}/>
                         <label for="rol7">Otras:</label>
-                        <input type="text" class="line-input">
+                        <input type="text" class="line-input" name="rolOtro" value="{{ rol_otro }}">
                     </span>
                 </div>
             </div>
@@ -89,33 +89,33 @@
                 <div class="question">Dentro de la empresa, ¿en qué área te desempeñas?</div>
                 <div class="options-group">
                     <span class="radio-option">
-                        <input type="radio" name="area" value="1" id="area1" />
+                        <input type="radio" name="area" value=1 id="area1" {% if area == "1" or area == 1 %}checked{% endif %}/>
                         <label for="area1">Producción</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="area" value="2" id="area2" />
+                        <input type="radio" name="area" value=2 id="area2" {% if area == "2" or area == 2 %}checked{% endif %}/>
                         <label for="area2">Ambiental</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="area" value="3" id="area3" />
+                        <input type="radio" name="area" value=3 id="area3" {% if area == "3" or area == 3 %}checked{% endif %}/>
                         <label for="area3">Seguridad</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="area" value="4" id="area4" />
+                        <input type="radio" name="area" value=4 id="area4" {% if area == "4" or area == 4 %}checked{% endif %}/>
                         <label for="area4">Recursos Financiero</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="area" value="5" id="area5" />
+                        <input type="radio" name="area" value=5 id="area5" {% if area == "5" or area == 5 %}checked{% endif %}/>
                         <label for="area5">Mantenimiento</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="area" value="6" id="area6" />
+                        <input type="radio" name="area" value=6 id="area6" {% if area == "6" or area == 6 %}checked{% endif %}/>
                         <label for="area6">Recursos Humanos</label>
                     </span>
                     <span class="radio-option">
-                        <input type="radio" name="area" value="7" id="area7" />
+                        <input type="radio" name="area" value=7 id="area7" {% if area == "7" or area == 7 %}checked{% endif %}/>
                         <label for="area7">Otras:</label>
-                        <input type="text" class="line-input">
+                        <input type="text" class="line-input" name="areaOtra" value="{{ area_otra }}">
                     </span>
                 </div>
             </div>

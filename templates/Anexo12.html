@@ -38,12 +38,12 @@
             </div>
             <div class="radio-group" style="width: 100%;">
                 <span class="radio-option">
-                    <input type="radio" name="asociacion" value="0" id="asociacionNo" />
+                    <input type="radio" name="asociacion" value=0 id="asociacionNo" {% if asociacion == "0" or asociacion == 0 %}checked{% endif %} />
                     <label for="asociacionNo">No</label>
                     <span class="radio-option">
-                        <input type="radio" name="asociacion" value="1" id="asociacionSi" />
-                        <label for="asociacionSi">Si especifique</label>
-                        <input type="text" class="line-input">
+                        <input type="radio" name="asociacion" value=1 id="asociacionSi" {% if asociacion == "1" or asociacion == 1 %}checked{% endif %} />
+                        <label for="asociacionSi">Sí especifique</label>
+                        <input type="text" class="line-input" name="asociacionEspecifique" value="{{ asociacion_especifique }}">
                     </span>
             </div>
 
@@ -54,33 +54,33 @@
             <div class="options-group">
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="etica" value="1" id="razon1" />
+                        <input type="radio" name="etica" value=1 id="razon1" {% if etica == "1" or etica == 1 %}checked{% endif %} />
                         <label for="razon1">Aplicar las Normas básicas de una empresa</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="etica" value="2" id="razon2" />
+                        <input type="radio" name="etica" value=2 id="razon2" {% if etica == "2" or etica == 2 %}checked{% endif %} />
                         <label for="razon2">Aplicar reglas de cortesía que demuestran respeto por los demás</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="etica" value="3" id="razon3" />
-                        <label for="razon3"> Asumir un comportamiento adecuado para la buena convivencia</label>
+                        <input type="radio" name="etica" value=3 id="razon3" {% if etica == "3" or etica == 3 %}checked{% endif %} />
+                        <label for="razon3">Asumir un comportamiento adecuado para la buena convivencia</label>
                     </span>
                 </div>
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="etica" value="4" id="razon4" />
-                        <label for="razon4"> Establecer una serie de normas como guía de conducta</label>
+                        <input type="radio" name="etica" value=4 id="razon4" {% if etica == "4" or etica == 4 %}checked{% endif %} />
+                        <label for="razon4">Establecer una serie de normas como guía de conducta</label>
                     </span>
                 </div>
                 
                 <div class="radio-row">
                     <span class="radio-option">
-                        <input type="radio" name="etica" value="5" id="razon4" />
-                        <label for="razon4">Ninguna de las anteriores</label>
+                        <input type="radio" name="etica" value=5 id="razon5" {% if etica == "5" or etica == 5 %}checked{% endif %} />
+                        <label for="razon5">Ninguna de las anteriores</label>
                     </span>
                 </div>
                 
