@@ -102,23 +102,21 @@
                     </a>
                 {% endif %}
             {% else %}
-                {% if tipo == 'admin' %}
-                    {% if carrera == 'general' %}
-                    {% if carrera == 'general' %}
-                        <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
-                            <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
-                                <button class="button-28" role="button">CREAR AVISO</button>
-                            </a>
-                            <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
-                                <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
-                            </a>
-                        </div>
-                    {% else %}
-                            <a href="{% url 'crear_aviso' %}">
-                                <button class="button-28" role="button">HACER AVISO</button>
-                            </a>
-                    {% endif %}
+                {% if carrera == 'general' %}
+                    <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
+                        <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
+                            <button class="button-28" role="button">CREAR AVISO</button>
+                        </a>
+                        <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
+                            <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
+                        </a>
+                    </div>
+                {% else %}
+                        <a href="{% url 'crear_aviso' %}">
+                            <button class="button-28" role="button">HACER AVISO</button>
+                        </a>
                 {% endif %}
+                
             {% endif %}
             
             <div class="welcome-info"
