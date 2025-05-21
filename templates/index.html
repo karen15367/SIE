@@ -57,9 +57,17 @@
                         {% csrf_token %}
                         <select name="opcion" onchange="this.form.action = this.value; this.form.submit();">
                             <option>Selecciona una opción</option>
-                            <optgroup label="Resultados">
+                            <optgroup label="Resultados por sección">
                                 <option value="/encuestaR/">ENCUESTAS</option>
                                 <option value="/anexoR/">ANEXO</option>
+                            </optgroup>
+                            <optgroup label="Resultados por semestre">
+                                <option value="#">ENCUESTAS</option>
+                                <option value="#">ANEXO</option>
+                            </optgroup>
+                            <optgroup label="Resultados por usuario">
+                                <option value="#">ENCUESTAS</option>
+                                <option value="#">ANEXO</option>
                             </optgroup>
                             <optgroup label="Usuarios">
                                 <option value="consulta/">CONSULTAR</option>
@@ -89,9 +97,7 @@
                     <h2 style="color: aliceblue;">Dudas o casos Particulares</h2>
                 </div>
             </div>
-            <!-- Contenido específico según el tipo de usuario -->
             {% if tipo == 'egresado' %}
-                <!-- Contenido para Egresados -->
                 {% if carrera == 'Ing. Química' or  carrera == 'Ing. Bioquímica'%}
                     <a href="{% url 'redirigir_anexo' %}">
                         <button class="button-28" role="button">RESPONDER ENCUESTA</button>
@@ -102,22 +108,21 @@
                     </a>
                 {% endif %}
             {% else %}
-                {% if tipo == 'admin' %}
-                    {% if carrera == 'general' %}
-                        <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
-                            <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
-                                <button class="button-28" role="button">CREAR AVISO</button>
-                            </a>
-                            <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
-                                <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
-                            </a>
-                        </div>
-                    {% else %}
-                            <a href="{% url 'crear_aviso' %}">
-                                <button class="button-28" role="button">HACER AVISO</button>
-                            </a>
+                {% if carrera == 'general' %}
+                    <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
+                        <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
+                            <button class="button-28" role="button">CREAR AVISO</button>
+                        </a>
+                        <a href="/admin-signup/" style="text-decoration: none; flex: 1;">
+                            <button class="button-28" role="button">REGISTRAR ADMINISTRADOR</button>
+                        </a>
+                    </div>
+                {% else %}
+                        <a href="{% url 'crear_aviso' %}">
+                            <button class="button-28" role="button">HACER AVISO</button>
+                        </a>
                     {% endif %}
-                {% endif %}
+                
             {% endif %}
             
             <div class="welcome-info"
@@ -140,7 +145,6 @@
             <div class="popup-content">
                 <span id="closePopup" class="close">&times;</span>
                 <h2 class="blueText">Avisos</h2>
-                <hr>
                 {% if avisos %}
                     {% if tipo == 'admin' %}
                         {% for aviso in avisos %}
@@ -162,7 +166,7 @@
                         {% endfor %}
                     {% endif %}
                 {% else %}
-                <p>No hay avisos disponibles.</p>
+                    <p>No hay avisos disponibles.</p>
                 {% endif %}
             </div>
         </div>
