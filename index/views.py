@@ -316,37 +316,26 @@ def modCampos(request):
 
                 user = Egresado.objects.filter(curp=tipo).first()
 
-                if user.titulado:
-                    titulo = 'si'
-                else:
-                    titulo = 'no'
-
-                if user.sexo:
-                    sex = 'si'
-                else:
-                    sex = 'no'
-
                 curpTemp = request.POST.get('curp')
                 nombreTemp = request.POST.get('nombre')
                 correoTemp = request.POST.get('correo')
                 carreraTemp = request.POST.get('carrera')
                 nacioTemp = request.POST.get('fechaNacimiento')
-                tituloTemp = request.POST.get('titulado')
+                tituloTemp = True if request.POST.get('titulado') == 'si' else False
                 controlTemp = request.POST.get('control')
-                sexoTemp = request.POST.get('control')
+                sexoTemp = True if request.POST.get('sexo') == 'femenino' else False
 
-                if curpTemp:
-                    if Administrador.objects.filter(curp=curpTemp).exists():
+                if curpTemp != user.curp:
+                    if Egresado.objects.filter(curp=curpTemp).exists():
                         return render(request, "modUser.html", {
                             "error": "Este CURP ya está registrado.",
                             'admin': 'si',
-                            'usuario': admin,
+                            'usuario': user,
                         })
                     else:
-                        admin.curp = curpTemp
-                        admin.save(update_fields=['curp'])
-                        admin = Administrador.objects.filter(
-                            rfc=curpTemp).first()
+                        user.curp = curpTemp
+                        user.save(update_fields=['curp'])
+                        user = Egresado.objects.filter(curp=curpTemp).first()
 
                 if nombreTemp != user.nombre:
                     user.nombre = nombreTemp
@@ -357,30 +346,23 @@ def modCampos(request):
                     user.save(update_fields=['correo'])
 
                 if carreraTemp != user.carrera:
-                    user.carrera = correoTemp
+                    user.carrera = carreraTemp
                     user.save(update_fields=['carrera'])
 
                 if nacioTemp != user.fechaNacimiento:
-                    user.fechaNacimiento = datetime.datetime.strptime(
-                        nacioTemp, '%Y-%m-%d').date()
+                    user.fechaNacimiento = datetime.datetime.strptime(nacioTemp, '%Y-%m-%d').date()
                     user.save(update_fields=['fechaNacimiento'])
 
-                if tituloTemp != titulo:
-                    if tituloTemp == 'si':
-                        user.titulado = True
-                    else:
-                        user.titulado = False
+                if  tituloTemp != user.titulado:
+                    user.titulado = tituloTemp
                     user.save(update_fields=['titulado'])
 
                 if controlTemp != user.noControl:
                     user.noControl = controlTemp
                     user.save(update_fields=['noControl'])
 
-                if sexoTemp != sex:
-                    if sexoTemp == 'femenino':
-                        user.sexo = True
-                    else:
-                        user.sexo = False
+                if  sexoTemp != user.sexo:
+                    user.sexo = sexoTemp
                     user.save(update_fields=['sexo'])
 
                 return render(request, 'modUser.html', {
