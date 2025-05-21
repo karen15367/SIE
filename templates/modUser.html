@@ -32,11 +32,6 @@
         <form action="/index/modCampos/" method="POST" id="mainForm" style="z-index: 800;">
             {% csrf_token %}
 
-            {% if error %}
-            <div style="color: red; margin-bottom: 15px;">
-                {{ error }}
-            </div>
-            {% endif %}
             <div class="form-content">
                 {% if admin == 'si' %}
                 <input type="hidden" name="real" value="{{ usuario.rfc}}">
@@ -263,6 +258,12 @@
             </form>
             <button class="button" type="submit" form="mainForm" id="continuar">Guardar</button>
         </div>
+
+        {% if error %}
+            <div style="color: red; margin-bottom: 15px;">
+                {{ error }}
+            </div>
+            {% endif %}
 
     </div>
 

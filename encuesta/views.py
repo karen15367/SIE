@@ -55,6 +55,13 @@ def e2(request):
         datos.update({
             'carrera': request.POST.get('carrera'),
             'especialidad': request.POST.get('Especialidad'),
+            'fechaIngreso': datetime.datetime.strptime(
+                fi, '%Y-%m-%d').date(),
+            'fechaEgreso': datetime.datetime.strptime(
+                fe, '%Y-%m-%d').date(),
+            'fechaIngreso':datetime.datetime.strptime(
+                request.POST.get('fechaingreso'), '%Y-%m-%d').date() ,
+            'fechaEgreso':request.POST.get('fechaEgreso') ,
             'titulado': request.POST.get('titulo'),
             'dominioIngles': request.POST.get('dominio'),
             'otroIdioma': request.POST.get('idioma'),
