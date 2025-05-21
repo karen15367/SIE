@@ -10,9 +10,9 @@
         var data = google.visualization.arrayToDataTable([
             ['Grado', 'cantidad'],
             ['Muy buena ', {{ calidad.uno }}],
-            ['Buena', {{ calidad.dos }}],
-            ['Regular', {{ calidad.tres }}],
-            ['Mala', {{ calidad.cuatro }}],
+    ['Buena', {{ calidad.dos }}],
+        ['Regular', {{ calidad.tres }}],
+        ['Mala', {{ calidad.cuatro }}],
             
         ]);
 
@@ -33,9 +33,9 @@
         var data = google.visualization.arrayToDataTable([
             ['Grado', 'cantidad'],
             ['Muy buena ', {{ plan.uno }}],
-            ['Buena', {{ plan.dos }}],
-            ['Regular', {{ plan.tres }}],
-            ['Mala', {{ plan.cuatro }}],
+    ['Buena', {{ plan.dos }}],
+        ['Regular', {{ plan.tres }}],
+        ['Mala', {{ plan.cuatro }}],
             
         ]);
 
@@ -56,9 +56,9 @@
         var data = google.visualization.arrayToDataTable([
             ['Grado', 'cantidad'],
             ['Muy buena ', {{ oportunidad.uno }}],
-            ['Buena', {{ oportunidad.dos }}],
-            ['Regular', {{ oportunidad.tres }}],
-            ['Mala', {{ oportunidad.cuatro }}],
+    ['Buena', {{ oportunidad.dos }}],
+        ['Regular', {{ oportunidad.tres }}],
+        ['Mala', {{ oportunidad.cuatro }}],
             
         ]);
 
@@ -79,9 +79,9 @@
         var data = google.visualization.arrayToDataTable([
             ['Grado', 'cantidad'],
             ['Muy buena ', {{ enfasis.uno }}],
-            ['Buena', {{ enfasis.dos }}],
-            ['Regular', {{ enfasis.tres }}],
-            ['Mala', {{ enfasis.cuatro }}],
+    ['Buena', {{ enfasis.dos }}],
+        ['Regular', {{ enfasis.tres }}],
+        ['Mala', {{ enfasis.cuatro }}],
             
         ]);
 
@@ -102,9 +102,9 @@
         var data = google.visualization.arrayToDataTable([
             ['Grado', 'cantidad'],
             ['Muy buena ', {{ satisfaccion.uno }}],
-            ['Buena', {{ satisfaccion.dos }}],
-            ['Regular', {{ satisfaccion.tres }}],
-            ['Mala', {{ satisfaccion.cuatro }}],
+    ['Buena', {{ satisfaccion.dos }}],
+        ['Regular', {{ satisfaccion.tres }}],
+        ['Mala', {{ satisfaccion.cuatro }}],
             
         ]);
 
@@ -126,9 +126,9 @@
         var data = google.visualization.arrayToDataTable([
             ['Grado', 'cantidad'],
             ['Muy buena ', {{ satisfaccion.uno }}],
-            ['Buena', {{ satisfaccion.dos }}],
-            ['Regular', {{ satisfaccion.tres }}],
-            ['Mala', {{ satisfaccion.cuatro }}],
+    ['Buena', {{ satisfaccion.dos }}],
+        ['Regular', {{ satisfaccion.tres }}],
+        ['Mala', {{ satisfaccion.cuatro }}],
             
         ]);
 
@@ -149,9 +149,9 @@
         var data = google.visualization.arrayToDataTable([
             ['Grado', 'cantidad'],
             ['Muy buena ', {{ experiencia.uno }}],
-            ['Buena', {{ experiencia.dos }}],
-            ['Regular', {{ experiencia.tres }}],
-            ['Mala', {{ experiencia.cuatro }}],
+    ['Buena', {{ experiencia.dos }}],
+        ['Regular', {{ experiencia.tres }}],
+        ['Mala', {{ experiencia.cuatro }}],
             
         ]);
 
@@ -165,17 +165,17 @@
     }
 </script>
 
-<div class="question-group" style="margin-top: 25px;" >
+<div class="question-group" style="margin-top: 25px;">
     <div id="donutchartCalidad" style="width: 100%; height: 500px;"></div>
     <div id="donutchartPlan" style="width: 100%; height: 500px;"></div>
 </div>
 <hr>
-<div class="question-group" style="margin-top: 25px;" >
+<div class="question-group" style="margin-top: 25px;">
     <div id="donutchartOportunidad" style="width: 100%; height: 500px;"></div>
     <div id="donutchartEnfasis" style="width: 100%; height: 500px;"></div>
 </div>
 <hr>
-<div class="question-group" style="margin-top: 25px;" >
+<div class="question-group" style="margin-top: 25px;">
     <div id="donutchartSatisfaccion" style="width: 100%; height: 500px;"></div>
     <div id="donutchartExperiencia" style="width: 100%; height: 500px;"></div>
 </div>
@@ -187,3 +187,84 @@
 
 
 {% endblock %}
+
+
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Institucional de Encuestas - Instituto Tecnológico de Veracruz</title>
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
+
+    <!-- Incluir Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Flowbite CSS y JS (necesario para los modales) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Resto del contenido de tu página -->
+
+        <!-- Botón para abrir el modal de restablecer contraseña -->
+        <div class="form-group">
+            <button data-modal-target="popup-modal" data-modal-toggle="popup-modal"
+                class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-0.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 w-full h-10"
+                type="button">
+                RESTABLECER CONTRASEÑA
+            </button>
+        </div>
+
+        <!-- Modal de restablecer contraseña -->
+        <div id="popup-modal" tabindex="-1"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                    <button type="button"
+                        class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="popup-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Cerrar modal</span>
+                    </button>
+                    <div class="p-4 md:p-5 text-center">
+                        <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            ¿Estás seguro de que deseas restablecer la contraseña de este usuario?
+                        </h3>
+                        <button data-modal-hide="popup-modal" type="button"
+                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                            Sí, restablecer
+                        </button>
+                        <button data-modal-hide="popup-modal" type="button"
+                            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                            No, cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script de Flowbite (necesario para los modales) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+</body>
+
+</html>

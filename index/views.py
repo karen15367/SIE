@@ -1,8 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from SIE import settings
 from core.models import Administrador, Egresado, Notificacion
 from django.utils import timezone
 import datetime
+
+import random
+import string
+
+from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
+
 from django.http import JsonResponse
 import json
 
@@ -316,37 +324,26 @@ def modCampos(request):
 
                 user = Egresado.objects.filter(curp=tipo).first()
 
-                if user.titulado:
-                    titulo = 'si'
-                else:
-                    titulo = 'no'
-
-                if user.sexo:
-                    sex = 'si'
-                else:
-                    sex = 'no'
-
                 curpTemp = request.POST.get('curp')
                 nombreTemp = request.POST.get('nombre')
                 correoTemp = request.POST.get('correo')
                 carreraTemp = request.POST.get('carrera')
                 nacioTemp = request.POST.get('fechaNacimiento')
-                tituloTemp = request.POST.get('titulado')
+                tituloTemp = True if request.POST.get('titulado') == 'si' else False
                 controlTemp = request.POST.get('control')
-                sexoTemp = request.POST.get('control')
+                sexoTemp = True if request.POST.get('sexo') == 'femenino' else False
 
-                if curpTemp:
-                    if Administrador.objects.filter(curp=curpTemp).exists():
+                if curpTemp != user.curp:
+                    if Egresado.objects.filter(curp=curpTemp).exists():
                         return render(request, "modUser.html", {
                             "error": "Este CURP ya está registrado.",
                             'admin': 'si',
-                            'usuario': admin,
+                            'usuario': user,
                         })
                     else:
-                        admin.curp = curpTemp
-                        admin.save(update_fields=['curp'])
-                        admin = Administrador.objects.filter(
-                            rfc=curpTemp).first()
+                        user.curp = curpTemp
+                        user.save(update_fields=['curp'])
+                        user = Egresado.objects.filter(curp=curpTemp).first()
 
                 if nombreTemp != user.nombre:
                     user.nombre = nombreTemp
@@ -357,30 +354,23 @@ def modCampos(request):
                     user.save(update_fields=['correo'])
 
                 if carreraTemp != user.carrera:
-                    user.carrera = correoTemp
+                    user.carrera = carreraTemp
                     user.save(update_fields=['carrera'])
 
                 if nacioTemp != user.fechaNacimiento:
-                    user.fechaNacimiento = datetime.datetime.strptime(
-                        nacioTemp, '%Y-%m-%d').date()
+                    user.fechaNacimiento = datetime.datetime.strptime(nacioTemp, '%Y-%m-%d').date()
                     user.save(update_fields=['fechaNacimiento'])
 
-                if tituloTemp != titulo:
-                    if tituloTemp == 'si':
-                        user.titulado = True
-                    else:
-                        user.titulado = False
+                if  tituloTemp != user.titulado:
+                    user.titulado = tituloTemp
                     user.save(update_fields=['titulado'])
 
                 if controlTemp != user.noControl:
                     user.noControl = controlTemp
                     user.save(update_fields=['noControl'])
 
-                if sexoTemp != sex:
-                    if sexoTemp == 'femenino':
-                        user.sexo = True
-                    else:
-                        user.sexo = False
+                if  sexoTemp != user.sexo:
+                    user.sexo = sexoTemp
                     user.save(update_fields=['sexo'])
 
                 return render(request, 'modUser.html', {
@@ -396,9 +386,30 @@ def modCampos(request):
 
 
 def newPwd(request):
-    if request.method == 'POST':
-        return JsonResponse({
-            'success': True,
-            'message': 'Contraseña restablecida correctamente'
-        })
-    return render(request, 'vistaVerificacionPendiente.html')
+    if request.method == 'POST': 
+        tipo = request.POST.get('personal')
+        pwd = generarC()
+        try:
+            admin = Administrador.objects.filter(rfc=tipo).first()
+            admin.contraseña = make_password(pwd)
+
+            send_mail(
+                    subject="Esta es tu nueva contraseña",
+                    message=f"Hola tu nueva contraseña es:  {pwd} ",
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[admin.correo],
+                )
+            
+            admin.save(update_fields=['contraseña'])
+        except ZeroDivisionError as e:
+            print(e)
+    return render(request, 'vistaVerificacionPendiente.html', {
+        'admin': 'si'
+    })
+
+
+def generarC():
+    
+    caracteres = string.ascii_letters + string.digits  # Letras (mayúsculas y minúsculas) + dígitos
+    contraseña = ''.join(random.choice(caracteres) for _ in range(9))
+    return contraseña
