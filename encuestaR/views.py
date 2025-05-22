@@ -2,7 +2,6 @@ from django.shortcuts import redirect, render
 from openpyxl import Workbook
 from django.db.models import OuterRef, Subquery
 from core.models import Encuesta, EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS4, EncuestaS5, EncuestaS3Empresa
-from core.models import Encuesta
 from django.http import HttpResponse
 from django.db.models import Count
 import csv
