@@ -1,10 +1,12 @@
 from django.shortcuts import render
-
+from openpyxl import Workbook
 from django.db.models import Count, Q
-from core.models import AnexoS1, AnexoS2, AnexoS3, AnexoS4, Egresado, Encuesta
+from core.models import Administrador, AnexoS1, AnexoS2, AnexoS3, AnexoS4, Egresado, Encuesta
 from .forms import FiltroEncuestaForm
 from django.http import HttpResponse
 import csv
+from django.db.models import Max, Subquery, OuterRef
+
 # Create your views here.
 
 
@@ -511,3 +513,154 @@ def A4(request):
         'anexo': True,
         'subtitle': 'VALORES Y COMPETENCIAS'
     })
+
+
+#exportaciones por usuario
+def formulario_export_anexo(request):
+    carreras = [
+        "general","Ing. Química", "Ing. Bioquímica"
+    ]
+    return render(request, 'exportarAnexoUsuario.html', {'carreras': carreras})
+
+def exportar_anexo_por_carrera(request):
+    carrera = request.GET.get('carrera')
+    if not carrera:
+        return HttpResponse("Carrera no seleccionada", status=400)
+
+    rfc_admin = request.session.get('usuario_id')
+    if not rfc_admin:
+        return HttpResponse("Sesión no válida. Inicia sesión nuevamente.", status=401)
+
+    try:
+        admin = Administrador.objects.get(rfc=rfc_admin)
+    except Administrador.DoesNotExist:
+        return HttpResponse("Administrador no encontrado.", status=404)
+
+    if admin.carrera.lower() != "general" and admin.carrera.lower() != carrera.lower():
+        return HttpResponse("No tienes permiso para exportar esta carrera.", status=403)
+    
+    if carrera == "general":
+        egresados_curps = list(Egresado.objects.values_list('curp', flat=True))
+    else:
+        egresados_curps = list(Egresado.objects.filter(carrera=carrera).values_list('curp', flat=True))
+
+    ultimos = Encuesta.objects.filter(
+        curp=OuterRef('folioEncuesta__curp')
+    ).order_by('-lapso').values('folioEncuesta')[:1]
+
+
+    wb = Workbook()
+    ws1 = wb.active
+    ws1.title = "Anexo S1"
+    ws2 = wb.create_sheet("Anexo S2")
+    ws3 = wb.create_sheet("Anexo S3")
+    ws4 = wb.create_sheet("Anexo S4")
+
+    # 🟢 Hoja 1 - Anexo S1
+    ws1.append(['CURP', 'Carrera', 'Lapso', 'Nombre completo', 'Correo', 'Teléfono', 'Fecha Egreso', 'Titulado', 'Razón No Título', 'Otra razón'])
+
+    anexos1 = AnexoS1.objects.filter(
+        folioEncuesta_id=Subquery(ultimos),
+        folioEncuesta__curp__curp__in=egresados_curps
+    ).select_related('folioEncuesta__curp')
+
+    for a in anexos1:
+        ws1.append([
+            a.folioEncuesta.curp.curp,
+            a.folioEncuesta.curp.carrera or 'No definida',
+            a.folioEncuesta.lapso,
+            a.nombreCompleto or '',
+            a.correo or '',
+            a.telefono or '',
+            a.fechaEgreso or '',
+            a.get_titulado_display() if a.titulado is not None else '',
+            a.get_razonNoTitulo_display() if a.razonNoTitulo else '',
+            a.razonNoTituloOtra or ''
+        ])
+
+
+
+    # 🟢 Hoja 2 - Anexo S2
+    ws2.append(['CURP', 'Carrera', 'Lapso', '¿Trabaja?', 'Razón no trabaja', 'Relación con carrera', 'Antigüedad', 'Tiempo trabajo relacionado', 'Sector', 'Rol', 'Área', 'Medio trabajo', 'Satisfacción'])
+
+    anexos2 = AnexoS2.objects.filter(
+        folioEncuesta_id=Subquery(ultimos),
+        folioEncuesta__curp__curp__in=egresados_curps
+    ).select_related('folioEncuesta__curp')
+
+    for a in anexos2:
+        ws2.append([
+            a.folioEncuesta.curp.curp,
+            a.folioEncuesta.curp.carrera or 'No definida',
+            a.folioEncuesta.lapso,
+            a.get_trabaja_display() if a.trabaja is not None else '',
+            a.get_razonNoTrabaja_display() if a.razonNoTrabaja else '',
+            a.get_relacionTrabajoCarrera_display() if a.relacionTrabajoCarrera else '',
+            a.get_antiguedad_display() if a.antiguedad else '',
+            a.get_tiempoTrabajoRelacionado_display() if a.tiempoTrabajoRelacionado else '',
+            a.get_sector_display() if a.sector else '',
+            a.get_rol_display() if a.rol else '',
+            a.get_area_display() if a.area else '',
+            a.get_medioTrabajo_display() if a.medioTrabajo else '',
+            a.get_satisfaccion_display() if a.satisfaccion else ''
+        ])
+
+
+    # 🟢 Hoja 3 - Anexo S3
+    ws3.append(['CURP', 'Carrera', 'Lapso', 'Competencias', 'Satisfacción', 'Educativo', '¿Contacto?', '¿Participa?', 'Aporte'])
+
+    anexos3 = AnexoS3.objects.filter(
+        folioEncuesta_id=Subquery(ultimos),
+        folioEncuesta__curp__curp__in=egresados_curps
+    ).select_related('folioEncuesta__curp')
+
+    for a in anexos3:
+        ws3.append([
+            a.folioEncuesta.curp.curp,
+            a.folioEncuesta.curp.carrera or 'No definida',
+            a.folioEncuesta.lapso,
+            a.get_competencias_display() if a.competencias else '',
+            a.get_satisfaccion_display() if a.satisfaccion else '',
+            a.get_educativo_display() if a.educativo else '',
+            a.get_contacto_display() if a.contacto is not None else '',
+            a.get_participar_display() if a.participar is not None else '',
+            a.get_aporte_display() if a.aporte else ''
+        ])
+
+
+    # 🟢 Hoja 4 - Anexo S4
+    ws4.append(['CURP', 'Carrera', 'Lapso', 'Herramientas', '¿Colabora?', 'Tipo investigación', '¿Participa en redes?', '¿Tiene certificación?', 'Servicios', 'Idiomas', '¿Publicación?', 'Documentos', 'Calidad', '¿Asociación?', 'Ética'])
+
+    anexos4 = AnexoS4.objects.filter(
+        folioEncuesta_id=Subquery(ultimos),
+        folioEncuesta__curp__curp__in=egresados_curps
+    ).select_related('folioEncuesta__curp')
+
+    for a in anexos4:
+        ws4.append([
+            a.folioEncuesta.curp.curp,
+            a.folioEncuesta.curp.carrera or 'No definida',
+            a.folioEncuesta.lapso,
+            a.get_herramientas_display() if a.herramientas else '',
+            a.get_colabora_display() if a.colabora is not None else '',
+            a.get_tipoInvestigacion_display() if a.tipoInvestigacion else '',
+            a.get_participaRedes_display() if a.participaRedes is not None else '',
+            a.get_certificacion_display() if a.certificacion is not None else '',
+            a.get_servicios_display() if a.servicios else '',
+            a.get_idiomas_display() if a.idiomas else '',
+            a.get_publicacion_display() if a.publicacion is not None else '',
+            a.get_documentos_display() if a.documentos else '',
+            a.get_calidad_display() if a.calidad else '',
+            a.get_asociacion_display() if a.asociacion is not None else '',
+            a.get_etica_display() if a.etica else ''
+        ])
+
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    nombre_archivo = 'anexo_general.xlsx' if carrera == "general" else f'anexo_{carrera}.xlsx'
+    response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+
+    wb.save(response)
+    return response
