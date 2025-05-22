@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar Anexo Quimica y BIOQUIMICA</title>
+    <link rel="stylesheet" href="{% static '/styles/general.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/Anexo2.css' %}">
+    <link rel="stylesheet" href="{% static '/styles/vistaSignUp.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        small.aviso {
+            color: #a94442;
+            font-size: 0.9em;
+            display: block;
+            margin-top: 5px;
+        }
+        
+        .descarga {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-content {
+            padding: 40px;
+        }
+        .thank-you {
+            text-align: center;
+            color: #f39c12;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{% static 'img/sepB.png' %}" alt="logo de la SEP" width="150" />
+            <div class="header-text">
+                <div class="title">SISTEMA INSTITUCIONAL DE ENCUESTAS</div>
+                <div class="subtitle">INSTITUTO TECNOLÓGICO DE VERACRUZ</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">Activación y Desactivación de Encuestas</div>
+            <div class="section-subtitle"> </div>
+        </div>
+
+        <div class="form-content">
+            <img src="{% static '/img/itv.png' %}" alt="Logo ITV" class="logo-center">
+            <form method="post" id="activacionForm">
+                {% csrf_token %}
+                <div class="thank-you">
+                    Activación de Encuestas por carreras
+                </div>
+                <ul>
+                    {% for c in carreras %}
+                    <li>
+                        <label>
+                            <input type="checkbox" name="{{ c.carrera }}" {% if c.activa %}checked{% endif %}>
+                            {{ c.carrera }}
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </form>
+        </div>
+        
+        <div class="buttons">
+            <button class="button" type="button" onclick="history.back()">Regresar</button>
+            <button class="button" type="submit" form="activacionForm">Guardar </button>
+    </div>
+</body>
+</html>

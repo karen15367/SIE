@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 import datetime
 from django.utils.timezone import now
 
+
 from core.validators import (
     solo_letras_espacios,
     curp_validator,
@@ -78,6 +79,13 @@ class Encuesta(models.Model):
 
     def __str__(self):
         return f"Encuesta {self.folioEncuesta}"
+    
+class EstadoEncuestaCarrera(models.Model):
+    carrera = models.CharField(max_length=100, unique=True)
+    activa = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.carrera} - {'Activa' if self.activa else 'Inactiva'}"
 
 # ---------------------------
 # MODELO temporal de administrador

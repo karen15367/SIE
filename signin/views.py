@@ -18,6 +18,8 @@ from django.utils.dateparse import parse_date
 from django.urls import reverse
 from django.utils.timezone import now
 from datetime import timedelta
+from core.models import EstadoEncuestaCarrera
+
 
 
 # * Create your views here. comentar esto al migrar la base de datos
@@ -33,8 +35,6 @@ def vistaVerificacionPendiente(request):
     return render(request, "vistaVerificacionPendiente.html")
 
 
-def vistaLogin(request):
-    return render(request, 'vistaLogin.html')
 
 
 def verify(request):
@@ -73,7 +73,7 @@ def verify(request):
                 contraseña=make_password(request.POST.get("pwd1"))
             )
             temp.save()
-
+            
             signer = TimestampSigner()
             signed_token = signer.sign(curp)
             confirm_url = request.build_absolute_uri(

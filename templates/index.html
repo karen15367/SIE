@@ -66,7 +66,7 @@
                                 <option value="#">ANEXO</option>
                             </optgroup>
                             <optgroup label="Resultados por usuario">
-                                <option value="#">ENCUESTAS</option>
+                                <option value="{% url 'encuestaR:formulario_export_encuesta' %}">ENCUESTAS</option>
                                 <option value="/anexoR/exportar-anexo/">ANEXO</option>
                             </optgroup>
                             <optgroup label="Usuarios">
@@ -110,6 +110,9 @@
             {% else %}
                 {% if carrera == 'general' %}
                     <div id="dvEncuesta" style="display: flex; justify-content: space-between; gap: 10px;">
+                        <a  href="{% url 'vista_estado_encuestas' %}">
+                            <button class="button-28" role="button">ACTIVAR/DESACTIVAR</button>
+                        </a>
                         <a href="{% url 'crear_aviso' %}" style="text-decoration: none; flex: 1;">
                             <button class="button-28" role="button">CREAR AVISO</button>
                         </a>
@@ -118,10 +121,15 @@
                         </a>
                     </div>
                 {% else %}
+                    <div id="dvEncuesta" style="display: flex; justify-content: center; gap: 20px;">
                         <a href="{% url 'crear_aviso' %}">
                             <button class="button-28" role="button">HACER AVISO</button>
                         </a>
-                    {% endif %}
+                        <a href="{% url 'vista_estado_encuestas' %}">
+                            <button class="button-28" role="button">ACTIVAR/DESACTIVAR</button>
+                        </a>
+                    </div>
+                {% endif %}
                 
             {% endif %}
             
@@ -137,6 +145,16 @@
                 </div>
                 {% if carrera %}
                 <div class="user-career">{{ carrera }}</div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% else %}
+
                 {% endif %}
             </div>
         </main>
