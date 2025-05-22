@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 import datetime
 from django.utils.timezone import now
 
+
 from core.validators import (
     solo_letras_espacios,
     curp_validator,
