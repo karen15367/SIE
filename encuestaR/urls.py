@@ -17,4 +17,6 @@ urlpatterns = [
     path('exportarE3/', views.exportarE3, name='exportarE3'),
     path('exportar-encuesta/', views.formulario_export_encuesta, name='formulario_export_encuesta'),
     path('exportar-encuesta-por-carrera/', views.exportar_encuesta_por_carrera, name='exportar_encuesta_por_carrera'),
+    path('exportar-encuestas-lapso/', views.exportar_encuesta_por_lapso, name='exportar_encuestas_lapso'),
+
 ]
