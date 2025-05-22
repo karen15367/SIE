@@ -14,5 +14,6 @@ urlpatterns = [
     path('exportarA3/', views.exportarA3, name='exportarA3'),
     path('exportarA4/', views.exportarA4, name='exportarA4'),
     path('A4/', views.A4, name='A4'),
-
+    path('exportar-anexo/', views.formulario_export_anexo, name='formulario_export_anexo'),
+    path('exportar-anexo-por-carrera/', views.exportar_anexo_por_carrera, name='exportar_anexo_por_carrera'),
 ]
