@@ -11,7 +11,7 @@
         var data = google.visualization.arrayToDataTable([
             ['Sexo', 'cantidad'],
             ['Femenino', {{ sexo.si }}],
-            ['Masculino', {{ sexo.no }}],
+    ['Masculino', {{ sexo.no }}],
             
         ]);
 
@@ -32,7 +32,7 @@
         var data = google.visualization.arrayToDataTable([
             ['Estado', 'cantidad'],
             ['Soltero', {{ estado.si }}],
-            ['Casado', {{ estado.no }}],
+    ['Casado', {{ estado.no }}],
             
         ]);
 
@@ -53,7 +53,7 @@
         var data = google.visualization.arrayToDataTable([
             ['Titulado', 'cantidad'],
             ['Si', {{ titulado.si }}],
-            ['NO', {{ titulado.no }}],
+    ['NO', {{ titulado.no }}],
             
         ]);
 
@@ -74,7 +74,7 @@
         var data = google.visualization.arrayToDataTable([
             ['Paquetes', 'cantidad'],
             ['Si', {{ paquetes.si }}],
-            ['NO', {{ paquetes.no }}],
+    ['NO', {{ paquetes.no }}],
             
         ]);
 
@@ -93,13 +93,12 @@
     <div id="donutchartEstado" style="width: 100%; height: 500px;"></div>
 </div>
 <hr>
-<div class="question-group" style="margin-top: 25px;" >
+<div class="question-group" style="margin-top: 25px;">
     <div id="donutchartTitulo" style="width: 100%; height: 500px;"></div>
     <div id="donutchartPaquetes" style="width: 100%; height: 500px;"></div>
 </div>
 <hr>
-<div style="text-align: center; margin: 20px;">
-    <a href="{% url 'exportarE1' %}" class="button">Descargar CSV E1</a>
-</div>
+<h2>
 
+</h2>
 {% endblock %}

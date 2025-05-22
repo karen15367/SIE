@@ -33,15 +33,16 @@ function drawChart(divId, title, dataDict) {
 </script>
 
 <h2>Encuesta - Participación y Actualización (E5)</h2>
-
-<div id="cursosActualizacion_chart"></div>
-<div id="tomarPosgrado_chart"></div>
-<div id="orgSociales_chart"></div>
-<div id="orgProfesionales_chart"></div>
-<div id="asociacionEgresados_chart"></div>
-
-<div style="text-align: center; margin-top: 10px;">
-    <a href="{% url 'exportarE5' %}" class="button">Descargar CSV</a>
-
+<div class="question-group" style="margin-top: 25px;">
+    <div id="cursosActualizacion_chart"></div>
+    <div id="tomarPosgrado_chart"></div>
 </div>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="orgSociales_chart"></div>
+    <div id="orgProfesionales_chart"></div>
+</div>
+<div class="question-group" style="margin-top: 25px;">
+    <div id="asociacionEgresados_chart"></div>
+</div>
+
 {% endblock %}

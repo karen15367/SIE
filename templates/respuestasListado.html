@@ -39,33 +39,31 @@
                 {% if inicio %}
                 <div class="section-subtitle">
                     {% if anexo %}<!--* si tiene resultado es inicio y es anexo-->
-                    TIPO: {{ contenido.folioAnexoS1 }}
-                    PERIODO: {{ contenido.folioEncuesta_id }}
+                    PERIODO: {{ contenido}}
                     <form action="#" method="post" id="ver_{{ forloop.counter0 }}">
                         {% csrf_token %}
-                        <input type="hidden" name="folio" value="{{ contenido.folioEncuesta_id }}">
+                        <input type="hidden" name="periodo" value="{{ contenido }}">
                     </form>
                     {% else %} <!--! si  es la pagina principal y no es anexo-->
-                    ENCUESTA
+                    PERIODO: {{ contenido }}
                     <form action="#" method="post" id="ver_{{ forloop.counter0 }}">
                         {% csrf_token %}
-                        <input type="hidden" name="folio" value="contenido.">
+                        <input type="hidden" name="periodo" value="{{contenido}}">
                     </form>
                     {% endif %}
                 </div>
                 {% else %} <!--! si no es inicio-->
                 {% if anexo %}<!--* si no es inicio pero es anexo-->
-                {{ contenido.id }}
-                
+                {{ contenido.id }} {{periodo}}
                 <form action="/{{ contenido.direccion }}/" method="post" id="ver_{{ forloop.counter0 }}">
                     {% csrf_token %}
-                    <input type="hidden" name="tipo" value="{{ contenido.folioEncuesta_id }}">
+                    <input type="hidden" name="periodo" value="{{ periodo }}">
                 </form>
                 {% else %}<!--! no es inicio y no es anexo-->
-                {{ contenido.id }}
+                {{ contenido.id }} {{periodo}}
                 <form action="/{{ contenido.direccion }}/" method="post" id="ver_{{ forloop.counter0 }}">
                     {% csrf_token %}
-                    <input type="hidden" name="tipo" value="{{ contenido.folioEncuesta_id }}">
+                    <input type="hidden" name="periodo" value="{{ periodo }}">
                 </form>
                 {% endif %}
                 {% endif %}
@@ -81,8 +79,6 @@
                 <div class="section-subtitle">NO SE ENCONTRARON ENCUESTAS</div>
             </div>
             {% endif %}
-
-
         </div>
 
         {% if anexo %}
@@ -90,7 +86,8 @@
             {% csrf_token %}
         </form>
         {% else %}
-        <form action="/{% if inicio %}index{% else %}encuestaR{% endif %}/" id="return" method="get">
+        <form action="/{% if inicio %}index{% else %}encuestaR{% endif %}/" 
+        id="return" method="get">
             {% csrf_token %}
         </form>
         {% endif %}

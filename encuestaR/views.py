@@ -11,34 +11,88 @@ from core.models import Egresado, Administrador
 
 
 def viewEncuesta(request):
-    lista = [
-        {'id': 'PERFIL DEL EGRESADO', 'direccion': 'encuestaR/E1'},
-        {'id': 'PERTINENCIA Y DISPONIBILIDAD', 'direccion': 'encuestaR/E2'},
-        {'id': 'UBICACIÓN LABORAL', 'direccion': 'encuestaR/E3'},
-        {'id': 'DESEMPEÑO PROFESIONAL', 'direccion': 'encuestaR/E4'},
-        {'id': 'DESAROLLO PROFESIONAL Y SOCIAL', 'direccion': 'encuestaR/E5'},
-    ]
 
-    return render(request, 'respuestasListado.html', {
-        'anexo': False,
-        'inicio': False,
-        'resultado': True,
-        'listado': lista,
-    })
+    if request.method == 'POST':
+
+        p = request.POST.get('periodo')
+
+        lista = [
+            {'id': 'PERFIL DEL EGRESADO', 'direccion': 'encuestaR/E1'},
+            {'id': 'PERTINENCIA Y DISPONIBILIDAD', 'direccion': 'encuestaR/E2'},
+            {'id': 'UBICACIÓN LABORAL', 'direccion': 'encuestaR/E3'},
+            {'id': 'DESEMPEÑO PROFESIONAL', 'direccion': 'encuestaR/E4'},
+            {'id': 'DESAROLLO PROFESIONAL Y SOCIAL', 'direccion': 'encuestaR/E5'},
+        ]
+        return render(request, 'respuestasListado.html', {
+            'anexo': False,
+            'inicio': False,
+            'resultado': True,
+            'listado': lista,
+            'periodo': p,
+
+        })
+    else:
+
+        listado = Encuesta.objects.values_list('lapso', flat=True).distinct()
+        return render(request, 'respuestasListado.html', {
+            'anexo': False,
+            'inicio': True,
+            'resultado': True,
+            'listado': listado,
+        })
 
 
 def viewE1(request):
-    sF = EncuestaS1.objects.filter(sexo=1).count()
-    sM = EncuestaS1.objects.filter(sexo=0).count()
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
+        sF = EncuestaS1.objects.filter(
+            sexo=1,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    e1 = EncuestaS1.objects.filter(estadoCivil=1).count()
-    e2 = EncuestaS1.objects.filter(estadoCivil=2).count()
+        sM = EncuestaS1.objects.filter(
+            sexo=0,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    t1 = EncuestaS1.objects.filter(titulado=0).count()
-    t2 = EncuestaS1.objects.filter(titulado=1).count()
+        e1 = EncuestaS1.objects.filter(
+            estadoCivil=1,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    p1 = EncuestaS1.objects.filter(titulado=0).count()
-    p2 = EncuestaS1.objects.filter(titulado=1).count()
+        e2 = EncuestaS1.objects.filter(
+            estadoCivil=2,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        t1 = EncuestaS1.objects.filter(
+            titulado=0,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        t2 = EncuestaS1.objects.filter(
+            titulado=1,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        # Para p1 y p2, el campo es manejoPaquetes
+        p1 = EncuestaS1.objects.filter(
+            manejoPaquetes=0,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        p2 = EncuestaS1.objects.filter(
+            manejoPaquetes=1,
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
     return render(request, 'layouts/E1.html', {
         'anexo': False,
@@ -47,62 +101,188 @@ def viewE1(request):
         'estado': {'si': e1, 'no': e2},
         'titulado': {'si': t1, 'no': t2},
         'paquetes': {'si': p1, 'no': p2},
+        'encuesta': p,
+        'url': 'encuestaR/exportarE1'
     })
 
 
 def exportarE1(request):
-    data = EncuestaS1.objects.all()
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="encuestaE1_export.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow([
-        'CURP', 'Sexo', 'Estado civil', 'Titulado', 'Manejo de paquetes'
-    ])
+        data = EncuestaS1.objects.filter(
+            folioEncuestaS1__in=Encuesta.objects.filter(
+                lapso=p).values('folioEncuesta')
+        )
 
-    for e in data:
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="encuestaE1_export.csv"'
+
+        writer = csv.writer(response)
         writer.writerow([
-            e.curp,
-            'Femenino' if e.sexo == 1 else 'Masculino',
-            'Soltero' if e.estadoCivil == 1 else 'Casado',
-            'Sí' if e.titulado == 1 else 'No',
-            'Sí' if e.manejoPaquetes == 1 else 'No'
+            'CURP', 'Sexo', 'Estado civil', 'Titulado', 'Manejo de paquetes'
         ])
 
-    return response
+        for e in data:
+            writer.writerow([
+                e.curp,
+                'Femenino' if e.sexo == 1 else 'Masculino',
+                'Soltero' if e.estadoCivil == 1 else 'Casado',
+                'Sí' if e.titulado == 1 else 'No',
+                'Sí' if e.manejoPaquetes == 1 else 'No'
+            ])
+        return response
+    
 
 
 def viewE2(request):
-    c1 = EncuestaS2.objects.filter(calidadDocentes=1).count()
-    c2 = EncuestaS2.objects.filter(calidadDocentes=2).count()
-    c3 = EncuestaS2.objects.filter(calidadDocentes=3).count()
-    c4 = EncuestaS2.objects.filter(calidadDocentes=4).count()
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
 
-    p1 = EncuestaS2.objects.filter(planEstudios=1).count()
-    p2 = EncuestaS2.objects.filter(planEstudios=2).count()
-    p3 = EncuestaS2.objects.filter(planEstudios=3).count()
-    p4 = EncuestaS2.objects.filter(planEstudios=4).count()
+        c1 = EncuestaS2.objects.filter(
+            calidadDocentes=1,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    o1 = EncuestaS2.objects.filter(oportunidadesProyectos=1).count()
-    o2 = EncuestaS2.objects.filter(oportunidadesProyectos=2).count()
-    o3 = EncuestaS2.objects.filter(oportunidadesProyectos=3).count()
-    o4 = EncuestaS2.objects.filter(oportunidadesProyectos=4).count()
+        c2 = EncuestaS2.objects.filter(
+            calidadDocentes=2,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    e1 = EncuestaS2.objects.filter(oportunidadesProyectos=1).count()
-    e2 = EncuestaS2.objects.filter(oportunidadesProyectos=2).count()
-    e3 = EncuestaS2.objects.filter(oportunidadesProyectos=3).count()
-    e4 = EncuestaS2.objects.filter(oportunidadesProyectos=4).count()
+        c3 = EncuestaS2.objects.filter(
+            calidadDocentes=3,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    s1 = EncuestaS2.objects.filter(satisfaccionCondiciones=1).count()
-    s2 = EncuestaS2.objects.filter(satisfaccionCondiciones=2).count()
-    s3 = EncuestaS2.objects.filter(satisfaccionCondiciones=3).count()
-    s4 = EncuestaS2.objects.filter(satisfaccionCondiciones=4).count()
+        c4 = EncuestaS2.objects.filter(
+            calidadDocentes=4,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    x1 = EncuestaS2.objects.filter(experienciaResidencia=1).count()
-    x2 = EncuestaS2.objects.filter(experienciaResidencia=2).count()
-    x3 = EncuestaS2.objects.filter(experienciaResidencia=3).count()
-    x4 = EncuestaS2.objects.filter(experienciaResidencia=4).count()
+        p1 = EncuestaS2.objects.filter(
+            planEstudios=1,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        p2 = EncuestaS2.objects.filter(
+            planEstudios=2,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        p3 = EncuestaS2.objects.filter(
+            planEstudios=3,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        p4 = EncuestaS2.objects.filter(
+            planEstudios=4,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        o1 = EncuestaS2.objects.filter(
+            oportunidadesProyectos=1,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        o2 = EncuestaS2.objects.filter(
+            oportunidadesProyectos=2,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        o3 = EncuestaS2.objects.filter(
+            oportunidadesProyectos=3,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        o4 = EncuestaS2.objects.filter(
+            oportunidadesProyectos=4,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        e1 = EncuestaS2.objects.filter(
+            enfasisInvestigacion=1,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        e2 = EncuestaS2.objects.filter(
+            enfasisInvestigacion=2,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        e3 = EncuestaS2.objects.filter(
+            enfasisInvestigacion=3,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        e4 = EncuestaS2.objects.filter(
+            enfasisInvestigacion=4,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        s1 = EncuestaS2.objects.filter(
+            satisfaccionCondiciones=1,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        s2 = EncuestaS2.objects.filter(
+            satisfaccionCondiciones=2,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        s3 = EncuestaS2.objects.filter(
+            satisfaccionCondiciones=3,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        s4 = EncuestaS2.objects.filter(
+            satisfaccionCondiciones=4,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        x1 = EncuestaS2.objects.filter(
+            experienciaResidencia=1,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        x2 = EncuestaS2.objects.filter(
+            experienciaResidencia=2,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        x3 = EncuestaS2.objects.filter(
+            experienciaResidencia=3,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        x4 = EncuestaS2.objects.filter(
+            experienciaResidencia=4,
+            folioEncuestaS2__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
     return render(request, 'layouts/E2.html', {
         'anexo': False,
@@ -113,12 +293,20 @@ def viewE2(request):
         'enfasis': {'uno': e1, 'dos': e2, 'tres': e3, 'cuatro': e4},
         'satisfaccion': {'uno': s1, 'dos': s2, 'tres': s3, 'cuatro': s4},
         'experiencia': {'uno': x1, 'dos': x2, 'tres': x3, 'cuatro': x4},
+        'encuesta': p,
+        'url': 'encuestaR/exportarE2'
 
     })
 
 
 def exportarE2(request):
-    data = EncuestaS2.objects.select_related('folioEncuesta__curp').all()
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
+
+    data = EncuestaS2.objects.select_related('folioEncuesta__curp').filter(
+        folioEncuestaS2__in=Encuesta.objects.filter(
+            lapso=p).values('folioEncuesta')
+    )
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="encuestaE2_export.csv"'
@@ -143,148 +331,250 @@ def exportarE2(request):
 
     return response
 
+
 def viewE3(request):
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
+        # answers = EncuestaS3.objects.all()
 
-    answers = EncuestaS3.objects.all()
+        answers = EncuestaS3.objects.filter(
+            folioEncuestaS3__in=Encuesta.objects.filter(
+                lapso=p).values('folioEncuesta')
+        )
 
-    a1 = EncuestaS3.objects.filter(actividad=1).count()
-    a2 = EncuestaS3.objects.filter(actividad=2).count()
-    a3 = EncuestaS3.objects.filter(actividad=3).count()
-    a4 = EncuestaS3.objects.filter(actividad=4).count()
+        a1 = EncuestaS3.objects.filter(
+            actividad=1,
+            folioEncuestaS3__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    answersE = EncuestaS3Empresa.objects.all()
+        a2 = EncuestaS3.objects.filter(
+            actividad=2,
+            folioEncuestaS3__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-# * Estudian
-    b1 = sum(1 for a in answers if (a.actividad ==
-                                    3 or a.actividad == 2) and a.tipoEstudio == 1)
-    b2 = sum(1 for a in answers if (a.actividad ==
-                                    3 or a.actividad == 2) and a.tipoEstudio == 2)
-    b3 = sum(1 for a in answers if (a.actividad ==
-                                    3 or a.actividad == 2) and a.tipoEstudio == 3)
-    b4 = sum(1 for a in answers if (a.actividad ==
-                                    3 or a.actividad == 2) and a.tipoEstudio == 4)
-    b5 = sum(1 for a in answers if (a.actividad ==
-                                    3 or a.actividad == 2) and a.tipoEstudio == 5)
+        a3 = EncuestaS3.objects.filter(
+            actividad=3,
+            folioEncuestaS3__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        a4 = EncuestaS3.objects.filter(
+            actividad=4,
+            folioEncuestaS3__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        # answersE = EncuestaS3Empresa.objects.all()
+
+        answersE = EncuestaS3Empresa.objects.filter(
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=p).values('folioEncuesta')
+        )
+
+    # * Estudian
+        b1 = sum(1 for a in answers if (a.actividad ==
+                                        3 or a.actividad == 2) and a.tipoEstudio == 1)
+        b2 = sum(1 for a in answers if (a.actividad ==
+                                        3 or a.actividad == 2) and a.tipoEstudio == 2)
+        b3 = sum(1 for a in answers if (a.actividad ==
+                                        3 or a.actividad == 2) and a.tipoEstudio == 3)
+        b4 = sum(1 for a in answers if (a.actividad ==
+                                        3 or a.actividad == 2) and a.tipoEstudio == 4)
+        b5 = sum(1 for a in answers if (a.actividad ==
+                                        3 or a.actividad == 2) and a.tipoEstudio == 5)
 # * trabajan
-    t1 = sum(1 for a in answers if (a.actividad ==
-                                    1 or a.actividad == 3) and a.tipoEstudio == 1)
-    t2 = sum(1 for a in answers if (a.actividad ==
-                                    1 or a.actividad == 3) and a.tipoEstudio == 2)
-    t3 = sum(1 for a in answers if (a.actividad ==
-                                    1 or a.actividad == 3) and a.tipoEstudio == 3)
-    t4 = sum(1 for a in answers if (a.actividad ==
-                                    1 or a.actividad == 3) and a.tipoEstudio == 4)
+        t1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.tipoEstudio == 1)
+        t2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.tipoEstudio == 2)
+        t3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.tipoEstudio == 3)
+        t4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.tipoEstudio == 4)
 
-    m1 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.medioEmpleo == 1)
-    m2 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.medioEmpleo == 2)
-    m3 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.medioEmpleo == 3)
-    m4 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.medioEmpleo == 4)
-    m5 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.medioEmpleo == 5)
+        m1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.medioEmpleo == 1)
+        m2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.medioEmpleo == 2)
+        m3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.medioEmpleo == 3)
+        m4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.medioEmpleo == 4)
+        m5 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.medioEmpleo == 5)
 
-    r1 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
-             and a.requisitosContratacion == 1)
-    r2 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
-             and a.requisitosContratacion == 2)
-    r3 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
-             and a.requisitosContratacion == 3)
-    r4 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
-             and a.requisitosContratacion == 4)
-    r5 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
-             and a.requisitosContratacion == 5)
-    r6 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
-             and a.requisitosContratacion == 6)
-    r7 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
-             and a.requisitosContratacion == 7)
+        r1 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
+                 and a.requisitosContratacion == 1)
+        r2 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
+                 and a.requisitosContratacion == 2)
+        r3 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
+                 and a.requisitosContratacion == 3)
+        r4 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
+                 and a.requisitosContratacion == 4)
+        r5 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
+                 and a.requisitosContratacion == 5)
+        r6 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
+                 and a.requisitosContratacion == 6)
+        r7 = sum(1 for a in answers if (a.actividad == 1 or a.actividad == 3)
+                 and a.requisitosContratacion == 7)
 
-    i1 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.idiomaUtiliza == 1)
-    i2 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.idiomaUtiliza == 2)
-    i3 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.idiomaUtiliza == 3)
-    i4 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.idiomaUtiliza == 4)
-    i5 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.idiomaUtiliza == 5)
+        i1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.idiomaUtiliza == 1)
+        i2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.idiomaUtiliza == 2)
+        i3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.idiomaUtiliza == 3)
+        i4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.idiomaUtiliza == 4)
+        i5 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.idiomaUtiliza == 5)
 
-    e1 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.antiguedad == 1)
-    e2 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.antiguedad == 2)
-    e3 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.antiguedad == 3)
-    e4 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.antiguedad == 4)
-    e5 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.antiguedad == 5)
+        e1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.antiguedad == 1)
+        e2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.antiguedad == 2)
+        e3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.antiguedad == 3)
+        e4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.antiguedad == 4)
+        e5 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.antiguedad == 5)
 
-    s1 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.ingreso == 1)
-    s2 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.ingreso == 2)
-    s3 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.ingreso == 3)
-    s4 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.ingreso == 4)
+        s1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.ingreso == 1)
+        s2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.ingreso == 2)
+        s3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.ingreso == 3)
+        s4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.ingreso == 4)
 
-    n1 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.nivelJerarquico == 1)
-    n2 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.nivelJerarquico == 2)
-    n3 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.nivelJerarquico == 3)
-    n4 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.nivelJerarquico == 4)
-    n5 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.nivelJerarquico == 5)
-    n6 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.nivelJerarquico == 6)
+        n1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 1)
+        n2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 2)
+        n3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 3)
+        n4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 4)
+        n5 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 5)
+        n6 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 6)
 
-    c1 = sum(1 for a in answers if (a.actividad ==
-             1 or a.actividad == 3) and a.condicionTrabajo == 1)
-    c2 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.condicionTrabajo == 2)
-    c3 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.condicionTrabajo == 3)
-    c4 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.condicionTrabajo == 4)
+        c1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.condicionTrabajo == 1)
+        c2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.condicionTrabajo == 2)
+        c3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.condicionTrabajo == 3)
+        c4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.condicionTrabajo == 4)
 
-    r1 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.nivelJerarquico == 1)
-    r2 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.nivelJerarquico == 2)
-    r3 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.nivelJerarquico == 3)
-    r4 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.nivelJerarquico == 4)
-    r5 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.nivelJerarquico == 5)
-    r6 = sum(1 for a in answers if (a.actividad ==
-            1 or a.actividad == 3) and a.nivelJerarquico == 6)
+        r1 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 1)
+        r2 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 2)
+        r3 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 3)
+        r4 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 4)
+        r5 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 5)
+        r6 = sum(1 for a in answers if (a.actividad ==
+                                        1 or a.actividad == 3) and a.nivelJerarquico == 6)
 
-    u1 = EncuestaS3Empresa.objects.filter(tipoOrganismo=1).count()
-    u2 = EncuestaS3Empresa.objects.filter(tipoOrganismo=1).count()
-    u3 = EncuestaS3Empresa.objects.filter(tipoOrganismo=1).count()
+        u1 = EncuestaS3Empresa.objects.filter(
+            tipoOrganismo=1,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    q1 = EncuestaS3Empresa.objects.filter(sectorPrimario=1).count()
-    q2 = EncuestaS3Empresa.objects.filter(sectorPrimario=2).count()
-    q3 = EncuestaS3Empresa.objects.filter(sectorPrimario=3).count()
-    q4 = EncuestaS3Empresa.objects.filter(sectorPrimario=4).count()
+        u2 = EncuestaS3Empresa.objects.filter(
+            tipoOrganismo=2,  # Asumiendo que hay diferentes tipos de organismo
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
-    h1 = EncuestaS3Empresa.objects.filter(sectorSecundario=1).count()
-    h2 = EncuestaS3Empresa.objects.filter(sectorSecundario=2).count()
-    h3 = EncuestaS3Empresa.objects.filter(sectorSecundario=3).count()
-    h4 = EncuestaS3Empresa.objects.filter(sectorSecundario=4).count()
-   
-    y1 = EncuestaS3Empresa.objects.filter(sectorTerciario=1).count()
-    y2 = EncuestaS3Empresa.objects.filter(sectorTerciario=2).count()
-    y3 = EncuestaS3Empresa.objects.filter(sectorTerciario=3).count()
-    y4 = EncuestaS3Empresa.objects.filter(sectorTerciario=4).count()
+        u3 = EncuestaS3Empresa.objects.filter(
+            tipoOrganismo=3,  # Asumiendo que hay diferentes tipos de organismo
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        q1 = EncuestaS3Empresa.objects.filter(
+            sectorPrimario=1,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        q2 = EncuestaS3Empresa.objects.filter(
+            sectorPrimario=2,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        q3 = EncuestaS3Empresa.objects.filter(
+            sectorPrimario=3,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        q4 = EncuestaS3Empresa.objects.filter(
+            sectorPrimario=4,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        h1 = EncuestaS3Empresa.objects.filter(
+            sectorSecundario=1,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        h2 = EncuestaS3Empresa.objects.filter(
+            sectorSecundario=2,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        h3 = EncuestaS3Empresa.objects.filter(
+            sectorSecundario=3,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        h4 = EncuestaS3Empresa.objects.filter(
+            sectorSecundario=4,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        y1 = EncuestaS3Empresa.objects.filter(
+            sectorTerciario=1,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        y2 = EncuestaS3Empresa.objects.filter(
+            sectorTerciario=2,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        y3 = EncuestaS3Empresa.objects.filter(
+            sectorTerciario=3,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
+
+        y4 = EncuestaS3Empresa.objects.filter(
+            sectorTerciario=4,
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(
+                lapso=f"{p}").values('folioEncuesta')
+        ).count()
 
     return render(request, 'layouts/E3.html', {
         'anexo': False,
@@ -304,187 +594,223 @@ def viewE3(request):
         'sectorp': {'uno': q1, 'dos': q2, 'tres': q3, 'cuatro': q4, },
         'sectors': {'uno': h1, 'dos': h2, 'tres': h3, 'cuatro': h4, },
         'sectort': {'uno': y1, 'dos': y2, 'tres': y3, 'cuatro': y4, },
-
+        'encuesta': p,
+        'url': 'encuestaR/exportarE3'
     })
 
+
 def exportarE3(request):
-    encuestas = EncuestaS3.objects.select_related('folioEncuesta').all()
-    empresas = EncuestaS3Empresa.objects.select_related('folioEncuesta').all()
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="encuestaE3_export.csv"'
-    writer = csv.writer(response)
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
 
-    # Tabla 1: EncuestaS3 (egresado)
-    writer.writerow(['SECCIÓN 1: DATOS DEL EGRESADO'])
-    writer.writerow([
-        'Folio Encuesta',
-        'Actividad actual',
-        'Tipo de estudio',
-        'Medio de empleo',
-        'Requisitos de contratación',
-        'Idioma que utiliza',
-        'Antigüedad en el empleo',
-        'Ingreso diario',
-        'Nivel jerárquico',
-        'Condición de trabajo',
-        'Relación con formación'
-    ])
 
-    for e in encuestas:
+        encuestas = EncuestaS3.objects.select_related('folioEncuesta').filter(
+            folioEncuestaS3__in=Encuesta.objects.filter(lapso=p).values('folioEncuesta')
+        )
+
+        empresas = EncuestaS3Empresa.objects.select_related('folioEncuesta').filter(
+            folioEncuestaS3Empresa__in=Encuesta.objects.filter(lapso=p).values('folioEncuesta')
+        )
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="encuestaE3_export.csv"'
+        writer = csv.writer(response)
+
+        # Tabla 1: EncuestaS3 (egresado)
+        writer.writerow(['SECCIÓN 1: DATOS DEL EGRESADO'])
         writer.writerow([
-            e.folioEncuesta_id,
-            e.get_actividad_display() if e.actividad else '',
-            e.get_tipoEstudio_display() if e.tipoEstudio else '',
-            e.get_medioEmpleo_display() if e.medioEmpleo else '',
-            e.get_requisitosContratacion_display() if e.requisitosContratacion else '',
-            e.get_idiomaUtiliza_display() if e.idiomaUtiliza else '',
-            e.get_antiguedad_display() if e.antiguedad else '',
-            e.get_ingreso_display() if e.ingreso else '',
-            e.get_nivelJerarquico_display() if e.nivelJerarquico else '',
-            e.get_condicionTrabajo_display() if e.condicionTrabajo else '',
-            e.get_relacionTrabajo_display() if e.relacionTrabajo else ''
+            'Folio Encuesta',
+            'Actividad actual',
+            'Tipo de estudio',
+            'Medio de empleo',
+            'Requisitos de contratación',
+            'Idioma que utiliza',
+            'Antigüedad en el empleo',
+            'Ingreso diario',
+            'Nivel jerárquico',
+            'Condición de trabajo',
+            'Relación con formación'
         ])
 
-    writer.writerow([])  # línea en blanco
+        for e in encuestas:
+            writer.writerow([
+                e.folioEncuesta_id,
+                e.get_actividad_display() if e.actividad else '',
+                e.get_tipoEstudio_display() if e.tipoEstudio else '',
+                e.get_medioEmpleo_display() if e.medioEmpleo else '',
+                e.get_requisitosContratacion_display() if e.requisitosContratacion else '',
+                e.get_idiomaUtiliza_display() if e.idiomaUtiliza else '',
+                e.get_antiguedad_display() if e.antiguedad else '',
+                e.get_ingreso_display() if e.ingreso else '',
+                e.get_nivelJerarquico_display() if e.nivelJerarquico else '',
+                e.get_condicionTrabajo_display() if e.condicionTrabajo else '',
+                e.get_relacionTrabajo_display() if e.relacionTrabajo else ''
+            ])
 
-    # Tabla 2: EncuestaS3Empresa
-    writer.writerow(['SECCIÓN 2: DATOS DE LA EMPRESA U ORGANIZACIÓN'])
-    writer.writerow([
-        'Folio Encuesta',
-        'Tipo de organismo',
-        'Tamaño de empresa',
-        'Sector primario',
-        'Sector secundario',
-        'Sector terciario'
-    ])
+        writer.writerow([])  # línea en blanco
 
-    for e in empresas:
+        # Tabla 2: EncuestaS3Empresa
+        writer.writerow(['SECCIÓN 2: DATOS DE LA EMPRESA U ORGANIZACIÓN'])
         writer.writerow([
-            e.folioEncuesta_id,
-            e.get_tipoOrganismo_display() if e.tipoOrganismo else '',
-            e.get_tamanoEmpresa_display() if e.tamanoEmpresa else '',
-            e.get_sectorPrimario_display() if e.sectorPrimario else '',
-            e.get_sectorSecundario_display() if e.sectorSecundario else '',
-            e.get_sectorTerciario_display() if e.sectorTerciario else '',
+            'Folio Encuesta',
+            'Tipo de organismo',
+            'Tamaño de empresa',
+            'Sector primario',
+            'Sector secundario',
+            'Sector terciario'
         ])
+
+        for e in empresas:
+            writer.writerow([
+                e.folioEncuesta_id,
+                e.get_tipoOrganismo_display() if e.tipoOrganismo else '',
+                e.get_tamanoEmpresa_display() if e.tamanoEmpresa else '',
+                e.get_sectorPrimario_display() if e.sectorPrimario else '',
+                e.get_sectorSecundario_display() if e.sectorSecundario else '',
+                e.get_sectorTerciario_display() if e.sectorTerciario else '',
+            ])
 
     return response
 
 
 def viewE4(request):
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
 
-    def contar(campo, choices):
-        resultados = EncuestaS4.objects.values(campo).annotate(total=Count(campo))
-        
-        # Crear un diccionario adaptado para las plantillas
-        conteo = {
-            '1poco': 0,
-            '2': 0,
-            '3': 0,
-            '4': 0,
-            '5mucho': 0
+        def contar(campo, choices, p):
+            filtros_modificados = {}
+            for key, value in p.items():
+                if key == 'lapso':
+                    filtros_modificados['folioEncuesta__lapso'] = value
+                else:
+                    filtros_modificados[key] = value
+
+            data = EncuestaS4.objects.filter(
+                **filtros_modificados).values(campo).annotate(total=Count(campo))
+
+            # Crear diccionario con las choices
+            resultado = {}
+            choices_dict = dict(choices)  # Convertir choices a diccionario
+
+            for choice_value, choice_label in choices:
+                total = sum(d['total']
+                            for d in data if d[campo] == choice_value)
+                resultado[choice_label] = total
+
+            return resultado
+
+        context = {
+            'areaCampoEstudio': contar('areaCampoEstudio', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'titulacion': contar('titulacion', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'experienciaLaboral': contar('experienciaLaboral', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'competenciaLaboral': contar('competenciaLaboral', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'posicionamientoInstitucion': contar('posicionamientoInstitucion', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'conocimientoIdiomas': contar('conocimientoIdiomas', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'recomendacionesReferencias': contar('recomendacionesReferencias', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'personalidadActitudes': contar('personalidadActitudes', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'capacidadLiderazgo': contar('capacidadLiderazgo', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'otrosAspectos': contar('otrosAspectos', EncuestaS4.VALORACION_CHOICES, {'lapso': f'{p}'}),
+            'encuesta': p,
+            'url': 'encuestaR/exportarE4'
         }
-        
-        # Llenar el diccionario con los valores obtenidos
-        for r in resultados:
-            valor = r[campo]
-            if valor == 1:
-                conteo['1poco'] = r['total']
-            elif valor == 2:
-                conteo['2'] = r['total']
-            elif valor == 3:
-                conteo['3'] = r['total']
-            elif valor == 4:
-                conteo['4'] = r['total']
-            elif valor == 5:
-                conteo['5mucho'] = r['total']
-        
-        return conteo
-
-    context = {
-        'areaCampoEstudio': contar('areaCampoEstudio', EncuestaS4.VALORACION_CHOICES),
-        'titulacion': contar('titulacion', EncuestaS4.VALORACION_CHOICES),
-        'experienciaLaboral': contar('experienciaLaboral', EncuestaS4.VALORACION_CHOICES),
-        'competenciaLaboral': contar('competenciaLaboral', EncuestaS4.VALORACION_CHOICES),
-        'posicionamientoInstitucion': contar('posicionamientoInstitucion', EncuestaS4.VALORACION_CHOICES),
-        'conocimientoIdiomas': contar('conocimientoIdiomas', EncuestaS4.VALORACION_CHOICES),
-        'recomendacionesReferencias': contar('recomendacionesReferencias', EncuestaS4.VALORACION_CHOICES),
-        'personalidadActitudes': contar('personalidadActitudes', EncuestaS4.VALORACION_CHOICES),
-        'capacidadLiderazgo': contar('capacidadLiderazgo', EncuestaS4.VALORACION_CHOICES),
-        'otrosAspectos': contar('otrosAspectos', EncuestaS4.VALORACION_CHOICES),
-    }
 
     return render(request, 'layouts/E4.html', context)
 
 
 def exportarE4(request):
-    data = EncuestaS4.objects.select_related('folioEncuesta').all()
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="encuestaE4_export.csv"'
+        data = EncuestaS4.objects.select_related('folioEncuesta').filter(
+    folioEncuestaS4__in=Encuesta.objects.filter(lapso=p).values('folioEncuesta')
+)
 
-    writer = csv.writer(response)
-    writer.writerow([
-        'Folio Encuesta',
-        'Área o campo de estudio',
-        'Titulación',
-        'Experiencia laboral',
-        'Competencia laboral',
-        'Posicionamiento institución',
-        'Conocimiento idiomas',
-        'Recomendaciones/referencias',
-        'Personalidad/actitudes',
-        'Capacidad liderazgo',
-        'Otros aspectos'
-    ])
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="encuestaE4_export.csv"'
 
-    for e in data:
+        writer = csv.writer(response)
         writer.writerow([
-            e.folioEncuesta_id,
-            e.get_areaCampoEstudio_display() if e.areaCampoEstudio else '',
-            e.get_titulacion_display() if e.titulacion else '',
-            e.get_experienciaLaboral_display() if e.experienciaLaboral else '',
-            e.get_competenciaLaboral_display() if e.competenciaLaboral else '',
-            e.get_posicionamientoInstitucion_display() if e.posicionamientoInstitucion else '',
-            e.get_conocimientoIdiomas_display() if e.conocimientoIdiomas else '',
-            e.get_recomendacionesReferencias_display() if e.recomendacionesReferencias else '',
-            e.get_personalidadActitudes_display() if e.personalidadActitudes else '',
-            e.get_capacidadLiderazgo_display() if e.capacidadLiderazgo else '',
-            e.get_otrosAspectos_display() if e.otrosAspectos else '',
+            'Folio Encuesta',
+            'Área o campo de estudio',
+            'Titulación',
+            'Experiencia laboral',
+            'Competencia laboral',
+            'Posicionamiento institución',
+            'Conocimiento idiomas',
+            'Recomendaciones/referencias',
+            'Personalidad/actitudes',
+            'Capacidad liderazgo',
+            'Otros aspectos'
         ])
+
+        for e in data:
+            writer.writerow([
+                e.folioEncuesta_id,
+                e.get_areaCampoEstudio_display() if e.areaCampoEstudio else '',
+                e.get_titulacion_display() if e.titulacion else '',
+                e.get_experienciaLaboral_display() if e.experienciaLaboral else '',
+                e.get_competenciaLaboral_display() if e.competenciaLaboral else '',
+                e.get_posicionamientoInstitucion_display() if e.posicionamientoInstitucion else '',
+                e.get_conocimientoIdiomas_display() if e.conocimientoIdiomas else '',
+                e.get_recomendacionesReferencias_display() if e.recomendacionesReferencias else '',
+                e.get_personalidadActitudes_display() if e.personalidadActitudes else '',
+                e.get_capacidadLiderazgo_display() if e.capacidadLiderazgo else '',
+                e.get_otrosAspectos_display() if e.otrosAspectos else '',
+            ])
 
     return response
 
 
 def viewE5(request):
-    def contar(campo):
-        data = EncuestaS5.objects.values(campo).annotate(total=Count(campo))
-        return {'Sí': sum(d['total'] for d in data if d[campo] == 1), 'No': sum(d['total'] for d in data if d[campo] == 0)}
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
 
-    context = {
-        'cursosActualizacion': contar('cursosActualizacion'),
-        'tomarPosgrado': contar('tomarPosgrado'),
-        'orgSociales': contar('perteneceOrganizacionesSociales'),
-        'orgProfesionales': contar('perteneceOrganismosProfesionistas'),
-        'asociacionEgresados': contar('perteneceAsociacionEgresados'),
-    }
+        def contar(campo, p):
+            filtros_modificados = {}
+            for key, value in p.items():
+                if key == 'lapso':
+                    # Ajustar según tu relación
+                    filtros_modificados['folioEncuesta__lapso'] = value
+                else:
+                    filtros_modificados[key] = value
+
+            data = EncuestaS5.objects.filter(
+                **filtros_modificados).values(campo).annotate(total=Count(campo))
+            return {'Sí': sum(d['total'] for d in data if d[campo] == 1), 'No': sum(d['total'] for d in data if d[campo] == 0)}
+
+        context = {
+            'cursosActualizacion': contar('cursosActualizacion', {'lapso': f'{p}'}),
+            'tomarPosgrado': contar('tomarPosgrado', {'lapso': f'{p}'}),
+            'orgSociales': contar('perteneceOrganizacionesSociales', {'lapso': f'{p}'}),
+            'orgProfesionales': contar('perteneceOrganismosProfesionistas', {'lapso': f'{p}'}),
+            'asociacionEgresados': contar('perteneceAsociacionEgresados', {'lapso': f'{p}'}),
+            'encuesta': p,
+            'url': 'encuestaR/exportarE5'
+        }
     return render(request, 'layouts/E5.html', context)
 
+
 def exportarE5(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="E5.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['Folio', 'Cursos Actualización', 'Desea Posgrado', 'Org. Sociales', 'Org. Profesionales', 'Asoc. Egresados'])
-    for e in EncuestaS5.objects.all():
-        writer.writerow([
-            e.folioEncuesta_id,
-            e.cursosActualizacion,
-            e.tomarPosgrado,
-            e.perteneceOrganizacionesSociales,
-            e.perteneceOrganismosProfesionistas,
-            e.perteneceAsociacionEgresados
-        ])
+    if request.method == 'POST':
+        p = request.POST.get('periodo')
+        answer = EncuestaS5.objects.filter(
+    folioEncuestaS5__in=Encuesta.objects.filter(lapso=p).values('folioEncuesta')
+)
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="E5.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['Folio', 'Cursos Actualización', 'Desea Posgrado',
+                        'Org. Sociales', 'Org. Profesionales', 'Asoc. Egresados'])
+        for e in answer:
+            writer.writerow([
+                e.folioEncuesta_id,
+                e.cursosActualizacion,
+                e.tomarPosgrado,
+                e.perteneceOrganizacionesSociales,
+                e.perteneceOrganismosProfesionistas,
+                e.perteneceAsociacionEgresados
+            ])
     return response
 
 def exportarE3(request):
