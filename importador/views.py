@@ -632,7 +632,7 @@ def procesar_excel_encuesta(request):
                 curp=curp,
                 defaults={
                     'nombre': 'Pendiente',
-                    'carrera': fila.get("Carrera", "No definida"),
+                    'carrera': fila.get("Carrera de egreso", "No definida"),
                 }
             )
 

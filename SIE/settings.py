@@ -77,6 +77,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'SIE.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

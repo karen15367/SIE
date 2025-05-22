@@ -1,10 +1,12 @@
 from django.shortcuts import redirect, render
-
-from core.models import EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS4, EncuestaS5, EncuestaS3Empresa
+from openpyxl import Workbook
+from django.db.models import OuterRef, Subquery
+from core.models import Encuesta, EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS4, EncuestaS5, EncuestaS3Empresa
 from core.models import Encuesta
 from django.http import HttpResponse
 from django.db.models import Count
 import csv
+from core.models import Egresado, Administrador
 
 # Create your views here.
 
@@ -811,4 +813,131 @@ def exportarE5(request):
                 e.perteneceOrganismosProfesionistas,
                 e.perteneceAsociacionEgresados
             ])
+    return response
+
+def exportarE3(request):
+    data = EncuestaS3.objects.select_related('folioEncuesta').all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="encuestaE3_export.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        'Folio Encuesta',
+        'Actividad actual',
+        'Tipo de estudio',
+        'Medio de empleo',
+        'Requisitos de contratación',
+        'Idioma que utiliza',
+        'Antigüedad en el empleo',
+        'Ingreso diario',
+        'Nivel jerárquico',
+        'Condición de trabajo',
+        'Relación con formación'
+    ])
+
+    for e in data:
+        writer.writerow([
+            e.folioEncuesta_id,
+            e.get_actividad_display() if e.actividad else '',
+            e.get_tipoEstudio_display() if e.tipoEstudio else '',
+            e.get_medioEmpleo_display() if e.medioEmpleo else '',
+            e.get_requisitosContratacion_display() if e.requisitosContratacion else '',
+            e.get_idiomaUtiliza_display() if e.idiomaUtiliza else '',
+            e.get_antiguedad_display() if e.antiguedad else '',
+            e.get_ingreso_display() if e.ingreso else '',
+            e.get_nivelJerarquico_display() if e.nivelJerarquico else '',
+            e.get_condicionTrabajo_display() if e.condicionTrabajo else '',
+            e.get_relacionTrabajo_display() if e.relacionTrabajo else ''
+        ])
+
+    return response
+
+def formulario_export_encuesta(request):
+    carreras = [
+        "general",
+        "Ing. Sistemas Computacionales",
+        "Ing. Industrial",
+        "Ing. Mecatrónica",
+        "Ing. Eléctrica",
+        "Ing. Electrónica",
+        "Ing. Mecánica",
+        "Ing. Renovables",
+        "Ing. Gestión Empresarial",
+        "Lic. Administración"
+    ]
+    return render(request, 'exportarEncuestaUsuario.html', {'carreras': carreras})
+
+def exportar_encuesta_por_carrera(request):
+    carrera = request.GET.get('carrera')
+    if not carrera:
+        return HttpResponse("Carrera no seleccionada", status=400)
+
+    rfc_admin = request.session.get('usuario_id')
+    if not rfc_admin:
+        return HttpResponse("Sesión no válida. Inicia sesión nuevamente.", status=401)
+
+    try:
+        admin = Administrador.objects.get(rfc=rfc_admin)
+    except Administrador.DoesNotExist:
+        return HttpResponse("Administrador no encontrado.", status=404)
+
+    if admin.carrera.lower() != "general" and admin.carrera.lower() != carrera.lower():
+        return HttpResponse("No tienes permiso para exportar esta carrera.", status=403)
+
+    if carrera == "general":
+        egresados_curps = list(Egresado.objects.values_list('curp', flat=True))
+    else:
+        egresados_curps = list(Egresado.objects.filter(carrera=carrera).values_list('curp', flat=True))
+
+    ultimos = Encuesta.objects.filter(
+        curp=OuterRef('folioEncuesta__curp')
+    ).order_by('-lapso').values('folioEncuesta')[:1]
+
+    wb = Workbook()
+    sheet_map = {
+        'Encuesta S1': (EncuestaS1, wb.active),
+        'Encuesta S2': (EncuestaS2, wb.create_sheet('Encuesta S2')),
+        'Encuesta S3': (EncuestaS3, wb.create_sheet('Encuesta S3')),
+        'Empresa': (EncuestaS3Empresa, wb.create_sheet('Empresa')),
+        'Encuesta S4': (EncuestaS4, wb.create_sheet('Encuesta S4')),
+        'Encuesta S5': (EncuestaS5, wb.create_sheet('Encuesta S5')),
+    }
+    sheet_map['Encuesta S1'][1].title = 'Encuesta S1'
+
+    def get_display(obj, field):
+        val = getattr(obj, field.name)
+        if field.choices:
+            return dict(field.flatchoices).get(val, val)
+        return val
+
+    for sheet_name, (ModelClass, sheet) in sheet_map.items():
+        queryset = ModelClass.objects.filter(
+            folioEncuesta_id=Subquery(ultimos),
+            folioEncuesta__curp__curp__in=egresados_curps
+        ).select_related('folioEncuesta__curp')
+
+        field_names = [f.verbose_name.title() if f.verbose_name else f.name for f in ModelClass._meta.fields if f.name != 'id' and not f.name.startswith('folioEncuesta')]
+        sheet.append(['CURP', 'Carrera', 'Lapso'] + field_names)
+
+        if queryset.exists():
+            for obj in queryset:
+                fila = [
+                    obj.folioEncuesta.curp.curp,
+                    obj.folioEncuesta.curp.carrera,
+                    obj.folioEncuesta.lapso
+                ]
+                for field in ModelClass._meta.fields:
+                    if field.name != 'id' and not field.name.startswith('folioEncuesta'):
+                        fila.append(get_display(obj, field))
+                sheet.append(fila)
+        else:
+            # Agrega una fila vacía si no hay datos
+            empty_row = ['' for _ in range(3 + len(field_names))]
+            sheet.append(empty_row)
+
+    nombre_archivo = 'encuesta_general.xlsx' if carrera == "general" else f'encuesta_{carrera}.xlsx'
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+    wb.save(response)
     return response

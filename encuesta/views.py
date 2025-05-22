@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from . import acuse
 from core.models import (
     Encuesta, EncuestaS1, EncuestaS2, EncuestaS3, EncuestaS3Empresa,
-    EncuestaS4, EncuestaS5, Egresado
+    EncuestaS4, EncuestaS5, Egresado, EstadoEncuestaCarrera
 )
 
 
@@ -24,6 +24,12 @@ def redirigir_encuesta(request):
 
     egresado = Egresado.objects.filter(curp=curp).first()
     if not egresado:
+        return redirect('index')
+    
+    carrera = egresado.carrera
+    estado = EstadoEncuestaCarrera.objects.filter(carrera__iexact=carrera).first()
+    if estado and not estado.activa:
+        messages.error(request, "La encuesta no está disponible para tu carrera en este momento.")
         return redirect('index')
 
     lapso_actual = calcular_lapso()

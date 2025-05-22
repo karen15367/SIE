@@ -15,4 +15,6 @@ urlpatterns = [
     path('exportarE5/', views.exportarE5, name='exportarE5'),
     path('exportarE4/', views.exportarE4, name='exportarE4'),
     path('exportarE3/', views.exportarE3, name='exportarE3'),
+    path('exportar-encuesta/', views.formulario_export_encuesta, name='formulario_export_encuesta'),
+    path('exportar-encuesta-por-carrera/', views.exportar_encuesta_por_carrera, name='exportar_encuesta_por_carrera'),
 ]

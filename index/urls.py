@@ -3,6 +3,8 @@ from django.urls import path
 from . import views
 from django.urls import include
 from importador.views import procesar_excel_anexo, procesar_excel_encuesta
+from core.models import EstadoEncuestaCarrera
+
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -17,5 +19,7 @@ urlpatterns = [
     path('modCampos/', views.modCampos, name='modCampos'),
     path('importar-anexo/', procesar_excel_anexo, name='importar_anexo'),
     path('importar-encuesta/', procesar_excel_encuesta, name='importar_encuesta'),
+    path('estado-encuestas/', views.vista_estado_encuestas, name='vista_estado_encuestas'),
+    path('encuestaBloqueada/', views.encuesta_bloqueada, name='encuesta_bloqueada'),
 
 ]

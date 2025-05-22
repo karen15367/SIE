@@ -4,6 +4,9 @@ from SIE import settings
 from core.models import Administrador, Egresado, Notificacion
 from django.utils import timezone
 import datetime
+from django.shortcuts import render, redirect
+from core.models import EstadoEncuestaCarrera
+
 
 import random
 import string
@@ -14,6 +17,36 @@ from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
 import json
 
+def encuesta_bloqueada(request):
+    return render(request, 'encuestaBloqueada.html')
+
+def vista_estado_encuestas(request):
+    # Validar sesión de administrador
+    rfc_admin = request.session.get('usuario_id')
+    if not rfc_admin:
+        return redirect('index')
+
+    admin = Administrador.objects.filter(rfc=rfc_admin).first()
+    if not admin:
+        return redirect('index')
+
+    if request.method == "POST":
+        # Solo modificar encuestas si es un admin general o de su propia carrera
+        for carrera in EstadoEncuestaCarrera.objects.all():
+            if admin.carrera.lower() == "general" or admin.carrera.lower() == carrera.carrera.lower():
+                estado = request.POST.get(carrera.carrera)
+                carrera.activa = True if estado == 'on' else False
+                carrera.save()
+        return redirect('vista_estado_encuestas')
+
+    # Solo mostrar carreras que el admin puede modificar
+    if admin.carrera.lower() == "general":
+        carreras = EstadoEncuestaCarrera.objects.all().order_by('carrera')
+    else:
+        carreras = EstadoEncuestaCarrera.objects.filter(carrera__iexact=admin.carrera)
+
+    return render(request, 'ActicacionDesactivacion.html', {'carreras': carreras})
+
 
 # Create your views here.
 def index(request):
@@ -22,10 +55,9 @@ def index(request):
     carrera = request.session.get('usuario_carrera')
     nombre = request.session.get('usuario_nombre')
 
-    if not tipo or not identificador:
-        # Si no hay sesión activa, redirigir al login
-        return redirect('vistaLogin')
 
+
+    # ⏬ Si pasa la verificación, continuar con lo de siempre
     fecha_actual = timezone.now().date()
     avisos_activos = Notificacion.objects.filter(
         fechaInicio__lte=fecha_actual,
@@ -413,3 +445,4 @@ def generarC():
     caracteres = string.ascii_letters + string.digits  # Letras (mayúsculas y minúsculas) + dígitos
     contraseña = ''.join(random.choice(caracteres) for _ in range(9))
     return contraseña
+

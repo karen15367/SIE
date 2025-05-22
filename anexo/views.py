@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render, redirect
-from core.models import Egresado, Encuesta
+from core.models import Egresado, Encuesta, EstadoEncuestaCarrera
 from django.shortcuts import render, redirect
 from core.models import AnexoS1, AnexoS2, AnexoS3, AnexoS4
 from django.contrib import messages
@@ -30,6 +30,11 @@ def redirigir_anexo(request):
 
     egresado = Egresado.objects.filter(curp=curp).first()
     if not egresado:
+        return redirect('index')
+    
+    estado = EstadoEncuestaCarrera.objects.filter(carrera__iexact=carrera).first()
+    if estado and not estado.activa:
+        messages.error(request, "La encuesta no está disponible para tu carrera en este momento.")
         return redirect('index')
 
     lapso_actual = calcular_lapso()
