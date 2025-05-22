@@ -45,7 +45,6 @@ def viewEncuesta(request):
 def viewE1(request):
     if request.method == 'POST':
         p = request.POST.get('periodo')
-
         sF = EncuestaS1.objects.filter(
             sexo=1,
             folioEncuestaS1__in=Encuesta.objects.filter(
