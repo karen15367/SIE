@@ -864,7 +864,7 @@ def formulario_export_encuesta(request):
         "Ing. Gestión Empresarial",
         "Lic. Administración"
     ]
-    return render(request, 'exportarEncuestaUsuario.html', {'carreras': carreras})
+    return render(request, 'ExportarEncuestaUsuario.html', {'carreras': carreras})
 
 def exportar_encuesta_por_carrera(request):
     carrera = request.GET.get('carrera')
