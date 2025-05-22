@@ -30,5 +30,5 @@ urlpatterns = [
     path('importador/', include('importador.urls')),
     path('anexoR/', include('anexoR.urls')),
     path('encuestaR/', include(('encuestaR.urls', 'encuestaR'), namespace='encuestaR')),
-
+    
 ]
